@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="1085.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CardTransactionsAnchorPaneController">
+   <children>
+      <Pane fx:id="paneCards" layoutX="-42.0" layoutY="6.0" prefHeight="456.0" prefWidth="1085.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ComboBox fx:id="cbCards" layoutX="389.0" layoutY="42.0" onAction="#displayCards" prefHeight="30.0" prefWidth="289.0" promptText="Choose Your Card" />
+            <Button fx:id="btnResetCardCBValue" layoutX="698.0" layoutY="44.0" mnemonicParsing="false" onAction="#clearSelectedValueCardsCB" text="Reset" />
+            <Label fx:id="lblTotalCardLimit" layoutX="407.0" layoutY="119.0" prefHeight="21.0" prefWidth="173.0" text="Total Card Limit :  USD">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblRemCardLimit" layoutX="377.0" layoutY="149.0" prefHeight="21.0" prefWidth="190.0" text="Remaining Card Limit :  USD">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTotCardLimitValue" layoutX="569.0" layoutY="119.0" prefHeight="21.0" prefWidth="95.0" text="5000.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblRemCardLimitValue" layoutX="569.0" layoutY="149.0" prefHeight="21.0" prefWidth="95.0" text="3000.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TableView fx:id="tblCards" layoutX="100.0" layoutY="196.0" prefHeight="200.0" prefWidth="893.0">
+               <columns>
+                  <TableColumn fx:id="tblAccountsClmSNo" prefWidth="44.3480224609375" text="S.No" />
+                  <TableColumn fx:id="tblCardsClmTID" prefWidth="218.65203857421875" text="Transaction ID" />
+                  <TableColumn fx:id="tblCardsClmAccNo" prefWidth="135.40570068359375" text="Card Number" />
+                  <TableColumn fx:id="tblCardsClmTName" prefWidth="221.59429931640625" text="Transaction Name" />
+                  <TableColumn fx:id="tblCardsClmTType" prefWidth="124.935302734375" text="Transaction Type" />
+                  <TableColumn fx:id="tblCardsClmTDate" prefWidth="147.3409423828125" text="Transaction Date" />
+               </columns>
+            </TableView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

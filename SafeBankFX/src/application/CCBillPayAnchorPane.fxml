@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CCBillPayAnchorPaneController">
+   <children>
+      <AnchorPane layoutX="-72.0" layoutY="-142.0" prefHeight="456.0" prefWidth="1085.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ComboBox fx:id="cbAccounts" layoutX="429.0" layoutY="77.0" onAction="#displayAccounts" prefHeight="26.0" prefWidth="224.0" promptText="Choose Your Account Number" />
+            <VBox fx:id="vBoxDetails" layoutX="355.0" layoutY="124.0" prefHeight="218.0" prefWidth="391.0">
+               <children>
+                  <RadioButton fx:id="radioBtnFull" mnemonicParsing="false" onAction="#handleChangeAmountLimit" selected="true" text="Pay Full Amount">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="120.0" right="120.0" top="10.0" />
+                     </VBox.margin>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="ChangeAmountLimit" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="radioBtnMin" mnemonicParsing="false" onAction="#handleChangeAmountLimit" text="Pay Minimum Amount" toggleGroup="$ChangeAmountLimit">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="120.0" right="120.0" top="10.0" />
+                     </VBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="radioBtnCustom" mnemonicParsing="false" onAction="#handleChangeAmountLimit" prefHeight="18.0" prefWidth="140.0" text="Pay Custom Amount" toggleGroup="$ChangeAmountLimit">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="120.0" right="120.0" top="10.0" />
+                     </VBox.margin>
+                  </RadioButton>
+                  <TextField fx:id="txtAmount" onInputMethodTextChanged="#validateAmount" prefHeight="30.0" prefWidth="224.0" promptText="Enter Amount">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="100.0" right="100.0" top="10.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="133.0" text="Pay Credit Card Bill">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="130.0" right="130.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <Button fx:id="btnReset" layoutX="666.0" layoutY="77.0" mnemonicParsing="false" onAction="#handleReset" text="Reset" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

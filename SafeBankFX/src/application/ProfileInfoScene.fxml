@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ProfileInfoSceneController">
+   <children>
+      <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="800.0" minWidth="1500.0" prefHeight="810.0" prefWidth="1510.0" style="-fx-border-radius: 20px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label fx:id="lblHome" alignment="CENTER" contentDisplay="CENTER" layoutX="595.0" layoutY="39.0" prefHeight="54.0" prefWidth="417.0" text="Welcome to Safe Bank Internet Banking">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnLogout" layoutX="1378.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleLogoutAction" text="Logout" />
+            <Button fx:id="btnGoBack" layoutX="1275.0" layoutY="50.0" mnemonicParsing="false" onAction="#invokeHomeSceneLayout" text="Go Back" />
+            <Label fx:id="lblName" alignment="CENTER" contentDisplay="CENTER" layoutX="520.0" layoutY="150.0" prefHeight="18.0" prefWidth="53.0" text="Name">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtName" editable="false" layoutX="520.0" layoutY="180.0" prefHeight="47.0" prefWidth="529.0" text="Sri Harsha Peri">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </TextField>
+            <Label fx:id="lblEmail" alignment="CENTER" contentDisplay="CENTER" layoutX="520.0" layoutY="290.0" prefHeight="18.0" prefWidth="53.0" text="Email">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtEmail" editable="false" layoutX="520.0" layoutY="320.0" prefHeight="47.0" prefWidth="529.0" text="peri.s@northeastern.edu">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </TextField>
+            <Label fx:id="lblPhone" alignment="CENTER" contentDisplay="CENTER" layoutX="520.0" layoutY="430.0" prefHeight="26.0" prefWidth="64.0" text="Phone">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtPhone" layoutX="520.0" layoutY="460.0" prefHeight="47.0" prefWidth="529.0" text="+1(857)-200-5105" />
+            <Button fx:id="btnChangePassword" layoutX="700.0" layoutY="599.0" mnemonicParsing="false" onAction="#triggerConfirmationDialog" prefHeight="51.0" prefWidth="185.0" text="Change Password">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnChangeNumber" layoutX="1079.0" layoutY="463.0" mnemonicParsing="false" onAction="#triggerOTPVerificationDialog" text="Change Number" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
