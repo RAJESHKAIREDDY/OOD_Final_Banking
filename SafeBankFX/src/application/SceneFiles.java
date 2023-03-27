@@ -15,4 +15,9 @@ public class SceneFiles {
 	public static final String CC_BILL_PAY = "CCBillPayAnchorPane.fxml";
 	public static final String PAY_BY_CREDIT = "PayByCreditAnchorPane.fxml";
 	public static final String PAY_BY_SAVINGS = "PayBySavingsAnchorPane.fxml";
+	public static final String TRANSFER_OTHER = "TransferOtherAnchorPane.fxml";
+	public static final String TRANSFER_EXISTING = "TransferExistingAnchorPane.fxml";
+	public static final String ADD_NEW_BENEFICIARY = "AddNewBenAnchorPane.fxml";
+	public static final String TRANSFER_TO_SELF = "TransferToSelfAnchorPane.fxml";
+	public static final String DEPOSIT = "DepositAnchorPane.fxml";
 }
