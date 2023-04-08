@@ -9,7 +9,6 @@ import dao.DBInstance;
 import models.SavingsAccount;
 import models.User;
 import notifications.EmailService;
-import notifications.MailgunEmailService;
 import notifications.OTPService;
 import services.BeneficiaryService;
 import services.CreditCardsService;
