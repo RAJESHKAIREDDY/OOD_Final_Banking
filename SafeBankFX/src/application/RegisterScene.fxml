@@ -17,12 +17,12 @@
                   <Font name="System Bold" size="34.0" />
                </font>
             </Label>
-            <TextField fx:id="txtEmail" layoutX="602.0" layoutY="314.0" onInputMethodTextChanged="#handleInputEmailChange" prefHeight="43.0" prefWidth="310.0" promptText="Email">
+            <TextField fx:id="txtEmail" layoutX="602.0" layoutY="314.0" prefHeight="43.0" prefWidth="310.0" promptText="Email">
                <font>
                   <Font size="20.0" />
                </font>
             </TextField>
-            <PasswordField fx:id="txtPassword" layoutX="602.0" layoutY="388.0" onInputMethodTextChanged="#handleInputPasswordChange" prefHeight="43.0" prefWidth="310.0" promptText="Password">
+            <PasswordField fx:id="txtPassword" layoutX="602.0" layoutY="388.0" prefHeight="43.0" prefWidth="310.0" promptText="Password">
                <font>
                   <Font size="20.0" />
                </font>
@@ -34,12 +34,12 @@
             </Button>
             <Hyperlink fx:id="hyperlinkToLogin" layoutX="822.0" layoutY="538.0" onAction="#handleSwitchToLoginScene" prefHeight="23.0" prefWidth="67.0" text="Click Here" />
             <Label fx:id="lblSwitchToLogin" layoutX="627.0" layoutY="541.0" text="Already have an account ? To Login, " />
-            <TextField fx:id="txtName" layoutX="602.0" layoutY="176.0" onInputMethodTextChanged="#handleInputNameChange" prefHeight="43.0" prefWidth="310.0" promptText="Name">
+            <TextField fx:id="txtName" layoutX="602.0" layoutY="176.0" prefHeight="43.0" prefWidth="310.0" promptText="Name">
                <font>
                   <Font size="20.0" />
                </font>
             </TextField>
-            <TextField fx:id="txtPhone" layoutX="602.0" layoutY="245.0" onInputMethodTextChanged="#handleInputPhoneChange" prefHeight="43.0" prefWidth="310.0" promptText="Phone">
+            <TextField fx:id="txtPhone" layoutX="602.0" layoutY="245.0" prefHeight="43.0" prefWidth="310.0" promptText="Phone">
                <font>
                   <Font size="20.0" />
                </font>

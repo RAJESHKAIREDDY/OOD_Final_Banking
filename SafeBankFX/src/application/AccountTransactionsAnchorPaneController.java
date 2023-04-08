@@ -74,7 +74,7 @@ public class AccountTransactionsAnchorPaneController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		//List of account numbers of current user
+//		//List of account numbers of current user
 		ObservableList<String> accountNumbersList = 
 				FXCollections.observableArrayList("94467845362", "78546789012");
 		

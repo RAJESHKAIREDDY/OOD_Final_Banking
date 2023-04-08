@@ -11,7 +11,7 @@
    <children>
       <AnchorPane fx:id="anchorPaneTransactionScene" layoutX="20.0" layoutY="6.0" minHeight="800.0" minWidth="1500.0" prefHeight="806.0" prefWidth="1520.0" style="-fx-border-radius: 20px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="lblHome" alignment="CENTER" contentDisplay="CENTER" layoutX="595.0" layoutY="39.0" prefHeight="54.0" prefWidth="417.0" text="Welcome to Safe Bank Internet Banking">
+            <Label fx:id="lblHome" alignment="CENTER" contentDisplay="CENTER" layoutX="435.0" layoutY="63.0" prefHeight="54.0" prefWidth="455.0" text="Welcome to Safe Bank Internet Banking">
                <font>
                   <Font size="24.0" />
                </font>
@@ -22,12 +22,12 @@
                   <Font size="25.0" />
                </font>
             </Label>
-            <RadioButton fx:id="radioBtnCredit" layoutX="706.0" layoutY="169.0" mnemonicParsing="false" onAction="#displayTransactions" selected="true" text="Credit">
+            <RadioButton fx:id="radioBtnCredit" layoutX="526.0" layoutY="177.0" mnemonicParsing="false" onAction="#displayTransactions" selected="true" text="Credit">
                <toggleGroup>
                   <ToggleGroup fx:id="TransactionType" />
                </toggleGroup></RadioButton>
-            <RadioButton fx:id="radioBtnSavings" layoutX="810.0" layoutY="169.0" mnemonicParsing="false" onAction="#displayTransactions" text="Savings" toggleGroup="$TransactionType" />
-            <AnchorPane fx:id="anchorPane" layoutX="242.0" layoutY="242.0" prefHeight="456.0" prefWidth="1085.0" />
+            <RadioButton fx:id="radioBtnSavings" layoutX="663.0" layoutY="177.0" mnemonicParsing="false" onAction="#displayTransactions" text="Savings" toggleGroup="$TransactionType" />
+            <AnchorPane fx:id="anchorPane" layoutX="64.0" layoutY="247.0" prefHeight="456.0" prefWidth="1085.0" />
          </children>
       </AnchorPane>
       <Button fx:id="btnGoBack" layoutX="1275.0" layoutY="50.0" mnemonicParsing="false" onAction="#invokeHomeSceneLayout" text="Go Back" />

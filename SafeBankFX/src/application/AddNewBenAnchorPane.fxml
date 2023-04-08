@@ -12,17 +12,17 @@
          <children>
             <VBox layoutX="246.0" layoutY="25.0" prefHeight="200.0" prefWidth="242.0">
                <children>
-                  <TextField fx:id="benName" onInputMethodTextChanged="#validateBenName" promptText="Beneficiary Name">
+                  <TextField fx:id="benName" promptText="Beneficiary Name">
                      <VBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>
                   </TextField>
-                  <TextField fx:id="benPhoneNum" onInputMethodTextChanged="#validateBenPhoneNum" promptText="Beneficiary Phone Number">
+                  <TextField fx:id="benPhoneNum" promptText="Beneficiary Phone Number">
                      <VBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>
                   </TextField>
-                  <TextField fx:id="benEmail" onInputMethodTextChanged="#validateBenEmail" promptText="Beneficiary Email">
+                  <TextField fx:id="benEmail" promptText="Beneficiary Email">
                      <VBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>

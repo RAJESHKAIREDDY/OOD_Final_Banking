@@ -81,10 +81,7 @@ public class CCBillPayAnchorPaneController implements Initializable {
     	txtAmount.setText("5000.0");
     }
 
-    @FXML
-    public void validateAmount(InputMethodEvent event) {
-
-    }
+    
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub

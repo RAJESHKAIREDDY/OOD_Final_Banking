@@ -15,12 +15,12 @@
          <children>
             <ComboBox fx:id="cbCards" layoutX="389.0" layoutY="42.0" onAction="#displayCards" prefHeight="30.0" prefWidth="289.0" promptText="Choose Your Card" />
             <Button fx:id="btnResetCardCBValue" layoutX="698.0" layoutY="44.0" mnemonicParsing="false" onAction="#clearSelectedValueCardsCB" text="Reset" />
-            <Label fx:id="lblTotalCardLimit" layoutX="407.0" layoutY="119.0" prefHeight="21.0" prefWidth="173.0" text="Total Card Limit :  USD">
+            <Label fx:id="lblTotalCardLimit" layoutX="407.0" layoutY="119.0" prefHeight="21.0" prefWidth="173.0" text="Total Card Limit :  $">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="lblRemCardLimit" layoutX="377.0" layoutY="149.0" prefHeight="21.0" prefWidth="190.0" text="Remaining Card Limit :  USD">
+            <Label fx:id="lblRemCardLimit" layoutX="377.0" layoutY="149.0" prefHeight="21.0" prefWidth="190.0" text="Remaining Card Limit :  $">
                <font>
                   <Font size="16.0" />
                </font>

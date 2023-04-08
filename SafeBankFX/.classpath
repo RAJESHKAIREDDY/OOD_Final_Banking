@@ -11,10 +11,5 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/Shared/Files From c.localized/app/sriha/virtual/product/12.2.0/dbhome_1/suptools/tfa/release/tfa_home/jlib/javax.mail.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

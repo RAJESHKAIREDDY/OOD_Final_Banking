@@ -9,7 +9,7 @@
    <children>
       <AnchorPane layoutX="20.0" layoutY="20.0" minHeight="800.0" minWidth="1500.0" prefHeight="820.0" prefWidth="1520.0" style="-fx-border-radius: 20px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="lblHome" alignment="CENTER" contentDisplay="CENTER" layoutX="595.0" layoutY="39.0" prefHeight="54.0" prefWidth="417.0" text="Welcome to Safe Bank Internet Banking">
+            <Label fx:id="lblHome" alignment="CENTER" contentDisplay="CENTER" layoutX="426.0" layoutY="48.0" prefHeight="54.0" prefWidth="461.0" text="Welcome to Safe Bank Internet Banking">
                <font>
                   <Font size="24.0" />
                </font>

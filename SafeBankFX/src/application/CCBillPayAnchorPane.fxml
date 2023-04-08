@@ -34,7 +34,7 @@
                         <Insets bottom="10.0" left="120.0" right="120.0" top="10.0" />
                      </VBox.margin>
                   </RadioButton>
-                  <TextField fx:id="txtAmount" onInputMethodTextChanged="#validateAmount" prefHeight="30.0" prefWidth="224.0" promptText="Enter Amount">
+                  <TextField fx:id="txtAmount" prefHeight="30.0" prefWidth="224.0" promptText="Enter Amount">
                      <VBox.margin>
                         <Insets bottom="10.0" left="100.0" right="100.0" top="10.0" />
                      </VBox.margin>

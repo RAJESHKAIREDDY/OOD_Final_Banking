@@ -18,7 +18,7 @@
                         <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
                      </VBox.margin>
                   </ComboBox>
-                  <TextField fx:id="txtAmount" onInputMethodTextChanged="#validateAmount" promptText="Enter Amount">
+                  <TextField fx:id="txtAmount" promptText="Enter Amount">
                      <VBox.margin>
                         <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
                      </VBox.margin>
