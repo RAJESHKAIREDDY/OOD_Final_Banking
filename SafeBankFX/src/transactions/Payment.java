@@ -2,5 +2,5 @@ package transactions;
 
 @FunctionalInterface
 public interface Payment {
-    void processPayment(double amount) throws Exception;
+    public boolean payment(double amount) throws Exception;
 }

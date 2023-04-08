@@ -11,20 +11,20 @@ import enums.TransactionMode;
 import enums.TransactionType;
 import models.Transaction;
 
-public class DepositTransaction extends Thread {
+public class AccountPaymentTransaction extends Thread {
 
     double amount;
     double accountBalance;
     String userId;
     String accountId;
-    public DepositTransaction(String userId, String accountId, double accountBalance, double amount) {
+    public AccountPaymentTransaction(String userId, String accountId, double accountBalance, double amount) {
         this.amount = amount;
         this.userId = userId;
         this.accountId = accountId;
         this.accountBalance = accountBalance;
     }
 
-    private final Deposit deposit = (double amount) -> {
+    private final Payment accountPayment = (double amount) -> {
    
         Scanner sc = new Scanner(System.in);
         boolean iterate = true;
@@ -37,16 +37,16 @@ public class DepositTransaction extends Thread {
             if(isValidSecurityCode) {
                 int secCode = Integer.parseInt(securityCode);
                 if(secCode == 259) {
-                    accountBalance += amount;
-                    System.out.println("\n\n*** Deposited USD " + amount + " to Savings A/C Account ID : "+accountId+" ***");
+                    accountBalance -= amount;
+                    System.out.println("\n\n*** Paid USD " + amount + " from Savings A/C Account ID : "+accountId+" ***");
                     System.out.println("Updated Balance : USD "+accountBalance);
                     SavingsAccountsDAO.updateAccountBalance(userId, accountId, accountBalance);
                     Transaction transaction = new Transaction();
                     transaction.setTransactionId(UUID.randomUUID());
-                    transaction.setTransactionCategory(TransactionCategory.CASH_DEPOSIT);
+                    transaction.setTransactionCategory(TransactionCategory.ONLINE_PAYMENT);
                     transaction.setTransactionType(TransactionType.ACCOUNT_TRANSACTION);
-                    transaction.setTransactionMode(TransactionMode.CREDIT);
-                    transaction.setTransactionName("Deposit for Medical Purpose");
+                    transaction.setTransactionMode(TransactionMode.DEBIT);
+                    transaction.setTransactionName("Online Payment for Shopping");
                     TransactionsDAO.createNewTransaction(userId, transaction);
                     iterate = false;
                 }
@@ -82,7 +82,7 @@ public class DepositTransaction extends Thread {
     public void run() {
         synchronized (this) {
             try {
-                deposit.deposit(amount);
+            	accountPayment.payment(amount);
             }
             catch (Exception ime) {
                 System.out.println("\n\n*** Transaction Failed .Try Again Later ***");

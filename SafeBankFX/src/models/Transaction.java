@@ -3,57 +3,65 @@ package models;
 import java.util.Date;
 import java.util.UUID;
 
+import enums.TransactionCategory;
+import enums.TransactionMode;
+import enums.TransactionType;
+
 public class Transaction {
-    private final UUID transactionId;
-    private TransactionType transactionType;
-    private double amount;
-    private TransactionMode transactionMode;
-    private CardType cardType;
-    private final Date transactionDate;
-
-    public Transaction() {
-        this.transactionId = UUID.randomUUID();
-        this.transactionDate = new Date();
-    }
-
-    public UUID getTransactionId() {
-        return transactionId;
-    }
-
-    public Date getTransactionDate() {
-        return transactionDate;
-    }
-
-    public TransactionType getTransactionType() {
-        return transactionType;
-    }
-
-    public void setTransactionType(TransactionType transactionType) {
-        this.transactionType = transactionType;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public TransactionMode getTransactionMode() {
-        return transactionMode;
-    }
-
-    public void setTransactionMode(TransactionMode transactionMode) {
-        this.transactionMode = transactionMode;
-    }
-
-    public CardType getCardType() {
-        return cardType;
-    }
-
-    public void setCardType(CardType cardType) {
-        this.cardType = cardType;
-    }
-
+	private int id;
+	private UUID transactionId;
+	private String transactionName;
+	private TransactionCategory transactionCategory;
+	private TransactionType transactionType;
+	private TransactionMode transactionMode;
+	private Date createdAt;
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public UUID getTransactionId() {
+		return transactionId;
+	}
+	public void setTransactionId(UUID transactionId) {
+		this.transactionId = transactionId;
+	}
+	public String getTransactionName() {
+		return transactionName;
+	}
+	public void setTransactionName(String transactionName) {
+		this.transactionName = transactionName;
+	}
+	public TransactionType getTransactionType() {
+		return transactionType;
+	}
+	public void setTransactionType(TransactionType transactionType) {
+		this.transactionType = transactionType;
+	}
+	public TransactionCategory getTransactionCategory() {
+		return transactionCategory;
+	}
+	public void setTransactionCategory(TransactionCategory transactionCategory) {
+		this.transactionCategory = transactionCategory;
+	}
+	public TransactionMode getTransactionMode() {
+		return transactionMode;
+	}
+	public void setTransactionMode(TransactionMode transactionMode) {
+		this.transactionMode = transactionMode;
+	}
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+	@Override
+	public String toString() {
+		return "Transaction [id=" + id + ", transactionId=" + transactionId + ", transactionName=" + transactionName
+				+ ", transactionCategory=" + transactionCategory + ", transactionType=" + transactionType
+				+ ", transactionMode=" + transactionMode + ", createdAt=" + createdAt + "]";
+	}
 }

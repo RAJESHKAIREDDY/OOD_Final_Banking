@@ -1,30 +1,31 @@
 package transactions;
 
-import validations.ValidatePin;
 import java.util.Scanner;
 import java.util.UUID;
 
+import dao.CreditCardsDAO;
 import dao.SavingsAccountsDAO;
 import dao.TransactionsDAO;
 import enums.TransactionCategory;
 import enums.TransactionMode;
 import enums.TransactionType;
 import models.Transaction;
+import validations.ValidatePin;
 
-public class DepositTransaction extends Thread {
-
-    double amount;
-    double accountBalance;
+public class CardPaymentTransaction extends Thread {
+	
+	double amount;
+    double remainingCreditLimit;
     String userId;
-    String accountId;
-    public DepositTransaction(String userId, String accountId, double accountBalance, double amount) {
+    String cardId;
+    public CardPaymentTransaction(String userId, String cardId, double remainingCreditLimit, double amount) {
         this.amount = amount;
         this.userId = userId;
-        this.accountId = accountId;
-        this.accountBalance = accountBalance;
+        this.cardId = cardId;
+        this.remainingCreditLimit = remainingCreditLimit;
     }
 
-    private final Deposit deposit = (double amount) -> {
+    private final Payment cardPayment = (double amount) -> {
    
         Scanner sc = new Scanner(System.in);
         boolean iterate = true;
@@ -37,16 +38,16 @@ public class DepositTransaction extends Thread {
             if(isValidSecurityCode) {
                 int secCode = Integer.parseInt(securityCode);
                 if(secCode == 259) {
-                    accountBalance += amount;
-                    System.out.println("\n\n*** Deposited USD " + amount + " to Savings A/C Account ID : "+accountId+" ***");
-                    System.out.println("Updated Balance : USD "+accountBalance);
-                    SavingsAccountsDAO.updateAccountBalance(userId, accountId, accountBalance);
+                    remainingCreditLimit -= amount;
+                    System.out.println("\n\n*** Paid USD " + amount + " from Card ID : "+cardId+" ***");
+                    System.out.println("Updated Balance : USD "+remainingCreditLimit);
+                    CreditCardsDAO.updateRemainingCreditLimit(userId, cardId, remainingCreditLimit);
                     Transaction transaction = new Transaction();
                     transaction.setTransactionId(UUID.randomUUID());
-                    transaction.setTransactionCategory(TransactionCategory.CASH_DEPOSIT);
-                    transaction.setTransactionType(TransactionType.ACCOUNT_TRANSACTION);
-                    transaction.setTransactionMode(TransactionMode.CREDIT);
-                    transaction.setTransactionName("Deposit for Medical Purpose");
+                    transaction.setTransactionCategory(TransactionCategory.ONLINE_PAYMENT);
+                    transaction.setTransactionType(TransactionType.CARD_TRANSACTION);
+                    transaction.setTransactionMode(TransactionMode.DEBIT);
+                    transaction.setTransactionName("Online Payment for Shopping");
                     TransactionsDAO.createNewTransaction(userId, transaction);
                     iterate = false;
                 }
@@ -82,7 +83,7 @@ public class DepositTransaction extends Thread {
     public void run() {
         synchronized (this) {
             try {
-                deposit.deposit(amount);
+            	cardPayment.payment(amount);
             }
             catch (Exception ime) {
                 System.out.println("\n\n*** Transaction Failed .Try Again Later ***");

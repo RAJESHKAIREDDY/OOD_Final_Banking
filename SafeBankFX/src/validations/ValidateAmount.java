@@ -1,11 +1,12 @@
 package validations;
 
 public class ValidateAmount {
-    public static boolean isAmountValid(String amount) throws Exception {
+    
+	public static boolean isAmountValidForDeposit(String amount) throws Exception {
         try {
             double amountDouble = Double.parseDouble(amount);
             if(amountDouble > 0 && amountDouble % 100 == 0) {
-                return amountDouble <= 10000;
+                return amountDouble <= 20000;
             }
             return false;
         }
