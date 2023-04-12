@@ -6,7 +6,6 @@ import enums.CardCategory;
 import enums.CardProvider;
 
 public class CreditCard {
-    private int id;
     private UUID creditCardId;
     private long cardNumber;
     private int securityCode;
@@ -14,19 +13,12 @@ public class CreditCard {
     private double totalCreditLimit;
     private double remainingCreditLimit;
     private Date validThru;
-    private Date lastDueDate;
     private Date lastPaymentDate;
     private Date createdAt;
     private Date updatedAt;
     private CardCategory cardCategory;
     private CardProvider cardProvider;
 	
-    public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public UUID getCreditCardId() {
 		return creditCardId;
 	}
@@ -69,12 +61,6 @@ public class CreditCard {
 	public void setValidThru(Date validThru) {
 		this.validThru = validThru;
 	}
-	public Date getLastDueDate() {
-		return lastDueDate;
-	}
-	public void setLastDueDate(Date lastDueDate) {
-		this.lastDueDate = lastDueDate;
-	}
 	public Date getLastPaymentDate() {
 		return lastPaymentDate;
 	}
@@ -107,11 +93,10 @@ public class CreditCard {
 	}
 	@Override
 	public String toString() {
-		return "CreditCard [id=" + id + ", creditCardId=" + creditCardId + ", cardNumber=" + cardNumber
-				+ ", securityCode=" + securityCode + ", pinNumber=" + pinNumber + ", totalCreditLimit="
-				+ totalCreditLimit + ", remainingCreditLimit=" + remainingCreditLimit + ", validThru=" + validThru
-				+ ", lastDueDate=" + lastDueDate + ", lastPaymentDate=" + lastPaymentDate + ", createdAt=" + createdAt
-				+ ", updatedAt=" + updatedAt + ", cardCategory=" + cardCategory + ", cardProvider=" + cardProvider
-				+ "]";
+		return "CreditCard [creditCardId=" + creditCardId + ", cardNumber=" + cardNumber + ", securityCode="
+				+ securityCode + ", pinNumber=" + pinNumber + ", totalCreditLimit=" + totalCreditLimit
+				+ ", remainingCreditLimit=" + remainingCreditLimit + ", validThru=" + validThru + ", lastPaymentDate="
+				+ lastPaymentDate + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", cardCategory="
+				+ cardCategory + ", cardProvider=" + cardProvider + "]";
 	}
 }

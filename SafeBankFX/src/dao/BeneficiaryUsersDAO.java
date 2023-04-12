@@ -10,9 +10,9 @@ import java.util.logging.Logger;
 
 import models.BeneficiaryUser;
 
-public class BeneficiaryUsersDAO extends DBInstance {
+public class BeneficiaryUsersDAO extends DatabaseConnectionFactory {
 
-	public static boolean createNewBeneficiary(String userId, BeneficiaryUser beneficiaryUser) {
+	public static boolean addNewBeneficiary(String userId, BeneficiaryUser beneficiaryUser) {
 		
 		String beneficiaryId = beneficiaryUser.getBeneficiaryUserId().toString();
 		
@@ -21,7 +21,7 @@ public class BeneficiaryUsersDAO extends DBInstance {
 		if(beneficiaryUserExists)
 			return false;
 		
-		final String CREATE_NEW_BENEFICIARY_QUERY = "INSERT INTO "
+		final String ADD_NEW_BENEFICIARY_QUERY = "INSERT INTO "
 				+ "beneficiary_users("
 				+ "beneficiary_user_id, "
 				+ "user_id) "
@@ -30,8 +30,9 @@ public class BeneficiaryUsersDAO extends DBInstance {
 				+ "'" + beneficiaryId + "', "
 				+ "'" + userId + "')";
 		
-		boolean createdCreditCard = executeUpdate(CREATE_NEW_BENEFICIARY_QUERY);
-		if(createdCreditCard)
+		
+		boolean addedNewBeneficiary = executeUpdate(ADD_NEW_BENEFICIARY_QUERY);
+		if(addedNewBeneficiary)
 			return true;
 		return false;
 	}
@@ -60,14 +61,13 @@ public class BeneficiaryUsersDAO extends DBInstance {
 			beneficiaries = executeQuery(GET_BENEFICIARY_USER_QUERY);
 			beneficiaryUser  = new BeneficiaryUser();
 			while(beneficiaries.next()) {
-				beneficiaryUser.setId(beneficiaries.getInt("id"));
 				beneficiaryUser.setBeneficiaryUserId(UUID.fromString(beneficiaries.getString("beneficiary_user_id")));
 				beneficiaryUser.setCreatedAt(beneficiaries.getTimestamp("created_at"));
 			}
 			beneficiaries.close();
 		} catch (SQLException sqlException) {
 			// TODO Auto-generated catch block
-			Logger.getLogger(DBInstance.class.getName()).log(Level.SEVERE, null, sqlException);
+			Logger.getLogger(DatabaseConnectionFactory.class.getName()).log(Level.SEVERE, null, sqlException);
 		}
 		finally {
 			closeConnection();
@@ -87,14 +87,13 @@ public class BeneficiaryUsersDAO extends DBInstance {
 			retrievedBeneficiaries = new ArrayList<>();
 			BeneficiaryUser beneficiaryUser = new BeneficiaryUser();
 			while(results.next()) {
-				beneficiaryUser.setId(results.getInt("id"));
 				beneficiaryUser.setBeneficiaryUserId(UUID.fromString(results.getString("beneficiary_user_id")));
 				beneficiaryUser.setCreatedAt(results.getTimestamp("created_at"));
 				retrievedBeneficiaries.add(beneficiaryUser);
 			}
 		} catch (SQLException sqlException) {
 			// TODO Auto-generated catch block
-			Logger.getLogger(DBInstance.class.getName()).log(Level.SEVERE, null, sqlException);
+			Logger.getLogger(DatabaseConnectionFactory.class.getName()).log(Level.SEVERE, null, sqlException);
 		}
 		return retrievedBeneficiaries;
 	}

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import dao.SavingsAccountsDAO;
+import dao.UsersDAO;
 import models.SavingsAccount;
 import models.User;
 import utils.SavingsAccountUtils;
@@ -19,6 +20,9 @@ public class SavingsAccountService {
 		boolean accountCreated = 
 				SavingsAccountsDAO.createNewAccount(userId, savingsAccount);
 		if(accountCreated) {
+			int creditScore = user.getCreditScore();
+			user.setCreditScore(creditScore + 20);
+			UsersDAO.updateUserCreditScore(userId, user.getCreditScore());
 			System.out.println("Created Savings Account for User "+user.getName());
 			List<SavingsAccount> userAccounts = SavingsAccountsDAO.getUserSavingsAccounts(userId);
 			user.setAccounts(userAccounts);

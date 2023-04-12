@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 import models.SavingsAccount;
 
-public class SavingsAccountsDAO extends DBInstance {
+public class SavingsAccountsDAO extends DatabaseConnectionFactory {
 	
 	public static boolean createNewAccount(String userId, SavingsAccount savingsAccount) {
 		
@@ -49,7 +49,6 @@ public class SavingsAccountsDAO extends DBInstance {
 			retrievedAccounts = new ArrayList<>();
 			SavingsAccount savingsAccount = new SavingsAccount();
 			while(results.next()) {
-				savingsAccount.setId(results.getInt("id"));
 				savingsAccount.setAccountId(UUID.fromString(results.getString("account_id")));
 				savingsAccount.setAccountNumber(results.getLong("account_number"));
 				savingsAccount.setAccountBalance(results.getDouble("account_balance"));
@@ -59,23 +58,49 @@ public class SavingsAccountsDAO extends DBInstance {
 			}
 		} catch (SQLException sqlException) {
 			// TODO Auto-generated catch block
-			Logger.getLogger(DBInstance.class.getName()).log(Level.SEVERE, null, sqlException);
+			Logger.getLogger(DatabaseConnectionFactory.class.getName()).log(Level.SEVERE, null, sqlException);
 		}
 		return retrievedAccounts;
 	}
 	
-	public static SavingsAccount getUserSavingsAccount(String accountId) {
+	public static SavingsAccount getSavingsAccountById(String accountId) {
+		return getAccountDetails(accountId);
+	}
+	
+	public static SavingsAccount getSavingsAccountByAccountNumber(long accountNumber) {
+		return getAccountDetails(accountNumber);
+	}
+	
+	private static SavingsAccount getAccountDetails(Object object) {
+		
+		String accountId = null;
+		Long accountNumber = null;
+		
+		if(object.getClass().getSimpleName() == "String")
+			accountId = (String) object;
+		else
+			accountNumber = (Long) object;
+		
 		ResultSet results = null;
 		SavingsAccount account = null;
 		try {
-			final String GET_ACCOUNTS_QUERY = "SELECT * "
-					+ "FROM safebankdb.savings_accounts "
-					+ "WHERE account_id = '"+accountId+"';";
-
+			
+			final String GET_ACCOUNTS_QUERY;
+			if(accountId != null) {
+				GET_ACCOUNTS_QUERY = "SELECT * "
+						+ "FROM safebankdb.savings_accounts "
+						+ "WHERE account_id = '"+accountId+"';";
+			}
+			else if(accountNumber != null) {
+				GET_ACCOUNTS_QUERY = "SELECT * "
+						+ "FROM safebankdb.savings_accounts "
+						+ "WHERE account_number = '"+accountNumber.longValue()+"';";
+			}
+			else return null;
+			
 			results = (ResultSet) executeQuery(GET_ACCOUNTS_QUERY);
 			account = new SavingsAccount();
 			while(results.next()) {
-				account.setId(results.getInt("id"));
 				account.setAccountId(UUID.fromString(results.getString("account_id")));
 				account.setAccountNumber(results.getLong("account_number"));
 				account.setAccountBalance(results.getDouble("account_balance"));
@@ -84,7 +109,7 @@ public class SavingsAccountsDAO extends DBInstance {
 			}
 		} catch (SQLException sqlException) {
 			// TODO Auto-generated catch block
-			Logger.getLogger(DBInstance.class.getName()).log(Level.SEVERE, null, sqlException);
+			Logger.getLogger(DatabaseConnectionFactory.class.getName()).log(Level.SEVERE, null, sqlException);
 		}
 		return account;
 	}
@@ -105,8 +130,33 @@ public class SavingsAccountsDAO extends DBInstance {
 		return false;
 	}
 	
+	public static boolean processTransfer(String senderAccountId, String receiverAccountId, double amount) {
+		SavingsAccount senderAccount = getAccountDetails(senderAccountId);
+		SavingsAccount receiverAccount = getAccountDetails(receiverAccountId);
+		double senderAccountBalance = senderAccount.getAccountBalance();
+		senderAccountBalance -= amount;
+		double receiverAccountBalance = receiverAccount.getAccountBalance();
+		receiverAccountBalance += amount;
+		final String PROCESS_TRANSFER_QUERY = "UPDATE savings_accounts "
+			    + "SET account_balance = "
+			    + "CASE "
+			    + "WHEN account_id = '" + senderAccountId + "' "
+			    + "THEN " + senderAccountBalance + " "
+			    + "WHEN account_id = '" + receiverAccountId + "' "
+			    + "THEN " + receiverAccountBalance + " "
+			    + "END "
+			    + "WHERE account_id IN ('" + senderAccountId + "', '" + receiverAccountId + "')";
+				
+		boolean createdSavingsAccount = executeUpdate(PROCESS_TRANSFER_QUERY);
+		if(createdSavingsAccount)
+			return true;
+		return false;
+	}
+	
+	
+	
 	public static boolean accountExists(String accountId) {
-		SavingsAccount account = getUserSavingsAccount(accountId);
+		SavingsAccount account = getSavingsAccountById(accountId);
 		if(account != null)
 			return true;
 		return false;

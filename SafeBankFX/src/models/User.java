@@ -5,27 +5,20 @@ import java.util.List;
 import java.util.UUID;
 
 public class User {
-    
-	private int id;
+   
     private UUID userId;
     private String name;
     private String email;
     private String password;
     private long phone;
     private List<SavingsAccount> accounts;
-    private List<CreditCard> creditCards;
+    private CreditCard creditCard;
     private List<Transaction> transactions;
     private List<BeneficiaryUser> beneficiaryUsers;
     private int creditScore;
     private Date createdAt;
     private Date updatedAt;
 	
-    public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public UUID getUserId() {
 		return userId;
 	}
@@ -62,11 +55,11 @@ public class User {
 	public void setAccounts(List<SavingsAccount> accounts) {
 		this.accounts = accounts;
 	}
-	public List<CreditCard> getCreditCards() {
-		return creditCards;
+	public CreditCard getCreditCard() {
+		return creditCard;
 	}
-	public void setCreditCards(List<CreditCard> creditCards) {
-		this.creditCards = creditCards;
+	public void setCreditCard(CreditCard creditCard) {
+		this.creditCard = creditCard;
 	}
 	public List<Transaction> getTransactions() {
 		return transactions;
@@ -105,8 +98,8 @@ public class User {
 	}
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", userId=" + userId + ", name=" + name + ", email=" + email + ", password="
-				+ password + ", phone=" + phone + ", accounts=" + accounts + ", creditCards=" + creditCards
+		return "User [userId=" + userId + ", name=" + name + ", email=" + email + ", password="
+				+ password + ", phone=" + phone + ", accounts=" + accounts + ", creditCard=" + creditCard
 				+ ", transactions=" + transactions + ", beneficiaryUsers=" + beneficiaryUsers + ", creditScore="
 				+ creditScore + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	}

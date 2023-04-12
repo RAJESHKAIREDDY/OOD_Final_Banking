@@ -5,16 +5,9 @@ import java.util.UUID;
 
 public class BeneficiaryUser {
 	
-	private int id;
 	private UUID beneficiaryUserId;
 	private Date createdAt;
 	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public UUID getBeneficiaryUserId() {
 		return beneficiaryUserId;
 	}
@@ -29,7 +22,7 @@ public class BeneficiaryUser {
 	}
 	@Override
 	public String toString() {
-		return "BeneficiaryUser [id=" + id + ", beneficiaryUserId=" + beneficiaryUserId + ", createdAt=" + createdAt
+		return "BeneficiaryUser [beneficiaryUserId=" + beneficiaryUserId + ", createdAt=" + createdAt
 				+ "]";
 	}
 }

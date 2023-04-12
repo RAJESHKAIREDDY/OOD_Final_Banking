@@ -1,1 +1,10 @@
 /backendmain/
+/application/
+/dao/
+/enums/
+/models/
+/notifications/
+/services/
+/transactions/
+/utils/
+/validations/

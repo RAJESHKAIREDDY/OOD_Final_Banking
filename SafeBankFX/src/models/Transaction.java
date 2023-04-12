@@ -3,25 +3,23 @@ package models;
 import java.util.Date;
 import java.util.UUID;
 
+import enums.CCBillPaymentStatus;
+import enums.PaymentStatus;
 import enums.TransactionCategory;
 import enums.TransactionMode;
 import enums.TransactionType;
 
 public class Transaction {
-	private int id;
 	private UUID transactionId;
 	private String transactionName;
 	private TransactionCategory transactionCategory;
 	private TransactionType transactionType;
 	private TransactionMode transactionMode;
+	private double amount;
 	private Date createdAt;
+	private Date dueDate;
+	private CCBillPaymentStatus paymentStatus;
 	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public UUID getTransactionId() {
 		return transactionId;
 	}
@@ -58,10 +56,29 @@ public class Transaction {
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
+	public double getAmount() {
+		return amount;
+	}
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+	public Date getDueDate() {
+		return dueDate;
+	}
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
+	}
+	public CCBillPaymentStatus getPaymentStatus() {
+		return paymentStatus;
+	}
+	public void setPaymentStatus(CCBillPaymentStatus paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
 	@Override
 	public String toString() {
-		return "Transaction [id=" + id + ", transactionId=" + transactionId + ", transactionName=" + transactionName
+		return "Transaction [transactionId=" + transactionId + ", transactionName=" + transactionName
 				+ ", transactionCategory=" + transactionCategory + ", transactionType=" + transactionType
-				+ ", transactionMode=" + transactionMode + ", createdAt=" + createdAt + "]";
+				+ ", transactionMode=" + transactionMode + ", amount=" + amount + ", createdAt=" + createdAt
+				+ ", dueDate=" + dueDate + ", paymentStatus=" + paymentStatus + "]";
 	}
 }

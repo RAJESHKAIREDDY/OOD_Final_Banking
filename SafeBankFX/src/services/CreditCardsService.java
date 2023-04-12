@@ -16,8 +16,9 @@ public class CreditCardsService {
 	public static boolean createNewCreditCard(
 			String userId, User user) throws Exception {
 		CreditCard creditCard = new CreditCard();
-		
+		System.out.println(user);
 		CardCategory cardCategory = CreditCardUtils.getCardCategory(user);
+		System.out.println(cardCategory);
 		
 		double totalCreditLimit = 
 				CreditCardUtils.getTotalCreditLimit(cardCategory);
@@ -30,8 +31,7 @@ public class CreditCardsService {
 		
 		Date validThru = CreditCardUtils.getValidThru(new Date());
 		
-		creditCard.setPinNumber(0000);
-		
+		creditCard.setPinNumber(CreditCardUtils.generatePin());
 		creditCard.setCreditCardId(UUID.randomUUID());
 		creditCard.setCardNumber(cardNumber);
 		creditCard.setSecurityCode(securityCode);
@@ -41,18 +41,25 @@ public class CreditCardsService {
 		creditCard.setCardProvider(cardProvider);
 		creditCard.setValidThru(validThru);
 		
-		boolean cardCreated = 
-				CreditCardsDAO.createNewCreditCard(userId, creditCard);
-		
-		if(cardCreated) {
-			System.out.println("Created Credit Card for User "+user.getName());
-			List<CreditCard> userCards = 
-					CreditCardsDAO.getUserCreditCards(userId);
-			user.setCreditCards(userCards);
-			return true;
+		CreditCard userCard = CreditCardsDAO.getCreditCardByUserId(userId);
+		if(userCard == null || userCard.getCreditCardId() == null) {
+			boolean cardCreated = 
+					CreditCardsDAO.createNewCreditCard(userId, creditCard);
+			
+			if(cardCreated) {
+				System.out.println("Created Credit Card for User "+user.getName());
+				CreditCard userCreditCard = 
+						CreditCardsDAO.getCreditCardByUserId(userId);
+				user.setCreditCard(userCreditCard);
+				return true;
+			}
+			else {
+				System.out.println("Failed Creating Credit Card for "+user.getName());
+				return false;
+			}
 		}
-		else {
-			System.out.println("Failed Creating Credit Card for "+user.getName());
+		else  {
+			System.out.println("Credit Card Already exists");
 			return false;
 		}
 	}

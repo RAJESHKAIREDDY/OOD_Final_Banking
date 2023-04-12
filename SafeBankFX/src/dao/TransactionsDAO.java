@@ -2,18 +2,24 @@ package dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import enums.CCBillPaymentStatus;
+import enums.PaymentStatus;
 import enums.TransactionCategory;
 import enums.TransactionMode;
 import enums.TransactionType;
+import models.CreditCard;
 import models.Transaction;
+import models.User;
 
-public class TransactionsDAO extends DBInstance {
+public class TransactionsDAO extends DatabaseConnectionFactory {
 	
 	public static boolean createNewTransaction(String userId, Transaction transaction) {
 		
@@ -22,23 +28,61 @@ public class TransactionsDAO extends DBInstance {
 		String transactionCategory = transaction.getTransactionCategory().name();
 		String transactionType = transaction.getTransactionType().name();
 		String transactionMode = transaction.getTransactionMode().name();
+		double amount = transaction.getAmount();
+		Timestamp dueDate = null;
+		String paymentStatus = null;
+		if(transaction.getDueDate() != null) {
+			dueDate = new Timestamp(transaction.getDueDate().getTime());
+			paymentStatus = transaction.getPaymentStatus().toString();
+		}
+		boolean isCardTransaction = transactionType.equals("CARD_TRANSACTION");
 		
-		final String CREATE_NEW_TRANSACTION_QUERY = "INSERT INTO "
-				+ "transactions("
-				+ "transaction_id, "
-				+ "transaction_name, "
-				+ "transaction_category, "
-				+ "transaction_type, "
-				+ "transaction_mode, "
-				+ "user_id) "
-				
-				+ "VALUES ("
-				+ "'" + transactionId + "',"
-				+ "'" + transactionName + "',"
-				+ "'" + transactionCategory + "', "
-				+ "'" + transactionType + "', "
-				+ "'" + transactionMode + "', "
-				+ "'" + userId + "')";
+		final String CREATE_NEW_TRANSACTION_QUERY;
+		
+		if(isCardTransaction) {
+			CREATE_NEW_TRANSACTION_QUERY = "INSERT INTO "
+					+ "transactions("
+					+ "transaction_id, "
+					+ "transaction_name, "
+					+ "transaction_category, "
+					+ "transaction_type, "
+					+ "transaction_mode, "
+					+ "amount, "
+					+ "user_id, "
+					+ "due_date,"
+					+ "payment_status) "
+					
+					+ "VALUES ("
+					+ "'" + transactionId + "',"
+					+ "'" + transactionName + "',"
+					+ "'" + transactionCategory + "', "
+					+ "'" + transactionType + "', "
+					+ "'" + transactionMode + "', "
+					+ "'" + amount + "', "
+					+ "'" + userId + "', "
+					+ "'" + dueDate + "', "
+					+ "'" + paymentStatus + "');";
+		}
+		else {
+			CREATE_NEW_TRANSACTION_QUERY = "INSERT INTO "
+					+ "transactions("
+					+ "transaction_id, "
+					+ "transaction_name, "
+					+ "transaction_category, "
+					+ "transaction_type, "
+					+ "transaction_mode, "
+					+ "amount, "
+					+ "user_id) "
+					
+					+ "VALUES ("
+					+ "'" + transactionId + "',"
+					+ "'" + transactionName + "',"
+					+ "'" + transactionCategory + "', "
+					+ "'" + transactionType + "', "
+					+ "'" + transactionMode + "', "
+					+ "'" + amount + "', "
+					+ "'" + userId + "');";
+		}
 		
 		boolean createdTransaction = executeUpdate(CREATE_NEW_TRANSACTION_QUERY);
 		if(createdTransaction)
@@ -58,18 +102,19 @@ public class TransactionsDAO extends DBInstance {
 			retrievedTransactions = new ArrayList<>();
 			Transaction transaction = new Transaction();
 			while(results.next()) {
-				transaction.setId(results.getInt("id"));
 				transaction.setTransactionId(UUID.fromString(results.getString("transaction_id")));
 				transaction.setTransactionName(results.getString("transaction_name"));
 				transaction.setTransactionCategory(TransactionCategory.valueOf(results.getString("transaction_category")));
 				transaction.setTransactionType(TransactionType.valueOf(results.getString("transaction_type")));
 				transaction.setTransactionMode(TransactionMode.valueOf(results.getString("transaction_mode")));
+				transaction.setAmount(results.getDouble("amount"));
 				transaction.setCreatedAt(results.getTimestamp("created_at"));
+				transaction.setDueDate(results.getTimestamp("due_date"));
 				retrievedTransactions.add(transaction);
 			}
 		} catch (SQLException sqlException) {
 			// TODO Auto-generated catch block
-			Logger.getLogger(DBInstance.class.getName()).log(Level.SEVERE, null, sqlException);
+			Logger.getLogger(DatabaseConnectionFactory.class.getName()).log(Level.SEVERE, null, sqlException);
 		}
 		return retrievedTransactions;
 	}
@@ -85,23 +130,203 @@ public class TransactionsDAO extends DBInstance {
 			transactions = executeQuery(GET_TRANSACTION_QUERY);
 			transaction = new Transaction();
 			while(transactions.next()) {
-				transaction.setId(transactions.getInt("id"));
 				transaction.setTransactionId(UUID.fromString(transactions.getString("transaction_id")));
 				transaction.setTransactionName(transactions.getString("transaction_name"));
 				transaction.setTransactionType(TransactionType.valueOf(transactions.getString("transaction_type")));
 				transaction.setTransactionMode(TransactionMode.valueOf(transactions.getString("transaction_mode")));
 				transaction.setTransactionCategory(TransactionCategory.valueOf(transactions.getString("transaction_category")));
+				transaction.setAmount(transactions.getDouble("amount"));
 				transaction.setCreatedAt(transactions.getTimestamp("created_at"));
+				transaction.setDueDate(transactions.getTimestamp("due_date"));
 			}
 			transactions.close();
 		} catch (SQLException sqlException) {
 			// TODO Auto-generated catch block
-			Logger.getLogger(DBInstance.class.getName()).log(Level.SEVERE, null, sqlException);
+			Logger.getLogger(DatabaseConnectionFactory.class.getName()).log(Level.SEVERE, null, sqlException);
 		}
 		finally {
 			closeConnection();
 		}
 		return transaction;
+	}
+	
+	public static Transaction getTransactionByDate(String userId, Timestamp transactionTimestamp) {
+		ResultSet transactions = null;
+		Transaction transaction = null;
+		try {
+			final String GET_TRANSACTION_QUERY = "SELECT * "
+					+ "FROM safebankdb.transactions "
+					+ "WHERE user_id = '"+userId+"' "
+					+ "AND created_at = '"+transactionTimestamp+"';";
+
+			transactions = executeQuery(GET_TRANSACTION_QUERY);
+			transaction = new Transaction();
+			while(transactions.next()) {
+				transaction.setTransactionId(UUID.fromString(transactions.getString("transaction_id")));
+				transaction.setTransactionName(transactions.getString("transaction_name"));
+				transaction.setTransactionType(TransactionType.valueOf(transactions.getString("transaction_type")));
+				transaction.setTransactionMode(TransactionMode.valueOf(transactions.getString("transaction_mode")));
+				transaction.setTransactionCategory(TransactionCategory.valueOf(transactions.getString("transaction_category")));
+				transaction.setAmount(transactions.getDouble("amount"));
+				transaction.setCreatedAt(transactions.getTimestamp("created_at"));
+				transaction.setDueDate(transactions.getTimestamp("due_date"));
+			}
+			transactions.close();
+		} catch (SQLException sqlException) {
+			// TODO Auto-generated catch block
+			Logger.getLogger(DatabaseConnectionFactory.class.getName()).log(Level.SEVERE, null, sqlException);
+		}
+		finally {
+			closeConnection();
+		}
+		return transaction;
+	}
+	
+	public static Date getLastDueDate(String userId) {
+		ResultSet transactions = null;
+		Transaction transaction = null;
+		try {
+			final String GET_TRANSACTION_QUERY = "SELECT due_date "
+					+ "FROM safebankdb.transactions "
+					+ "WHERE user_id = '"+userId+"' "
+					+ "AND transaction_type = 'CARD_TRANSACTION'"
+					+ " ORDER BY due_date desc LIMIT 1;";
+
+			transactions = executeQuery(GET_TRANSACTION_QUERY);
+			transaction = new Transaction();
+			while(transactions.next()) {
+				transaction.setDueDate(transactions.getTimestamp("due_date"));
+			}
+			transactions.close();
+		} catch (SQLException sqlException) {
+			// TODO Auto-generated catch block
+			Logger.getLogger(DatabaseConnectionFactory.class.getName()).log(Level.SEVERE, null, sqlException);
+		}
+		finally {
+			closeConnection();
+		}
+		return transaction.getDueDate();
+	}
+	
+//	public static boolean 
+//	updatePaymentStatusOfSameDueDateTransactions(
+//			String userId, Date dueDate, PaymentStatus status) {
+//
+//		Timestamp dueDateTimestamp = new Timestamp(dueDate.getTime());
+//		String paymentStatus = status.toString();
+//		
+//		final String UPDATE_PAYMENT_STATUS_QUERY = "UPDATE transactions " 
+//		+ "SET payment_status = " + "'" + paymentStatus
+//		+ "'" + " WHERE user_id = " + "'" + userId 
+//		+ "'" + " AND due_date = " + "'" + dueDateTimestamp + "'";
+//
+//		boolean updatedPaymentStatus = executeUpdate(UPDATE_PAYMENT_STATUS_QUERY);
+//		if (updatedPaymentStatus)
+//			return true;
+//		return false;
+//	}
+	
+	public static boolean updateTransactionsPaymentStatus(String userId) {
+		ResultSet results = null;
+		List<Transaction> unpaidTransactions = null;
+		try {
+			
+			final String GET_UNPAID_TRANSACTIONS_QUERY = "SELECT * "
+					+ "FROM safebankdb.transactions "
+					+ "WHERE transaction_type = '"+TransactionType.CARD_TRANSACTION+"' "
+					+ "AND user_id = '"+userId+"'"
+					+ "AND payment_status IN "
+					+ "('"+CCBillPaymentStatus.PENDING+"',"
+					+ "'"+CCBillPaymentStatus.LATE_YET_PENDING+"')"
+					+ " ORDER BY due_date desc;";
+
+			results = (ResultSet) executeQuery(GET_UNPAID_TRANSACTIONS_QUERY);
+			unpaidTransactions = new ArrayList<>();
+			Transaction transaction = new Transaction();
+			while(results.next()) {
+				transaction.setTransactionId(UUID.fromString(results.getString("transaction_id")));
+				transaction.setTransactionName(results.getString("transaction_name"));
+				transaction.setTransactionCategory(TransactionCategory.valueOf(results.getString("transaction_category")));
+				transaction.setTransactionType(TransactionType.valueOf(results.getString("transaction_type")));
+				transaction.setTransactionMode(TransactionMode.valueOf(results.getString("transaction_mode")));
+				transaction.setAmount(results.getDouble("amount"));
+				transaction.setCreatedAt(results.getTimestamp("created_at"));
+				transaction.setDueDate(results.getTimestamp("due_date"));
+				unpaidTransactions.add(transaction);
+			}
+			
+			User currentUser = UsersDAO.getUserById(userId);
+			CreditCard currentUserCreditCard = 
+					CreditCardsDAO.getCreditCardByUserId(currentUser.getUserId().toString());
+			System.out.println(currentUserCreditCard);
+			double totalCreditLimit = currentUserCreditCard.getTotalCreditLimit();
+			double remainingCreditLimit = currentUserCreditCard.getRemainingCreditLimit();
+			double payableAmount = totalCreditLimit - remainingCreditLimit;
+			
+			Date lastPaymentDate = currentUserCreditCard.getLastPaymentDate();
+			unpaidTransactions.forEach(currentTransaction -> {
+				Date currentTransactionDueDate = currentTransaction.getDueDate();
+				int compareValue = lastPaymentDate.compareTo(currentTransactionDueDate);
+				if(compareValue > 0) {
+					if(payableAmount > 0) {
+						currentTransaction.setPaymentStatus(CCBillPaymentStatus.LATE_YET_PENDING);
+					}
+					else {
+						currentTransaction.setPaymentStatus(CCBillPaymentStatus.LATE);
+					}
+				}
+				else {
+					if(payableAmount > 0) {
+						currentTransaction.setPaymentStatus(CCBillPaymentStatus.PENDING);
+					}
+					else {
+						currentTransaction.setPaymentStatus(CCBillPaymentStatus.IN_TIME);
+					}
+				}
+				
+				updateTransactionPaymentStatus(
+						userId, 
+						currentTransaction.getTransactionId().toString(), 
+						currentTransaction.getPaymentStatus().toString());
+				
+			});
+			
+		} catch (SQLException sqlException) {
+			// TODO Auto-generated catch block
+			Logger.getLogger(
+					DatabaseConnectionFactory
+					.class.getName()).log(Level.SEVERE, null, sqlException);
+		}
+		return true;
+	}
+	
+	public static boolean updateTransactionPaymentStatus(String userId, String transactionId, String paymentStatus) {
+		
+		final String UPDATE_PAYMENT_STATUS_QUERY = "UPDATE transactions " 
+		+ "SET payment_status = '"+paymentStatus+"' "
+		+ "WHERE user_id = '"+userId+"' "
+		+ "AND transaction_id = '"+transactionId+"';";
+
+		boolean updatedPaymentStatus = executeUpdate(UPDATE_PAYMENT_STATUS_QUERY);
+		if (updatedPaymentStatus)
+			return true;
+		return false;
+	}
+	
+	
+	public static Date getLastPaymentDate(String userId) throws SQLException {
+		Date lastPaymentDate = null;
+		ResultSet result = null;
+		final String GET_LAST_PAYMENT_DATE_QUERY = "SELECT created_at " 
+				+ "FROM safebankdb.transactions "
+				+ "WHERE transaction_category = '"+TransactionCategory.CC_BILL_PAYMENT+"' "
+				+ "AND user_id = '"+userId+"' "
+				+ "ORDER BY created_at desc;";
+		result = (ResultSet) executeQuery(GET_LAST_PAYMENT_DATE_QUERY);
+		while (result.next()) {
+			lastPaymentDate = result.getTimestamp("created_at");
+		}
+		return lastPaymentDate;
 	}
 	
 	public static boolean transactionExists(String transactionId) {
