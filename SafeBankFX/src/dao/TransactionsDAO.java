@@ -41,7 +41,7 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 		
 		if(isCardTransaction) {
 			CREATE_NEW_TRANSACTION_QUERY = "INSERT INTO "
-					+ "transactions("
+					+ "safebankdb.transactions("
 					+ "transaction_id, "
 					+ "transaction_name, "
 					+ "transaction_category, "
@@ -65,7 +65,7 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 		}
 		else {
 			CREATE_NEW_TRANSACTION_QUERY = "INSERT INTO "
-					+ "transactions("
+					+ "safebankdb.transactions("
 					+ "transaction_id, "
 					+ "transaction_name, "
 					+ "transaction_category, "
@@ -215,7 +215,7 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 //		Timestamp dueDateTimestamp = new Timestamp(dueDate.getTime());
 //		String paymentStatus = status.toString();
 //		
-//		final String UPDATE_PAYMENT_STATUS_QUERY = "UPDATE transactions " 
+//		final String UPDATE_PAYMENT_STATUS_QUERY = "UPDATE safebankdb.transactions " 
 //		+ "SET payment_status = " + "'" + paymentStatus
 //		+ "'" + " WHERE user_id = " + "'" + userId 
 //		+ "'" + " AND due_date = " + "'" + dueDateTimestamp + "'";
@@ -302,7 +302,7 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 	
 	public static boolean updateTransactionPaymentStatus(String userId, String transactionId, String paymentStatus) {
 		
-		final String UPDATE_PAYMENT_STATUS_QUERY = "UPDATE transactions " 
+		final String UPDATE_PAYMENT_STATUS_QUERY = "UPDATE safebankdb.transactions " 
 		+ "SET payment_status = '"+paymentStatus+"' "
 		+ "WHERE user_id = '"+userId+"' "
 		+ "AND transaction_id = '"+transactionId+"';";

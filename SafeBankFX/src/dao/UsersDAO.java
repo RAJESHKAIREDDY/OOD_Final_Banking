@@ -154,7 +154,7 @@ public class UsersDAO extends DatabaseConnectionFactory {
 
 	public static boolean updateUserCreditScore(String userId, int creditScore) {
 
-		final String UPDATE_USER_CREDIT_SCORE_QUERY = "UPDATE users " + "SET credit_score = '" + creditScore + "'"
+		final String UPDATE_USER_CREDIT_SCORE_QUERY = "UPDATE safebankdb.users " + "SET credit_score = '" + creditScore + "'"
 				+ " WHERE user_id = '" + userId + "'";
 
 		boolean updatedRemainingCreditLimit = executeUpdate(UPDATE_USER_CREDIT_SCORE_QUERY);

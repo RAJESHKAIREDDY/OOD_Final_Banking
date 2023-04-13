@@ -29,7 +29,7 @@ public class CreditCardsDAO extends DatabaseConnectionFactory {
 		CardCategory cardCategory = creditCard.getCardCategory();
 
 		final String CREATE_NEW_CREDIT_CARD_QUERY = "INSERT INTO " 
-		+ "`safebankdb`.`credit_cards`(" 
+		+ "safebankdb.credit_cards(" 
 				+ "credit_card_id,"
 				+ "card_number," 
 				+ "security_code," 
@@ -122,7 +122,7 @@ public class CreditCardsDAO extends DatabaseConnectionFactory {
 
 	public static boolean updateRemainingCreditLimit(String userId, String cardId, double remainingCreditLimit) {
 
-		final String UPDATE_REMAINING_CREDIT_LIMIT_QUERY = "UPDATE credit_cards " + "SET remaining_credit_limit = "
+		final String UPDATE_REMAINING_CREDIT_LIMIT_QUERY = "UPDATE safebankdb.credit_cards " + "SET remaining_credit_limit = "
 				+ "'" + remainingCreditLimit + "'" + " WHERE user_id = " + "'" + userId + "'" + " AND credit_card_id = "
 				+ "'" + cardId + "'";
 
@@ -134,7 +134,7 @@ public class CreditCardsDAO extends DatabaseConnectionFactory {
 
 	public static boolean updateLastPaymentDate(String userId, String cardId, Timestamp lastPaymentDate) {
 
-		final String UPDATE_LAST_PAYMENT_DATE_QUERY = "UPDATE credit_cards " 
+		final String UPDATE_LAST_PAYMENT_DATE_QUERY = "UPDATE safebankdb.credit_cards " 
 		+ "SET last_payment_date = " + "'" + lastPaymentDate
 		+ "'" + " WHERE user_id = " + "'" + userId + "'" 
 		+ " AND credit_card_id = " + "'" + cardId + "'";
@@ -148,7 +148,7 @@ public class CreditCardsDAO extends DatabaseConnectionFactory {
 	
 //	public static boolean updateLastDueDate(String userId, String cardId, Timestamp lastDueDate) {
 //
-//		final String UPDATE_LAST_DUE_DATE_QUERY = "UPDATE credit_cards " + "SET last_due_date = " + "'" + lastDueDate
+//		final String UPDATE_LAST_DUE_DATE_QUERY = "UPDATE safebankdb.credit_cards " + "SET last_due_date = " + "'" + lastDueDate
 //				+ "'" + " WHERE user_id = " + "'" + userId + "'" + " AND credit_card_id = " + "'" + cardId + "'";
 //
 //		boolean updatedRemainingCreditLimit = executeUpdate(UPDATE_LAST_DUE_DATE_QUERY);

@@ -27,7 +27,7 @@ import transactions.CCBillPaymentTransaction;
 
 public class SafeBankBackendMain {
 	
-	public static void main(String[] args) {
+	public static void backendMain() {
 		Map<String, Object> newUserData = new HashMap<>();
 		newUserData.put("name", "peri");
 		newUserData.put("email", "sriharshaperi@gmail.com");

@@ -22,7 +22,7 @@ public class BeneficiaryUsersDAO extends DatabaseConnectionFactory {
 			return false;
 		
 		final String ADD_NEW_BENEFICIARY_QUERY = "INSERT INTO "
-				+ "beneficiary_users("
+				+ "safebankdb.beneficiary_users("
 				+ "beneficiary_user_id, "
 				+ "user_id) "
 				
@@ -40,7 +40,7 @@ public class BeneficiaryUsersDAO extends DatabaseConnectionFactory {
 	public static boolean deleteBeneficiary(String beneficiaryId) {
 		
 		final String DELETE_BENEFICIARY_QUERY = "DELETE FROM "
-				+ "beneficiary_users"
+				+ "safebankdb.beneficiary_users"
 				+ "WHERE"
 				+ "beneficiary_user_id = '" + beneficiaryId + "'";
 		

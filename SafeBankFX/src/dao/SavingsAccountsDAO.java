@@ -19,7 +19,7 @@ public class SavingsAccountsDAO extends DatabaseConnectionFactory {
 		double accountBalance = savingsAccount.getAccountBalance();
 	
 		final String CREATE_NEW_SAVINGS_ACCOUNT_QUERY = "INSERT INTO "
-				+ "savings_accounts("
+				+ "safebankdb.savings_accounts("
 				+ "account_id, "
 				+ "account_number, "
 				+ "account_balance, "
@@ -116,7 +116,7 @@ public class SavingsAccountsDAO extends DatabaseConnectionFactory {
 	
 	public static boolean updateAccountBalance(String userId, String accountId, double updatedBalance) {
 	
-		final String UPDATE_ACCOUNT_BALANCE_QUERY = "UPDATE savings_accounts "
+		final String UPDATE_ACCOUNT_BALANCE_QUERY = "UPDATE safebankdb.savings_accounts "
 				+ "SET account_balance = "
 				+ "'" + updatedBalance + "'"
 				+ " WHERE user_id = "
@@ -137,7 +137,7 @@ public class SavingsAccountsDAO extends DatabaseConnectionFactory {
 		senderAccountBalance -= amount;
 		double receiverAccountBalance = receiverAccount.getAccountBalance();
 		receiverAccountBalance += amount;
-		final String PROCESS_TRANSFER_QUERY = "UPDATE savings_accounts "
+		final String PROCESS_TRANSFER_QUERY = "UPDATE safebankdb.savings_accounts "
 			    + "SET account_balance = "
 			    + "CASE "
 			    + "WHEN account_id = '" + senderAccountId + "' "
