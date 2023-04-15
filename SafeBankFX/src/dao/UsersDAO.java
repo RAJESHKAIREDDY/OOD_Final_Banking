@@ -58,79 +58,31 @@ public class UsersDAO extends DatabaseConnectionFactory {
 	}
 
 	public static User getUserByEmail(String email) {
-		return getUserData(email);
-//		ResultSet users = null;
-//		List<User> retrievedUser = null;
-//		try {
-//			final String GET_USER_QUERY = "SELECT * "
-//					+ "FROM safebankdb.users "
-//					+ "WHERE email = '"+email+"';";
-//
-//			users = executeQuery(GET_USER_QUERY);
-//			retrievedUser = new ArrayList<>();
-//			User user  = new User();
-//			while(users.next()) {
-//				user.setName(users.getString("name"));
-//				user.setEmail(users.getString("email"));
-//				user.setPassword(users.getString("password"));
-//				user.setPhone(users.getLong("phone"));
-//				user.setUserId(UUID.fromString(users.getString("user_id")));
-//				user.setCreatedAt(users.getTimestamp("created_at"));
-//				user.setUpdatedAt(users.getTimestamp("updated_at"));
-//				retrievedUser.add(user);
-//			}
-//			users.close();
-//		} catch (SQLException sqlException) {
-//			// TODO Auto-generated catch block
-//			Logger.getLogger(DBInstance.class.getName()).log(Level.SEVERE, null, sqlException);
-//		}
-//		finally {
-//			closeConnection();
-//		}
-//		return !retrievedUser.isEmpty() ? retrievedUser.get(0) : null;
+		final String GET_USER_QUERY = "SELECT * " + 
+				"FROM safebankdb.users " + "WHERE "
+				+ "email = '" + email + "';";
+		return getUserData(GET_USER_QUERY);
 	}
 
 	public static User getUserById(String userId) {
-		User getUserById = getUserData(userId);
-		return getUserById;
-//		ResultSet users = null;
-//		List<User> retrievedUser = null;
-//		try {
-//			final String GET_USER_QUERY = "SELECT * "
-//					+ "FROM safebankdb.users "
-//					+ "WHERE user_id = '"+userId+"';";
-//
-//			users = executeQuery(GET_USER_QUERY);
-//			retrievedUser = new ArrayList<>();
-//			User user  = new User();
-//			while(users.next()) {
-//				user.setUserId(UUID.fromString(users.getString("user_id")));
-//				user.setName(users.getString("name"));
-//				user.setEmail(users.getString("email"));
-//				user.setPassword(users.getString("password"));
-//				user.setPhone(users.getLong("phone"));
-//				user.setCreatedAt(users.getTimestamp("created_at"));
-//				user.setUpdatedAt(users.getTimestamp("updated_at"));
-//				retrievedUser.add(user);
-//			}
-//			users.close();
-//		} catch (SQLException sqlException) {
-//			// TODO Auto-generated catch block
-//			Logger.getLogger(DBInstance.class.getName()).log(Level.SEVERE, null, sqlException);
-//		}
-//		finally {
-//			closeConnection();
-//		}
-//		return !retrievedUser.isEmpty() ? retrievedUser.get(0) : null;
+		final String GET_USER_QUERY = "SELECT * " + 
+				"FROM safebankdb.users " + "WHERE "
+				+ "user_id = '" + userId + "';";
+		return getUserData(GET_USER_QUERY);
+	}
+	
+	public static User getUserByPhone(long phone) {
+		final String GET_USER_QUERY = "SELECT * " + 
+				"FROM safebankdb.users " + "WHERE "
+				+ "phone = '" + phone + "';";
+		return getUserData(GET_USER_QUERY);
 	}
 
-	private static User getUserData(String entity) {
+	private static User getUserData(String GET_USER_QUERY) {
+		
 		ResultSet users = null;
 		List<User> retrievedUser = null;
 		try {
-			final String GET_USER_QUERY = "SELECT * " + "FROM safebankdb.users " + "WHERE "
-					+ (entity.contains("@") ? "email" : "user_id") + " = '" + entity + "';";
-
 			users = executeQuery(GET_USER_QUERY);
 			retrievedUser = new ArrayList<>();
 			User user = new User();
@@ -204,8 +156,22 @@ public class UsersDAO extends DatabaseConnectionFactory {
 		return false;
 	}
 
-	public static boolean userExists(String email) {
+	public static boolean userExistsByEmail(String email) {
 		User user = getUserByEmail(email);
+		if (user != null)
+			return true;
+		return false;
+	}
+	
+	public static boolean userExistsByPhone(long email) {
+		User user = getUserByPhone(email);
+		if (user != null)
+			return true;
+		return false;
+	}
+	
+	public static boolean userExistsById(String userId) {
+		User user = getUserById(userId);
 		if (user != null)
 			return true;
 		return false;

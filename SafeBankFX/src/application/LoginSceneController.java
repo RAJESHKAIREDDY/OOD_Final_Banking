@@ -60,7 +60,7 @@ public class LoginSceneController {
 			}
 		} else {
 			// check whether user exists
-			boolean userExists = UsersDAO.userExists(email);
+			boolean userExists = UsersDAO.userExistsByEmail(email);
 			if (!userExists) {
 				title = "Login";
 				headerText = "User does not exist with given email";

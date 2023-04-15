@@ -15,7 +15,7 @@ public class UserUtils {
 	}
 
 	public static boolean isEmailPasswordValid(String email, String password) {
-		boolean userExists = UsersDAO.userExists(email);
+		boolean userExists = UsersDAO.userExistsByEmail(email);
 		if(!userExists) {
 			return false;
 		}

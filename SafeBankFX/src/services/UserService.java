@@ -36,7 +36,7 @@ public class UserService {
 		newUser.setTransactions(new ArrayList<Transaction>());
 		newUser.setBeneficiaryUsers(new ArrayList<BeneficiaryUser>());
 		
-		boolean existingUser = UsersDAO.userExists(newUser.getEmail());
+		boolean existingUser = UsersDAO.userExistsByEmail(newUser.getEmail());
 		User user = null;
 		if(!existingUser) {
 			boolean created = UsersDAO.createNewUser(newUser);
