@@ -11,20 +11,20 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/rajes/Downloads/safebank_jar_files/safebank_jar_files/httpcore-4.4.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rajes/Downloads/safebank_jar_files/safebank_jar_files/httpcore-nio-4.4.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rajes/Downloads/safebank_jar_files/safebank_jar_files/httpmime-4.5.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rajes/Downloads/safebank_jar_files/safebank_jar_files/javax.mail 2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rajes/Downloads/safebank_jar_files/safebank_jar_files/mysql-connector-j-8.0.32.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rajes/Downloads/safebank_jar_files/safebank_jar_files/twilio-9.3.0-jar-with-dependencies.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rajes/Downloads/safebank_jar_files/safebank_jar_files/activation-1.1.1 2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rajes/Downloads/safebank_jar_files/safebank_jar_files/commons-codec-1.9.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rajes/Downloads/safebank_jar_files/safebank_jar_files/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rajes/Downloads/safebank_jar_files/safebank_jar_files/httpasyncclient-4.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rajes/Downloads/safebank_jar_files/safebank_jar_files/httpclient-4.5.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rajes/Downloads/safebank_jar_files/safebank_jar_files/javax.mail.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rajes/Downloads/safebank_jar_files/safebank_jar_files/json-20160212.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rajes/Downloads/safebank_jar_files/safebank_jar_files/unirest-java-1.4.9.jar"/>
-	<classpathentry kind="lib" path="C:/Users/rajes/Downloads/postgresql-42.5.3.jar"/>
+	<classpathentry kind="lib" path="/Users/sriha/Downloads/safebank_jar_files/commons-codec-1.9.jar"/>
+	<classpathentry kind="lib" path="/Users/sriha/Downloads/safebank_jar_files/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="/Users/sriha/Downloads/safebank_jar_files/httpasyncclient-4.1.1.jar"/>
+	<classpathentry kind="lib" path="/Users/sriha/Downloads/safebank_jar_files/httpclient-4.5.2.jar"/>
+	<classpathentry kind="lib" path="/Users/sriha/Downloads/safebank_jar_files/httpcore-4.4.4.jar"/>
+	<classpathentry kind="lib" path="/Users/sriha/Downloads/safebank_jar_files/httpcore-nio-4.4.4.jar"/>
+	<classpathentry kind="lib" path="/Users/sriha/Downloads/safebank_jar_files/httpmime-4.5.2.jar"/>
+	<classpathentry kind="lib" path="/Users/sriha/Downloads/safebank_jar_files/json-20160212.jar"/>
+	<classpathentry kind="lib" path="/Users/sriha/Downloads/safebank_jar_files/unirest-java-1.4.9.jar"/>
+	<classpathentry kind="lib" path="/Users/sriha/Downloads/safebank_jar_files/activation-1.1.1 2.jar"/>
+	<classpathentry kind="lib" path="/Users/sriha/Downloads/safebank_jar_files/twilio-9.3.0-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="/Users/sriha/Downloads/safebank_jar_files/mysql-connector-j-8.0.32.jar"/>
+	<classpathentry kind="lib" path="/Users/sriha/Downloads/safebank_jar_files/javax.mail.jar"/>
+	<classpathentry kind="lib" path="/Users/sriha/Downloads/safebank_jar_files/javax.mail 2.jar"/>
+	<classpathentry kind="lib" path="/Users/sriha/Downloads/safebank_jar_files/jbcrypt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

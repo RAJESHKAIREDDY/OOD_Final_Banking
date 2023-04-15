@@ -25,9 +25,20 @@ public class AlertController extends Controller {
         alert.setContentText(contentText);
         alert.showAndWait();
     }
-
-	public static boolean showConfirmation(ActionEvent event, Map<String, String> alertData) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    
+    public static void showSuccess(String title, String headerText, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
+    
+    public static void showWarning(String title, String headerText, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
 }

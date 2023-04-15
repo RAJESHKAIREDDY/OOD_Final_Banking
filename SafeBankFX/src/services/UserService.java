@@ -52,35 +52,35 @@ public class UserService {
 		}
 		else {
 			user = UsersDAO.getUserByEmail(newUser.getEmail());
-			String userId = user.getUserId().toString();
-			List<SavingsAccount> accounts = 
-					SavingsAccountsDAO.getUserSavingsAccounts(userId);
-			CreditCard creditCard = 
-					CreditCardsDAO.getCreditCardByUserId(userId);
-			List<Transaction> transactions = 
-					TransactionsDAO.getUserTransactions(userId);
-			List<BeneficiaryUser> beneficiaries = 
-					BeneficiaryUsersDAO.getBeneficiaries(userId);
-			
-			if(accounts == null)
-				user.setAccounts(new ArrayList<>());
-			else
-				user.setAccounts(accounts);
-			
-			if(beneficiaries == null)
-				user.setBeneficiaryUsers(new ArrayList<>());
-			else
-				user.setBeneficiaryUsers(beneficiaries);
-			
-			if(creditCard == null)
-				user.setCreditCard(new CreditCard());
-			else
-				user.setCreditCard(creditCard);
-			
-			if(transactions == null)
-				user.setTransactions(new ArrayList<>());
-			else
-				user.setTransactions(transactions);
+//			String userId = user.getUserId().toString();
+//			List<SavingsAccount> accounts = 
+//					SavingsAccountsDAO.getUserSavingsAccounts(userId);
+//			CreditCard creditCard = 
+//					CreditCardsDAO.getCreditCardByUserId(userId);
+//			List<Transaction> transactions = 
+//					TransactionsDAO.getUserTransactions(userId);
+//			List<BeneficiaryUser> beneficiaries = 
+//					BeneficiaryUsersDAO.getBeneficiaries(userId);
+//			
+//			if(accounts == null)
+//				user.setAccounts(new ArrayList<>());
+//			else
+//				user.setAccounts(accounts);
+//			
+//			if(beneficiaries == null)
+//				user.setBeneficiaryUsers(new ArrayList<>());
+//			else
+//				user.setBeneficiaryUsers(beneficiaries);
+//			
+//			if(creditCard == null)
+//				user.setCreditCard(new CreditCard());
+//			else
+//				user.setCreditCard(creditCard);
+//			
+//			if(transactions == null)
+//				user.setTransactions(new ArrayList<>());
+//			else
+//				user.setTransactions(transactions);
 
 			return user;
 		}

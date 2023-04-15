@@ -8,7 +8,10 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import models.BeneficiaryUser;
+import models.CreditCard;
 import models.SavingsAccount;
+import models.Transaction;
 import models.User;
 
 public class UsersDAO extends DatabaseConnectionFactory {
@@ -149,7 +152,45 @@ public class UsersDAO extends DatabaseConnectionFactory {
 		} finally {
 			closeConnection();
 		}
-		return !retrievedUser.isEmpty() ? retrievedUser.get(0) : null;
+		
+		User currentUser = null;
+		if(retrievedUser !=null && !retrievedUser.isEmpty()) {
+			
+			currentUser = retrievedUser.get(0);
+			String userId = currentUser.getUserId().toString();
+			List<SavingsAccount> accounts = 
+					SavingsAccountsDAO.getUserSavingsAccounts(userId);
+			CreditCard creditCard = 
+					CreditCardsDAO.getCreditCardByUserId(userId);
+			List<Transaction> transactions = 
+					TransactionsDAO.getUserTransactions(userId);
+			List<BeneficiaryUser> beneficiaries = 
+					BeneficiaryUsersDAO.getBeneficiaries(userId);
+			
+	
+			if(accounts == null)
+				currentUser.setAccounts(new ArrayList<>());
+			else
+				currentUser.setAccounts(accounts);
+			
+			if(beneficiaries == null)
+				currentUser.setBeneficiaryUsers(new ArrayList<>());
+			else
+				currentUser.setBeneficiaryUsers(beneficiaries);
+			
+			if(creditCard == null)
+				currentUser.setCreditCard(new CreditCard());
+			else
+				currentUser.setCreditCard(creditCard);
+			
+			if(transactions == null)
+				currentUser.setTransactions(new ArrayList<>());
+			else
+				currentUser.setTransactions(transactions);
+
+		}
+		
+		return currentUser;
 	}
 
 	public static boolean updateUserCreditScore(String userId, int creditScore) {
