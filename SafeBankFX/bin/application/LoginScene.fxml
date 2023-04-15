@@ -32,5 +32,9 @@
       </Button>
       <Label fx:id="lblSwitchToRegister" layoutX="623.0" layoutY="439.0" text="Don't have an account ? To Register, " />
       <Hyperlink fx:id="hyperlinkToRegister" layoutX="821.0" layoutY="436.0" onAction="#handleSwitchToRegisterScene" prefHeight="23.0" prefWidth="66.0" text="Click Here" />
+      <Label fx:id="lblForgotPassword" layoutX="660.0" layoutY="477.0" text="Forgot your password ?" />
+      <Hyperlink fx:id="hyperlinkForgotPassword" layoutX="791.0" layoutY="474.0" onAction="#handleForgotPasswordAction" text="click here" />
+      <Label fx:id="lblForgotEmail" layoutX="672.0" layoutY="508.0" text="Forgot your email ?" />
+      <Hyperlink fx:id="hyperlinkForgotEmail" layoutX="776.0" layoutY="505.0" onAction="#handleForgotEmailAction" text="click here" />
    </children>
 </AnchorPane>

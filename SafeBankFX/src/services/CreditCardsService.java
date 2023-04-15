@@ -14,10 +14,10 @@ import utils.CreditCardUtils;
 public class CreditCardsService {
 	
 	public static boolean createNewCreditCard(
-			String userId, User user) throws Exception {
+			String userId, User user, CardCategory cardCategory) throws Exception {
 		CreditCard creditCard = new CreditCard();
 		System.out.println(user);
-		CardCategory cardCategory = CreditCardUtils.getCardCategory(user);
+//		CardCategory cardCategory = CreditCardUtils.getCardCategory(user);
 		System.out.println(cardCategory);
 		
 		double totalCreditLimit = 

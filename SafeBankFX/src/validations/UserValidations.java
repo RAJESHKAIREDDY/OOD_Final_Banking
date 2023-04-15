@@ -45,15 +45,15 @@ public class UserValidations {
 	}
 
 	public static boolean isNameValid(String name) {
-		if (name == null || name.isEmpty()) {
-			return false; // Name is null or empty
-		}
-		if (!name.matches("^[a-zA-Z]+$")) {
-			return false; // Name contains non-alphabetic characters
-		}
-		if (name.length() < 2 || name.length() > 50) {
-			return false; // Name length is out of range
-		}
-		return true; // Name is valid
+		if (name == null || name.trim().isEmpty()) {
+	        return false; // Name is null, empty, or contains only whitespace
+	    }
+	    if (!name.matches("^[a-zA-Z]+([\\s]?[a-zA-Z]+)*$")) {
+	        return false; // Name contains non-alphabetic characters or invalid whitespace
+	    }
+	    if (name.length() < 2 || name.length() > 50) {
+	        return false; // Name length is out of range
+	    }
+	    return true; // Name is valid
 	}
 }

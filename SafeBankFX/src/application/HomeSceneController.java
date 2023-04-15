@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
 import models.User;
 import services.UserService;
 
-public class HomeSceneController  implements Initializable {
+public class HomeSceneController extends Controller implements Initializable {
 	@FXML
 	private Label lblHome;
 	@FXML
@@ -77,7 +77,8 @@ public class HomeSceneController  implements Initializable {
 		SwitchSceneController.invokeLayout(event, SceneFiles.ANALYTICS_SCENE_LAYOUT);
 	}
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub		
+	public void initialize(URL url, ResourceBundle resourceBundle) {
+		// TODO Auto-generated method stub	
+		
 	}
 }

@@ -20,4 +20,6 @@ public class SceneFiles {
 	public static final String ADD_NEW_BENEFICIARY = "AddNewBenAnchorPane.fxml";
 	public static final String TRANSFER_TO_SELF = "TransferToSelfAnchorPane.fxml";
 	public static final String DEPOSIT = "DepositAnchorPane.fxml";
+	public static final String FORGOT_PASSWORD_SCENE = "ForgotPasswordScene.fxml";
+	public static final String RESET_PASSWORD_ANCHOR_PANE = "ResetPasswordAnchorPane.fxml";
 }

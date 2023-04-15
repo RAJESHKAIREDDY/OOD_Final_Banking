@@ -10,7 +10,7 @@
 
 <AnchorPane minHeight="800.0" minWidth="1500.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.RegisterSceneController">
    <children>
-      <AnchorPane layoutX="1.0" minHeight="600.0" minWidth="1000.0"  prefHeight="803.0" prefWidth="1500.0">
+      <AnchorPane layoutX="1.0" minHeight="600.0" minWidth="1000.0" prefHeight="803.0" prefWidth="1500.0">
          <children>
             <Label fx:id="lblBankName" alignment="CENTER" contentDisplay="CENTER" layoutX="669.0" layoutY="88.0" prefHeight="59.0" prefWidth="204.0" text="Safe Bank">
                <font>
@@ -27,7 +27,7 @@
                   <Font size="20.0" />
                </font>
             </PasswordField>
-            <Button fx:id="btnRegister" layoutX="703.0" layoutY="468.0" mnemonicParsing="false" onAction="#handleRegisterAction" prefHeight="37.0" prefWidth="111.0" text="Register">
+            <Button fx:id="btnRegister" layoutX="770.0" layoutY="474.0" mnemonicParsing="false" onAction="#handleRegisterAction" prefHeight="37.0" prefWidth="111.0" text="Register">
                <font>
                   <Font size="15.0" />
                </font>
@@ -44,6 +44,12 @@
                   <Font size="20.0" />
                </font>
             </TextField>
+            <Button fx:id="btnVerifyEmail" layoutX="650.0" layoutY="474.0" mnemonicParsing="false" onAction="#handleVerifyEmailAction" prefHeight="37.0" prefWidth="111.0" text="Verify Email">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnChangeEmail" layoutX="933.0" layoutY="318.0" mnemonicParsing="false" onAction="#handleChangeEmailAction" prefHeight="35.0" text="Change Email" />
          </children>
       </AnchorPane>
    </children>

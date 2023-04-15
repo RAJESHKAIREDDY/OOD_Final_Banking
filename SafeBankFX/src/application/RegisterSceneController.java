@@ -1,17 +1,11 @@
 package application;
 
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
-
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -19,23 +13,20 @@ import javax.mail.MessagingException;
 
 import dao.UsersDAO;
 import javafx.event.ActionEvent;
-
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-
 import javafx.scene.control.PasswordField;
-
-import javafx.scene.input.InputMethodEvent;
-import javafx.stage.Stage;
-import models.SavingsAccount;
+import javafx.scene.control.TextField;
 import models.User;
-import notifications.EmailService;
 import services.SavingsAccountService;
 import services.UserService;
 import utils.PasswordUtils;
 import utils.TransactionUtils;
 import utils.UserUtils;
 import validations.UserValidations;
-import javafx.scene.control.Hyperlink;
 
 public class RegisterSceneController implements Initializable {
 	@FXML
@@ -54,6 +45,13 @@ public class RegisterSceneController implements Initializable {
 	private TextField txtName;
 	@FXML
 	private TextField txtPhone;
+	@FXML
+	private Button btnVerifyEmail;
+	@FXML
+	private Button btnChangeEmail;
+	
+	List<String> temporaryVeriedEmailsList;
+	
 
 	private static final String LOGIN_SCENE_LAYOUT = "LoginScene.fxml";
 
@@ -73,65 +71,64 @@ public class RegisterSceneController implements Initializable {
 		String password = txtPassword.getText();
 		String phone = txtPhone.getText();
 
-		boolean isEmailValid = UserValidations.isEmailValid(email);
-		boolean isPasswordValid = UserValidations.isPasswordValid(password);
-		boolean isPhoneValid = UserValidations.isPhoneValid(phone);
-		boolean isNameValid = UserValidations.isNameValid(name);
+		if (!btnRegister.isDisabled()) {
 
-		if (!isEmailValid || !isPasswordValid || !isPhoneValid || !isNameValid) {
-			if (!isEmailValid) {
-				headerText = "Invalid Email";
-				AlertController.showError(title, headerText, contentText);
-				return;
-			}
+			boolean isPasswordValid = UserValidations.isPasswordValid(password);
+			boolean isPhoneValid = UserValidations.isPhoneValid(phone);
+			boolean isNameValid = UserValidations.isNameValid(name);
 
-			if (!isPasswordValid) {
-				headerText = "Invalid Password";
-				AlertController.showError(title, headerText, contentText);
-				return;
-			}
+			if (!isPasswordValid || !isPhoneValid || !isNameValid) {
 
-			if (!isPhoneValid) {
-				headerText = "Invalid Phone";
-				AlertController.showError(title, headerText, contentText);
-				return;
-			}
+				if (!isPasswordValid) {
+					headerText = "Invalid Password";
+					AlertController.showError(title, headerText, contentText);
+					return;
+				}
 
-			if (!isNameValid) {
-				headerText = "Invalid Name Format";
-				AlertController.showError(title, headerText, contentText);
-				return;
-			}
-		} else {
+				if (!isPhoneValid) {
+					headerText = "Invalid Phone";
+					AlertController.showError(title, headerText, contentText);
+					return;
+				}
 
-			long phoneNumber = Long.parseLong(phone);
-			boolean phoneExists = UsersDAO.userExistsByPhone(phoneNumber);
-			boolean emailExists = UsersDAO.userExistsByEmail(email);
-			if (phoneExists) {
-				headerText = "Phone Number Already Exists";
-				AlertController.showError(title, headerText, contentText);
-				return;
-			} 
-			if (emailExists) {
-				headerText = "Email Already Exists";
-				AlertController.showError(title, headerText, contentText);
-				return;
-			} 
-			else {
-				String hashPassword = PasswordUtils.hashPassword(password);
+				if (!isNameValid) {
+					headerText = "Invalid Name Format";
+					AlertController.showError(title, headerText, contentText);
+					return;
+				}
+			} else {
 
-				Map<String, Object> userData = new HashMap<>();
-				userData.put("name", name);
-				userData.put("password", hashPassword);
-				userData.put("phone", phone);
-				userData.put("email", email);
+				long phoneNumber = Long.parseLong(phone);
+				boolean phoneExists = UsersDAO.userExistsByPhone(phoneNumber);
+				if (phoneExists) {
+					headerText = "Phone Number Already Exists";
+					AlertController.showError(title, headerText, contentText);
+					return;
+				}
+				else {
 
-				User user = UserService.findOrCreateUser(userData);
-				SavingsAccountService.createSavingsAccount(user.getUserId().toString(), user);
+					String hashPassword = PasswordUtils.hashPassword(password);
 
-				headerText = "Created user and savings account successfully";
-				AlertController.showConfirmation(title, headerText, contentText);
-				return;
+					Map<String, Object> userData = new HashMap<>();
+					userData.put("name", name);
+					userData.put("password", hashPassword);
+					userData.put("phone", phone);
+					userData.put("email", email);
+
+					User user = UserService.findOrCreateUser(userData);
+					SavingsAccountService.createSavingsAccount(user.getUserId().toString(), user);
+
+					txtEmail.setText("");
+					txtName.setText("");
+					txtPassword.setText("");
+					txtPhone.setText("");
+
+					SwitchSceneController.invokeLayout(event, LOGIN_SCENE_LAYOUT);
+
+					headerText = "Created user and savings account successfully";
+					AlertController.showConfirmation(title, headerText, contentText);
+					return;
+				}
 			}
 		}
 	}
@@ -143,10 +140,95 @@ public class RegisterSceneController implements Initializable {
 		SwitchSceneController.invokeLayout(event, LOGIN_SCENE_LAYOUT);
 	}
 
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
+	@FXML
+	public void handleVerifyEmailAction(ActionEvent event) throws Exception {
+		// TODO Autogenerated
+		
+		String title = null;
+		String headerText = null;
+		String contentText = null;
+		
+		String email = txtEmail.getText();
+		
+		if(temporaryVeriedEmailsList.contains(email)) {
+			btnRegister.setDisable(false);
+			btnVerifyEmail.setText("Email Verified");
+			btnVerifyEmail.setStyle("-fx-background-color: green;");
+			btnVerifyEmail.setStyle("-fx-text-fill: black;");
+			btnVerifyEmail.setDisable(true);
+			txtEmail.setDisable(true);
+			btnChangeEmail.setVisible(true);
+			headerText = "Email Already Verified";
+			AlertController.showSuccess(title, headerText, contentText);
+			return;
+		}
+		
+		boolean isEmailValid = UserValidations.isEmailValid(email);
+		boolean emailExists = UsersDAO.userExistsByEmail(email);
 
+		title = "New User Email Verification";
+		if (!isEmailValid) {
+			headerText = "Invalid Email";
+			AlertController.showError(title, headerText, contentText);
+			return;
+		}
+		
+		if (emailExists) {
+			headerText = "Email Already Exists";
+			AlertController.showError(title, headerText, contentText);
+			return;
+		} 
+
+		int generatedOTP = TransactionUtils.generateOTP();
+		Date generatedOTPTimestamp = new Date();
+		boolean sentOTP = UserUtils.sendEmailVerificationOTP(email, generatedOTP);
+		if(sentOTP) {
+			boolean isEmailVerified = DialogController.verifyEmailDialog(email, generatedOTP,  generatedOTPTimestamp);
+			if (isEmailVerified) {
+				temporaryVeriedEmailsList.add(email);
+				btnRegister.setDisable(false);
+				btnVerifyEmail.setText("Email Verified");
+				btnVerifyEmail.setStyle("-fx-background-color: green;");
+				btnVerifyEmail.setStyle("-fx-text-fill: black;");
+				btnVerifyEmail.setDisable(true);
+				txtEmail.setDisable(true);
+				btnChangeEmail.setVisible(true);
+				headerText = "Email Verification Successful";
+				AlertController.showSuccess(title, headerText, contentText);
+				return;
+			}
+			else {
+				headerText = "Invalid verification code";
+				AlertController.showError(title, headerText, contentText);
+				return;
+			}
+		}
+		else {
+			headerText = "Could Not Send Verification Code";
+			AlertController.showError(title, headerText, contentText);
+			return;
+		}
 	}
-
+	
+	@FXML
+	public void handleChangeEmailAction(ActionEvent event) throws IOException {
+		
+		btnRegister.setDisable(true);
+		btnVerifyEmail.setText("Verify Email");
+		btnVerifyEmail.setStyle("");
+		btnVerifyEmail.setDisable(false);
+		txtEmail.setDisable(false);
+		btnChangeEmail.setVisible(false);
+		txtName.setText("");
+		txtPhone.setText("");
+		txtPassword.setText("");
+	}
+	
+	@Override
+	public void initialize(URL url, ResourceBundle resourceBundle) {
+		// TODO Auto-generated method stub
+		btnRegister.setDisable(true);
+		btnChangeEmail.setVisible(false);
+		temporaryVeriedEmailsList = new ArrayList<>();
+	}
 }

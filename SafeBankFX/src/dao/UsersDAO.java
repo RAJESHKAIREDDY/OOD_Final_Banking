@@ -33,24 +33,31 @@ public class UsersDAO extends DatabaseConnectionFactory {
 		return false;
 	}
 
-	public static boolean updateUserPassword(String encryptedPassword) {
-		final String UPDATE_USER_PASSWORD_QUERY = "";
+	public static boolean updateUserPassword(String email, String encryptedPassword) {
+		
+		final String UPDATE_USER_PASSWORD_QUERY = "UPDATE safebankdb.users " 
+				+ "SET credit_score = '" + encryptedPassword + "'"
+				+ " WHERE email = '" + email + "'";
 		boolean updatedUserPassword = executeUpdate(UPDATE_USER_PASSWORD_QUERY);
 		if (updatedUserPassword)
 			return true;
 		return false;
 	}
 
-	public static boolean updateUserPhone(Long phone) {
-		final String UPDATE_USER_PHONE_QUERY = "";
+	public static boolean updateUserPhone(String userId, Long phone) {
+		final String UPDATE_USER_PHONE_QUERY = "UPDATE safebankdb.users " 
+				+ "SET phone = '" + phone.longValue() + "'"
+				+ " WHERE user_id = '" + userId + "'";
 		boolean updatedUserPhone = executeUpdate(UPDATE_USER_PHONE_QUERY);
 		if (updatedUserPhone)
 			return true;
 		return false;
 	}
 
-	public static boolean updateUserName(String name) {
-		final String UPDATE_USER_NAME = "";
+	public static boolean updateUserName(String userId, String name) {
+		final String UPDATE_USER_NAME = "UPDATE safebankdb.users " 
+				+ "SET name = '" + name + "'"
+				+ " WHERE user_id = '" + userId + "'";
 		boolean updatedUserName = executeUpdate(UPDATE_USER_NAME);
 		if (updatedUserName)
 			return true;
