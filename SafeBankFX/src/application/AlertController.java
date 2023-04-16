@@ -1,17 +1,7 @@
 package application;
 
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.TextInputDialog;
-import utils.UserUtils;
 
 public class AlertController extends Controller {
 

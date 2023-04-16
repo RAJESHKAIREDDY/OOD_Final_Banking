@@ -15,7 +15,7 @@ import javafx.scene.control.ComboBox;
 
 import javafx.scene.input.InputMethodEvent;
 
-public class TransferExisingAnchorPaneController implements Initializable {
+public class TransferExisingAnchorPaneController extends Controller implements Initializable {
 	@FXML
 	private ComboBox<String> cbBenName;
 	@FXML

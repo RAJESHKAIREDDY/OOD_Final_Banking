@@ -15,7 +15,7 @@ import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.control.RadioButton;
 
-public class TransferOtherAnchorPaneController implements Initializable {
+public class TransferOtherAnchorPaneController extends Controller implements Initializable {
 	@FXML
 	private RadioButton radioBtnBenifExist;
 	@FXML

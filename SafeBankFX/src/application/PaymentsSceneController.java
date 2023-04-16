@@ -16,7 +16,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 
-public class PaymentsSceneController implements Initializable {
+public class PaymentsSceneController extends Controller implements Initializable {
 	@FXML
 	private Label lblHome;
 	@FXML

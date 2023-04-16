@@ -17,7 +17,7 @@ import javafx.scene.input.InputMethodEvent;
 import javafx.scene.layout.VBox;
 
 
-public class CCBillPayAnchorPaneController implements Initializable {
+public class CCBillPayAnchorPaneController extends Controller implements Initializable {
 	
 	@FXML
     private ToggleGroup ChangeAmountLimit;

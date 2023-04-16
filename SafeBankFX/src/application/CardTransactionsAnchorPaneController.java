@@ -22,7 +22,7 @@ import javafx.scene.layout.Pane;
 
 import javafx.scene.control.TableColumn;
 
-public class CardTransactionsAnchorPaneController implements Initializable {
+public class CardTransactionsAnchorPaneController extends Controller implements Initializable {
 	@FXML
 	private Pane paneCards;
 	@FXML

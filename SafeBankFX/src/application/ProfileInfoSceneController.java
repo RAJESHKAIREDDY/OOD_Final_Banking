@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import javax.mail.MessagingException;
 
+import dao.CreditCardsDAO;
 import dao.UsersDAO;
 import enums.CardCategory;
 import javafx.event.ActionEvent;
@@ -174,8 +175,11 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 		
 		String userId = user.getUserId().toString();
 		CreditCard userCreditCard = user.getCreditCard();
-		if(userCreditCard == null) {
-			int creditScore = user.getCreditScore();
+		
+		int creditScore = user.getCreditScore();
+		if(userCreditCard.getCardCategory() == null) {
+			
+			//CREATING NEW CARD
 			if(creditScore < 720) {
 				title = "SafeBank Credit Card Request";
 				headerText = "Poor Credit Score. Boost up your credit score by adding more account transactions";
@@ -183,38 +187,84 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 				return;
 			}
 			else {
-				int creditLimit = 0;
-				CardCategory cardCategory = CreditCardUtils.getEligibleCreditCard(creditScore);
-				if(cardCategory.equals(CardCategory.BURGUNDY))
-					creditLimit = 10000;
-				else if(cardCategory.equals(CardCategory.GOLD))
-					creditLimit = 20000;
-				else
-					creditLimit = 30000;
+				CardCategory cardCategory = CreditCardUtils.getEligibleCreditCard(creditScore, user);
+				double totalcreditLimit = CreditCardUtils.getTotalCreditLimit(cardCategory);
 				CreditCardsService.createNewCreditCard(userId, user, cardCategory);
 				title = "SafeBank Credit Card Request";
-				headerText = "Congratulations. We offered you a "+cardCategory+ ", with a credit limit of "+creditLimit;
+				headerText = "Congratulations. We offered you a "+cardCategory+ ", with a credit limit of "+totalcreditLimit;
 				AlertController.showError(title, headerText, contentText);
 				return;
 			}
+		}
+		else {
+			
+			
+			//UPDATING EXISTING CARD
+			String cardId = userCreditCard.getCreditCardId().toString();
+			CardCategory cardCategory = CreditCardUtils.getEligibleCreditCard(creditScore, user);
+			double totalcreditLimit = CreditCardUtils.getTotalCreditLimit(cardCategory);
+			if(cardCategory != userCreditCard.getCardCategory()) {
+				//upgraded
+				CreditCardsDAO.updateRemainingCreditLimit(userId, cardId, totalcreditLimit);
+				refreshState();
+				title = "SafeBank Credit Card Upgrade Request";
+				headerText = "Congratulations. We offered you a "+cardCategory+ "card, with a credit limit of "+totalcreditLimit;
+				
+				String toEmail = user.getEmail();
+				String subject = "SafeBank Update Account Details";
+				String message = "Your total credit limit has been upgraded";
+				
+				EmailService.sendEmail(toEmail, subject, message);
+				AlertController.showSuccess(title, headerText, contentText);
+				return;
+			}
+			else {
+				//same
+				title = "SafeBank Credit Card Upgrade Request";
+				headerText = "Currently you have "+userCreditCard.getCardCategory()+". Boost your score further to upgrade card";
+				AlertController.showWarning(title, headerText, contentText);
+				return;
+			}
+			
 		}
 		
 		
 	}
 
 	@FXML
-	public void handleViewCreditScoreAction(ActionEvent event) throws IOException {
-
+	public void handleViewCreditScoreAction(ActionEvent event) throws IOException, MessagingException {
+		int creditScore = user.getCreditScore();
+		boolean poorScore = creditScore < 750;
+		boolean averageScore = creditScore >= 750 && creditScore <= 799;
+		boolean goodScore = creditScore >= 800;
+		boolean bestScore = creditScore >= 830;
+		String status = "";
+		if(poorScore)
+			status = "Poor";
+		else if(averageScore)
+			status = "Average";
+		else if(goodScore)
+			status = "Good";
+		else if(bestScore)
+			status = "Best";
+		String toEmail = user.getEmail();
+		String subject = "SafeBank Credit Score";
+		String message = "Your Credit Score : "+creditScore+ "\n"
+				+ "Status : "+status;
+		
+		EmailService.sendEmail(toEmail, subject, message);
 	}
 
 	@FXML
 	public void handleLogoutAction(ActionEvent event) throws IOException {
-
+		isSessionActive = false;
+		user = null;
+		SwitchSceneController.invokeLayout(event, SceneFiles.HOME_SCENE_LAYOUT);
 	}
 
 	@FXML
 	public void invokeHomeSceneLayout(ActionEvent event) throws IOException {
-
+		SwitchSceneController.invokeLayout(event, SceneFiles.HOME_SCENE_LAYOUT);
 	}
 
 	@Override

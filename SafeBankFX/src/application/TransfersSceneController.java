@@ -19,7 +19,7 @@ import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.control.RadioButton;
 
-public class TransfersSceneController implements Initializable {
+public class TransfersSceneController extends Controller implements Initializable {
 	@FXML
 	private Label lblHome;
 	@FXML

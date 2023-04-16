@@ -28,7 +28,7 @@ import utils.TransactionUtils;
 import utils.UserUtils;
 import validations.UserValidations;
 
-public class RegisterSceneController implements Initializable {
+public class RegisterSceneController extends Controller implements Initializable {
 	@FXML
 	private Label lblBankName;
 	@FXML

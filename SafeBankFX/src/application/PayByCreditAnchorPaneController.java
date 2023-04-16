@@ -17,7 +17,7 @@ import javafx.scene.control.ComboBox;
 
 import javafx.scene.input.InputMethodEvent;
 
-public class PayByCreditAnchorPaneController implements Initializable {
+public class PayByCreditAnchorPaneController extends Controller implements Initializable {
 	@FXML
 	private ComboBox<String> cbCards;
 	@FXML

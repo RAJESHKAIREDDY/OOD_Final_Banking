@@ -21,7 +21,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.TableColumn;
 
-public class AccountTransactionsAnchorPaneController implements Initializable {
+public class AccountTransactionsAnchorPaneController extends Controller implements Initializable {
 	@FXML
 	private Pane paneAccounts;
 	@FXML

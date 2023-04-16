@@ -1,11 +1,14 @@
 package application;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Date;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 import dao.UsersDAO;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
@@ -17,7 +20,7 @@ import utils.PasswordUtils;
 import validations.TransactionValidations;
 import validations.UserValidations;
 
-public class DialogController extends Controller {
+public class DialogController extends Controller implements Initializable {
 
 	public static boolean verifyEmailDialog(String email, int generatedOTP, Date generatedOTPTimestamp)
 			throws Exception {
@@ -123,5 +126,11 @@ public class DialogController extends Controller {
 		    return false;
 		}
 		return false;
+	}
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 }

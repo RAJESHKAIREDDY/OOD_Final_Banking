@@ -103,16 +103,26 @@ public class CreditCardUtils {
 		return CardCategory.BURGUNDY;
 	}
 
-	public static CardCategory getEligibleCreditCard(int creditScore) {
+	public static CardCategory getEligibleCreditCard(int creditScore, User user) {
 
 		boolean burgundyCardRange = creditScore >= 720 && creditScore <= 759;
 		boolean goldCardRange = creditScore >= 760 && creditScore <= 819;
-
+		CardCategory cardCategory = user.getCreditCard().getCardCategory();
 		if (burgundyCardRange)
 			return CardCategory.BURGUNDY;
-		else if (goldCardRange)
+		else if (goldCardRange) {
+			if(cardCategory == null)
+				return CardCategory.BURGUNDY;
 			return CardCategory.GOLD;
-		return CardCategory.PLATINUM;
+		}
+		else {
+			if(cardCategory == null)
+				return CardCategory.BURGUNDY;
+			else if(cardCategory == CardCategory.BURGUNDY)
+				return CardCategory.GOLD;
+			else
+				return CardCategory.PLATINUM;	
+		}
 	}
 
 	public static Date generateCCDueDateAfterTwoMin(Date inputDate) throws Exception {
