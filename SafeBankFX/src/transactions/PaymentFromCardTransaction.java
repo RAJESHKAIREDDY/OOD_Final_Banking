@@ -73,6 +73,7 @@ public class PaymentFromCardTransaction extends Thread {
 						Date dueDate = CreditCardUtils.generateCCDueDateAfterTwoMin(new Date());
 //								CreditCardUtils.generateDueDateForCreditCard();
 						CreditCardsDAO.updateRemainingCreditLimit(userId, cardId, remainingCreditLimit);
+						CreditCard userCreditCard = CreditCardsDAO.getCreditCard(cardId);
 						Transaction transaction = new Transaction();
 						transaction.setTransactionId(UUID.randomUUID());
 						transaction.setTransactionCategory(TransactionCategory.ONLINE_PAYMENT);
@@ -82,6 +83,7 @@ public class PaymentFromCardTransaction extends Thread {
 						transaction.setAmount(amount);
 						transaction.setDueDate(dueDate);
 						transaction.setPaymentStatus(CCBillPaymentStatus.PENDING);
+						transaction.setCardNumber(userCreditCard.getCardNumber());
 						TransactionsDAO.createNewTransaction(userId, transaction);
 						setPaymentStatus(PaymentStatus.SUCCESS);
 						int creditScore = user.getCreditScore();

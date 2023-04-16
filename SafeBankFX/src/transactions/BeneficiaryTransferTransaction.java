@@ -10,6 +10,7 @@ import dao.UsersDAO;
 import enums.TransactionCategory;
 import enums.TransactionMode;
 import enums.TransactionType;
+import models.SavingsAccount;
 import models.Transaction;
 import models.User;
 
@@ -43,6 +44,7 @@ public class BeneficiaryTransferTransaction extends Thread {
 
 	public void transferToBeneficiary() throws Exception {
         
+		SavingsAccount senderAccount = SavingsAccountsDAO.getSavingsAccountById(senderAccountId);
 		SavingsAccountsDAO.processTransfer(senderAccountId, receiverAccountId, amount);
         Transaction senderTransaction = new Transaction();
         senderTransaction.setTransactionId(UUID.randomUUID());
@@ -51,6 +53,7 @@ public class BeneficiaryTransferTransaction extends Thread {
         senderTransaction.setTransactionMode(TransactionMode.DEBIT);
         senderTransaction.setTransactionName("Transfer to Beneficiary");
         senderTransaction.setAmount(amount);
+        senderTransaction.setAccountNumber(senderAccount.getAccountNumber());
       	TransactionsDAO.createNewTransaction(senderUserId, senderTransaction);
       	
       	User sender = UsersDAO.getUserById(senderUserId);
@@ -59,6 +62,7 @@ public class BeneficiaryTransferTransaction extends Thread {
 		
 		UsersDAO.updateUserCreditScore(senderUserId, sender.getCreditScore());
       	
+		SavingsAccount recieverAccount = SavingsAccountsDAO.getSavingsAccountById(receiverAccountId);
       	Transaction receiverTransaction = new Transaction();
         senderTransaction.setTransactionId(UUID.randomUUID());
         senderTransaction.setTransactionCategory(TransactionCategory.TRANSFER_FROM_BENEFICIARY);
@@ -66,6 +70,7 @@ public class BeneficiaryTransferTransaction extends Thread {
         senderTransaction.setTransactionMode(TransactionMode.CREDIT);
         senderTransaction.setTransactionName("Transfer from Beneficiary");
         senderTransaction.setAmount(amount);
+        receiverTransaction.setAccountNumber(recieverAccount.getAccountNumber());
       	TransactionsDAO.createNewTransaction(receiverUserId, receiverTransaction);
     }
 	

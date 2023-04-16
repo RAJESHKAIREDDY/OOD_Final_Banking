@@ -36,6 +36,13 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 			paymentStatus = transaction.getPaymentStatus().toString();
 		}
 		boolean isCardTransaction = transactionType.equals("CARD_TRANSACTION");
+		long cardNumber = 0;
+		long accountNumber = 0;
+		if(isCardTransaction) {
+			cardNumber = transaction.getCardNumber();
+		}
+		else
+			accountNumber = transaction.getAccountNumber();
 		
 		final String CREATE_NEW_TRANSACTION_QUERY;
 		
@@ -50,6 +57,7 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 					+ "amount, "
 					+ "user_id, "
 					+ "due_date,"
+					+ "card_number,"
 					+ "payment_status) "
 					
 					+ "VALUES ("
@@ -61,6 +69,7 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 					+ "'" + amount + "', "
 					+ "'" + userId + "', "
 					+ "'" + dueDate + "', "
+					+ "'" + cardNumber + "', "
 					+ "'" + paymentStatus + "');";
 		}
 		else {
@@ -72,6 +81,7 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 					+ "transaction_type, "
 					+ "transaction_mode, "
 					+ "amount, "
+					+ "account_number, "
 					+ "user_id) "
 					
 					+ "VALUES ("
@@ -81,6 +91,7 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 					+ "'" + transactionType + "', "
 					+ "'" + transactionMode + "', "
 					+ "'" + amount + "', "
+					+ "'" + accountNumber + "', "
 					+ "'" + userId + "');";
 		}
 		
@@ -110,6 +121,8 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 				transaction.setAmount(results.getDouble("amount"));
 				transaction.setCreatedAt(results.getTimestamp("created_at"));
 				transaction.setDueDate(results.getTimestamp("due_date"));
+				transaction.setAccountNumber(results.getLong("account_number"));
+				transaction.setCardNumber(results.getLong("card_number"));
 				retrievedTransactions.add(transaction);
 			}
 		} catch (SQLException sqlException) {
@@ -138,6 +151,8 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 				transaction.setAmount(transactions.getDouble("amount"));
 				transaction.setCreatedAt(transactions.getTimestamp("created_at"));
 				transaction.setDueDate(transactions.getTimestamp("due_date"));
+				transaction.setAccountNumber(transactions.getLong("account_number"));
+				transaction.setCardNumber(transactions.getLong("card_number"));
 			}
 			transactions.close();
 		} catch (SQLException sqlException) {
@@ -170,6 +185,8 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 				transaction.setAmount(transactions.getDouble("amount"));
 				transaction.setCreatedAt(transactions.getTimestamp("created_at"));
 				transaction.setDueDate(transactions.getTimestamp("due_date"));
+				transaction.setAccountNumber(transactions.getLong("account_number"));
+				transaction.setCardNumber(transactions.getLong("card_number"));
 			}
 			transactions.close();
 		} catch (SQLException sqlException) {
@@ -252,6 +269,8 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 				transaction.setAmount(results.getDouble("amount"));
 				transaction.setCreatedAt(results.getTimestamp("created_at"));
 				transaction.setDueDate(results.getTimestamp("due_date"));
+				transaction.setAccountNumber(results.getLong("account_number"));
+				transaction.setCardNumber(results.getLong("card_number"));
 				unpaidTransactions.add(transaction);
 			}
 			

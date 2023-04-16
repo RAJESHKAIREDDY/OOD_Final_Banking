@@ -19,6 +19,8 @@ public class Transaction {
 	private Date createdAt;
 	private Date dueDate;
 	private CCBillPaymentStatus paymentStatus;
+	private long accountNumber;
+	private long cardNumber;
 	
 	public UUID getTransactionId() {
 		return transactionId;
@@ -74,11 +76,24 @@ public class Transaction {
 	public void setPaymentStatus(CCBillPaymentStatus paymentStatus) {
 		this.paymentStatus = paymentStatus;
 	}
+	public long getAccountNumber() {
+		return accountNumber;
+	}
+	public void setAccountNumber(long accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+	public long getCardNumber() {
+		return cardNumber;
+	}
+	public void setCardNumber(long cardNumber) {
+		this.cardNumber = cardNumber;
+	}
 	@Override
 	public String toString() {
 		return "Transaction [transactionId=" + transactionId + ", transactionName=" + transactionName
 				+ ", transactionCategory=" + transactionCategory + ", transactionType=" + transactionType
 				+ ", transactionMode=" + transactionMode + ", amount=" + amount + ", createdAt=" + createdAt
-				+ ", dueDate=" + dueDate + ", paymentStatus=" + paymentStatus + "]";
+				+ ", dueDate=" + dueDate + ", paymentStatus=" + paymentStatus + ", accountNumber=" + accountNumber
+				+ ", cardNumber=" + cardNumber + "]";
 	}
 }

@@ -170,8 +170,8 @@ public class UsersDAO extends DatabaseConnectionFactory {
 		return false;
 	}
 	
-	public static boolean userExistsByPhone(long email) {
-		User user = getUserByPhone(email);
+	public static boolean userExistsByPhone(long phone) {
+		User user = getUserByPhone(phone);
 		if (user != null)
 			return true;
 		return false;

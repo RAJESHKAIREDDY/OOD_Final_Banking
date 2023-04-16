@@ -10,6 +10,7 @@ import dao.UsersDAO;
 import enums.TransactionCategory;
 import enums.TransactionMode;
 import enums.TransactionType;
+import models.SavingsAccount;
 import models.Transaction;
 import models.User;
 
@@ -35,6 +36,7 @@ public class SelfTransferTransaction extends Thread {
 
 
 	public void transferToSelf() throws Exception {
+		SavingsAccount senderAccount = SavingsAccountsDAO.getSavingsAccountById(senderAccountId);
         SavingsAccountsDAO.processTransfer(senderAccountId, receiverAccountId, amount);
         Transaction senderTransaction = new Transaction();
         senderTransaction.setTransactionId(UUID.randomUUID());
@@ -43,6 +45,7 @@ public class SelfTransferTransaction extends Thread {
         senderTransaction.setTransactionMode(TransactionMode.DEBIT);
         senderTransaction.setTransactionName("Transfer to Self");
         senderTransaction.setAmount(amount);
+        senderTransaction.setAccountNumber(senderAccount.getAccountNumber());
       	TransactionsDAO.createNewTransaction(userId, senderTransaction);
       	
       	Transaction receiverTransaction = new Transaction();
@@ -52,6 +55,7 @@ public class SelfTransferTransaction extends Thread {
         senderTransaction.setTransactionMode(TransactionMode.CREDIT);
         senderTransaction.setTransactionName("Transfer from Self");
         senderTransaction.setAmount(amount);
+        senderTransaction.setAccountNumber(senderAccount.getAccountNumber());
       	TransactionsDAO.createNewTransaction(userId, receiverTransaction);
       	
       	User user = UsersDAO.getUserById(userId);

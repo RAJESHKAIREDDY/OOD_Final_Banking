@@ -93,7 +93,6 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 				EmailService.sendEmail(toEmail, subject, message);
 				AlertController.showSuccess(title, headerText, contentText);
 				return;
-
 			}
 		}
 	}
@@ -118,19 +117,27 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 				AlertController.showError(title, headerText, contentText);
 				return;
 			} else {
-				Long phoneNumber = Long.parseLong(phone);
-				UsersDAO.updateUserPhone(user.getUserId().toString(), phoneNumber);
-				txtName.setDisable(true);
-				btnChangeName.setText("Change Number");
-				headerText = "Updated User Phone Number Successfully";
 
-				String toEmail = user.getEmail();
-				String subject = "SafeBank Update Account Details";
-				String message = "Your phone number has been updated";
+				long phoneNumber = Long.parseLong(phone);
+				boolean phoneExists = UsersDAO.userExistsByPhone(phoneNumber);
+				if (phoneExists) {
+					headerText = "User exists with the given phone number";
+					AlertController.showError(title, headerText, contentText);
+					return;
+				} else {
+					UsersDAO.updateUserPhone(user.getUserId().toString(), phoneNumber);
+					txtName.setDisable(true);
+					btnChangeName.setText("Change Number");
+					headerText = "Updated User Phone Number Successfully";
 
-				EmailService.sendEmail(toEmail, subject, message);
-				AlertController.showSuccess(title, headerText, contentText);
-				return;
+					String toEmail = user.getEmail();
+					String subject = "SafeBank Update Account Details";
+					String message = "Your phone number has been updated";
+
+					EmailService.sendEmail(toEmail, subject, message);
+					AlertController.showSuccess(title, headerText, contentText);
+					return;
+				}
 			}
 		}
 	}
@@ -144,7 +151,7 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 		int iterationCount = 0;
 		boolean iterating = true;
 		while (iterating) {
-			System.out.println("ietration "+iterationCount);
+			System.out.println("ietration " + iterationCount);
 			boolean passwordsMatched = DialogController.enterCurrentPasswordDialog(iterationCount);
 			if (passwordsMatched) {
 				AnchorPane transferOther = (AnchorPane) FXMLLoader
@@ -172,63 +179,61 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 		String title = null;
 		String headerText = null;
 		String contentText = null;
-		
+
 		String userId = user.getUserId().toString();
 		CreditCard userCreditCard = user.getCreditCard();
-		
+
 		int creditScore = user.getCreditScore();
-		if(userCreditCard.getCardCategory() == null) {
-			
-			//CREATING NEW CARD
-			if(creditScore < 720) {
+		if (userCreditCard.getCardCategory() == null) {
+
+			// CREATING NEW CARD
+			if (creditScore < 720) {
 				title = "SafeBank Credit Card Request";
 				headerText = "Poor Credit Score. Boost up your credit score by adding more account transactions";
 				AlertController.showError(title, headerText, contentText);
 				return;
-			}
-			else {
+			} else {
 				CardCategory cardCategory = CreditCardUtils.getEligibleCreditCard(creditScore, user);
 				double totalcreditLimit = CreditCardUtils.getTotalCreditLimit(cardCategory);
 				CreditCardsService.createNewCreditCard(userId, user, cardCategory);
 				title = "SafeBank Credit Card Request";
-				headerText = "Congratulations. We offered you a "+cardCategory+ ", with a credit limit of "+totalcreditLimit;
+				headerText = "Congratulations. We offered you a " + cardCategory + ", with a credit limit of "
+						+ totalcreditLimit;
 				AlertController.showError(title, headerText, contentText);
 				return;
 			}
-		}
-		else {
-			
-			
-			//UPDATING EXISTING CARD
+		} else {
+
+			// UPDATING EXISTING CARD
 			String cardId = userCreditCard.getCreditCardId().toString();
 			CardCategory cardCategory = CreditCardUtils.getEligibleCreditCard(creditScore, user);
 			double totalcreditLimit = CreditCardUtils.getTotalCreditLimit(cardCategory);
-			if(cardCategory != userCreditCard.getCardCategory()) {
-				//upgraded
+			if (cardCategory != userCreditCard.getCardCategory()) {
+				// upgraded
 				CreditCardsDAO.updateRemainingCreditLimit(userId, cardId, totalcreditLimit);
 				refreshState();
 				title = "SafeBank Credit Card Upgrade Request";
-				headerText = "Congratulations. We offered you a "+cardCategory+ "card, with a credit limit of "+totalcreditLimit;
-				
+				headerText = "Congratulations. We offered you a " + cardCategory + "card, with a credit limit of "
+						+ totalcreditLimit;
+
 				String toEmail = user.getEmail();
 				String subject = "SafeBank Update Account Details";
 				String message = "Your total credit limit has been upgraded";
-				
+
 				EmailService.sendEmail(toEmail, subject, message);
 				AlertController.showSuccess(title, headerText, contentText);
 				return;
-			}
-			else {
-				//same
+			} else {
+				// same
 				title = "SafeBank Credit Card Upgrade Request";
-				headerText = "Currently you have "+userCreditCard.getCardCategory()+". Boost your score further to upgrade card";
+				headerText = "Currently you have " + userCreditCard.getCardCategory()
+						+ ". Boost your score further to upgrade card";
 				AlertController.showWarning(title, headerText, contentText);
 				return;
 			}
-			
+
 		}
-		
-		
+
 	}
 
 	@FXML
@@ -239,19 +244,18 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 		boolean goodScore = creditScore >= 800;
 		boolean bestScore = creditScore >= 830;
 		String status = "";
-		if(poorScore)
+		if (poorScore)
 			status = "Poor";
-		else if(averageScore)
+		else if (averageScore)
 			status = "Average";
-		else if(goodScore)
+		else if (goodScore)
 			status = "Good";
-		else if(bestScore)
+		else if (bestScore)
 			status = "Best";
 		String toEmail = user.getEmail();
 		String subject = "SafeBank Credit Score";
-		String message = "Your Credit Score : "+creditScore+ "\n"
-				+ "Status : "+status;
-		
+		String message = "Your Credit Score : " + creditScore + "\n" + "Status : " + status;
+
 		EmailService.sendEmail(toEmail, subject, message);
 	}
 

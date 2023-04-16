@@ -15,6 +15,7 @@ import enums.PaymentStatus;
 import enums.TransactionCategory;
 import enums.TransactionMode;
 import enums.TransactionType;
+import models.SavingsAccount;
 import models.Transaction;
 import models.User;
 import notifications.EmailService;
@@ -61,7 +62,7 @@ public class DepositToAccountTransaction extends Thread {
 							"\n\n*** Deposited USD " + amount + " to Savings A/C Account ID : " + accountId + " ***");
 					System.out.println("Updated Balance : USD " + accountBalance);
 					SavingsAccountsDAO.updateAccountBalance(userId, accountId, accountBalance);
-					
+					SavingsAccount savingsAccount = SavingsAccountsDAO.getSavingsAccountById(accountId);
 					Transaction transaction = new Transaction();
 					transaction.setTransactionId(UUID.randomUUID());
 					transaction.setTransactionCategory(TransactionCategory.CASH_DEPOSIT);
@@ -69,6 +70,7 @@ public class DepositToAccountTransaction extends Thread {
 					transaction.setTransactionMode(TransactionMode.CREDIT);
 					transaction.setTransactionName("Deposit for Medical Purpose");
 					transaction.setAmount(amount);
+					transaction.setAccountNumber(savingsAccount.getAccountNumber());
 					TransactionsDAO.createNewTransaction(userId, transaction);
 					
 					setPaymentStatus(PaymentStatus.SUCCESS);

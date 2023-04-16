@@ -16,6 +16,7 @@ import enums.PaymentStatus;
 import enums.TransactionCategory;
 import enums.TransactionMode;
 import enums.TransactionType;
+import models.SavingsAccount;
 import models.Transaction;
 import models.User;
 import notifications.EmailService;
@@ -70,13 +71,16 @@ public class PaymentFromAccountTransaction extends Thread {
                         System.out.println("\n\n*** Paid USD " + amount + " from Savings A/C Account ID : "+accountId+" ***");
                         System.out.println("Updated Balance : USD "+accountBalance);
                         SavingsAccountsDAO.updateAccountBalance(userId, accountId, accountBalance);
+                        SavingsAccount userAccount = SavingsAccountsDAO.getSavingsAccountById(accountId);
                         Transaction transaction = new Transaction();
                         transaction.setTransactionId(UUID.randomUUID());
                         transaction.setTransactionCategory(transactionCategory);
                         transaction.setTransactionType(TransactionType.ACCOUNT_TRANSACTION);
                         transaction.setTransactionMode(TransactionMode.DEBIT);
+                        transaction.setAccountNumber(userAccount.getAccountNumber());
                         transaction.setTransactionName("Account Transaction");
                         transaction.setAmount(amount);
+                        transaction.setAccountNumber(userAccount.getAccountNumber());
                         if(amount > 0)
                         	TransactionsDAO.createNewTransaction(userId, transaction);
                         setPaymentStatus(PaymentStatus.SUCCESS);
