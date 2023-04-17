@@ -14,26 +14,30 @@
       <AnchorPane layoutX="-100.0" layoutY="-110.0" prefHeight="456.0" prefWidth="1085.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Pane fx:id="paneAccounts" layoutX="252.0" layoutY="252.0" prefHeight="456.0" prefWidth="1085.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ComboBox fx:id="cbAccounts" layoutX="380.0" layoutY="46.0" onAction="#displayAccounts" prefHeight="30.0" prefWidth="289.0" promptText="Choose Your Account" />
-            <Button fx:id="btnResetCBValue" layoutX="710.0" layoutY="49.0" mnemonicParsing="false" onAction="#clearSelectedValue" text="Reset" />
-            <Label fx:id="lblAccountBalance" layoutX="407.0" layoutY="119.0" prefHeight="21.0" prefWidth="173.0" text="Account Balance :  $">
+            <ComboBox fx:id="cbAccounts" layoutX="380.0" layoutY="46.0" onAction="#displayAccounts" prefHeight="40.0" prefWidth="300.0" promptText="Choose Your Account" />
+            <Button fx:id="btnResetCBValue" layoutX="703.0" layoutY="47.0" mnemonicParsing="false" onAction="#clearSelectedValue" text="Reset">
                <font>
-                  <Font size="16.0" />
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Label fx:id="lblAccountBalance" layoutX="424.0" layoutY="130.0" prefHeight="21.0" prefWidth="173.0" text="Account Balance :  $">
+               <font>
+                  <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="lblAccountBalanceValue" layoutX="556.0" layoutY="119.0" prefHeight="21.0" prefWidth="95.0" text="3000.0">
+            <Label fx:id="lblAccountBalanceValue" layoutX="597.0" layoutY="130.0" prefHeight="21.0" prefWidth="95.0">
                <font>
-                  <Font size="16.0" />
+                  <Font size="20.0" />
                </font>
             </Label>
-            <TableView fx:id="tblAccounts" layoutX="100.0" layoutY="196.0" prefHeight="200.0" prefWidth="893.0">
+            <TableView fx:id="tblAccounts" layoutX="100.0" layoutY="196.0" prefHeight="200.0" prefWidth="925.0">
                <columns>
-                  <TableColumn fx:id="tblClmSNo" prefWidth="44.3480224609375" text="S.No" />
                   <TableColumn fx:id="tblClmTID" prefWidth="218.65203857421875" text="Transaction ID" />
                   <TableColumn fx:id="tblClmAccNo" prefWidth="135.40570068359375" text="Account Number" />
                   <TableColumn fx:id="tblClmTName" prefWidth="221.59429931640625" text="Transaction Name" />
                   <TableColumn fx:id="tblClmTType" prefWidth="124.935302734375" text="Transaction Type" />
                   <TableColumn fx:id="tblClmTDate" prefWidth="147.3409423828125" text="Transaction Date" />
+                  <TableColumn fx:id="tblClmAmt" prefWidth="75.0" text="Amount" />
                </columns>
             </TableView>
          </children>

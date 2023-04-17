@@ -73,6 +73,8 @@ public class TransfersSceneController extends Controller implements Initializabl
 			AnchorPane transferOther = (AnchorPane)FXMLLoader.load(getClass().getResource(SceneFiles.TRANSFER_OTHER));
 			anchorPane.getChildren().setAll(transferOther.getChildren());
 			
+			
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

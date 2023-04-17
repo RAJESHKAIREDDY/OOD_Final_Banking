@@ -29,6 +29,8 @@ public class TransactionsSceneController extends Controller implements Initializ
 	@FXML
 	private Label lblHome;
 	@FXML
+	private Label lblDisplayingAccountTransactions;
+	@FXML
 	private Button btnLogout;
 	@FXML
 	private Label lblCurrentUserEmail;
@@ -55,8 +57,22 @@ public class TransactionsSceneController extends Controller implements Initializ
 		public void initialize(URL url, ResourceBundle arg1) {
 			// TODO Auto-generated method stub
 			try {
-				AnchorPane cards = (AnchorPane)FXMLLoader.load(getClass().getResource(SceneFiles.CARD_TRANSACTIONS));
-				anchorPane.getChildren().setAll(cards.getChildren());
+				
+				AnchorPane accounts = (AnchorPane)FXMLLoader
+						.load(getClass()
+								.getResource(SceneFiles.ACCOUNT_TRANSACTIONS));
+				AnchorPane cards = (AnchorPane)FXMLLoader
+						.load(getClass()
+								.getResource(SceneFiles.CARD_TRANSACTIONS));
+				
+				if(user.getCreditCard().getCreditCardId() == null) {
+					radioBtnCredit.setVisible(false);
+					radioBtnSavings.setVisible(false);
+					anchorPane.getChildren().setAll(accounts.getChildren());
+				}
+				else 
+					anchorPane.getChildren().setAll(cards.getChildren());
+				
 			} catch (IOException e) {
 				// TODO: handle exception
 			}
@@ -67,12 +83,21 @@ public class TransactionsSceneController extends Controller implements Initializ
 			
 			AnchorPane cards = (AnchorPane)FXMLLoader.load(getClass().getResource(SceneFiles.CARD_TRANSACTIONS));
 			AnchorPane accounts = (AnchorPane)FXMLLoader.load(getClass().getResource(SceneFiles.ACCOUNT_TRANSACTIONS));
-			
-			if(radioBtnCredit.isSelected()) {
-				anchorPane.getChildren().setAll(cards.getChildren());
+			System.out.println(user.getCreditCard().toString());
+			if(user.getCreditCard().getCreditCardId() == null) {
+				radioBtnCredit.setVisible(false);
+				radioBtnSavings.setVisible(false);
+				anchorPane.getChildren().setAll(accounts.getChildren());
+		
 			}
 			else {
-				anchorPane.getChildren().setAll(accounts.getChildren());
+				if(radioBtnCredit.isSelected()) {
+					anchorPane.getChildren().setAll(cards.getChildren());
+					
+				}
+				else {
+					anchorPane.getChildren().setAll(accounts.getChildren());
+				}
 			}
 		}
 }
