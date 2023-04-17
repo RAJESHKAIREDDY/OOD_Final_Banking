@@ -20,16 +20,6 @@
                   <Font size="20.0" />
                </font>
             </Button>
-            <Label fx:id="lblAccountBalance" layoutX="424.0" layoutY="130.0" prefHeight="21.0" prefWidth="173.0" text="Account Balance :  $">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label fx:id="lblAccountBalanceValue" layoutX="597.0" layoutY="130.0" prefHeight="21.0" prefWidth="95.0">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
             <TableView fx:id="tblAccounts" layoutX="100.0" layoutY="196.0" prefHeight="200.0" prefWidth="925.0">
                <columns>
                   <TableColumn fx:id="tblClmTID" prefWidth="218.65203857421875" text="Transaction ID" />
@@ -40,6 +30,8 @@
                   <TableColumn fx:id="tblClmAmt" prefWidth="75.0" text="Amount" />
                </columns>
             </TableView>
+            <Label fx:id="lblAccountBalance" layoutX="475.0" layoutY="149.0" text="Account Balance : $ " />
+            <Label fx:id="lblAccountBalanceValue" layoutX="586.0" layoutY="149.0" />
          </children>
       </Pane>
    </children>

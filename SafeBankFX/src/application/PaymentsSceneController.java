@@ -71,9 +71,24 @@ public class PaymentsSceneController extends Controller implements Initializable
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		try {
-			AnchorPane ccBillPay = (AnchorPane)FXMLLoader.load(getClass().getResource(SceneFiles.CC_BILL_PAY));
-			anchorPane.getChildren().setAll(ccBillPay.getChildren());
-			radioBtnPayCCBill.setSelected(true);
+			AnchorPane ccBillPay = null;
+			AnchorPane payBySavings = null;
+			if(user.getCreditCard().getCreditCardId() != null) {
+				radioBtnPayByCredit.setVisible(true);
+				radioBtnPayCCBill.setVisible(true);
+				radioBtnPayBySavings.setVisible(true);
+				radioBtnPayCCBill.setSelected(true);
+				ccBillPay = (AnchorPane)FXMLLoader.load(getClass().getResource(SceneFiles.CC_BILL_PAY));
+				anchorPane.getChildren().setAll(ccBillPay.getChildren());
+			}
+			else {
+				radioBtnPayByCredit.setVisible(false);
+				radioBtnPayCCBill.setVisible(false);
+				radioBtnPayBySavings.setVisible(false);
+				payBySavings = (AnchorPane)FXMLLoader.load(getClass().getResource(SceneFiles.PAY_BY_SAVINGS));
+				anchorPane.getChildren().setAll(payBySavings.getChildren());
+			}
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

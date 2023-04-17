@@ -88,7 +88,7 @@ public class TransactionsSceneController extends Controller implements Initializ
 				radioBtnCredit.setVisible(false);
 				radioBtnSavings.setVisible(false);
 				anchorPane.getChildren().setAll(accounts.getChildren());
-		
+				
 			}
 			else {
 				if(radioBtnCredit.isSelected()) {
