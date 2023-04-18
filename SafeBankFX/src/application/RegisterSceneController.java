@@ -99,7 +99,7 @@ public class RegisterSceneController extends Controller implements Initializable
 			} else {
 
 				long phoneNumber = Long.parseLong(phone);
-				boolean phoneExists = UsersDAO.userExistsByPhone(phoneNumber);
+				boolean phoneExists = UsersDAO.userExistsByPhone(phoneNumber, user.getUserId().toString());
 				if (phoneExists) {
 					headerText = "Phone Number Already Exists";
 					AlertController.showError(title, headerText, contentText);
@@ -227,6 +227,7 @@ public class RegisterSceneController extends Controller implements Initializable
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// TODO Auto-generated method stub
+		refreshState();
 		btnRegister.setDisable(true);
 		btnChangeEmail.setVisible(false);
 		temporaryVeriedEmailsList = new ArrayList<>();

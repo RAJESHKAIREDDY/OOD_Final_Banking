@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import dao.UsersDAO;
+import enums.TransactionCategory;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -78,7 +79,7 @@ public class DialogController extends Controller implements Initializable {
 				AlertController.showError(title, headerText, contentText);
 			} else {
 				long phoneNumber = Long.parseLong(enteredPhoneNumber);
-				boolean phoneExists = UsersDAO.userExistsByPhone(phoneNumber);
+				boolean phoneExists = UsersDAO.userExistsByPhone(phoneNumber, Controller.user.getUserId().toString());
 				if (!phoneExists) {
 					headerText = "No record exists with the given phone number";
 					AlertController.showError(title, headerText, contentText);
@@ -102,7 +103,7 @@ public class DialogController extends Controller implements Initializable {
 		}
 	}
 	
-	public static boolean enterCurrentPasswordDialog(int iterationCount) throws IOException {
+	public static String enterCurrentPasswordDialog(int iterationCount) throws IOException {
 		TextInputDialog dialog = new TextInputDialog();
 		dialog.setTitle("Request for Change Password");
 		dialog.setHeaderText("Current Password::Attempts Remaining : "+(3 - iterationCount));
@@ -122,15 +123,47 @@ public class DialogController extends Controller implements Initializable {
 		    // Do something with the password...
 		    boolean passwordsMatched = PasswordUtils.checkPassword(password, user.getPassword());
 		    if(passwordsMatched)
-		    	return true;
-		    return false;
+		    	return "matched";
+		    return "not_matched";
 		}
-		return false;
+		return null;
+	}
+	
+	public static String getEnteredOTPInputForTransaction(TransactionCategory transactionCategory) {
+		
+		String title = null;
+		String headerText = null;
+		String contentText = null;
+		
+		headerText = "Enter the high security code sent to your email";
+		if(transactionCategory == TransactionCategory.ONLINE_PAYMENT)
+			title = "Online Payment";
+		else if(transactionCategory == TransactionCategory.CASH_DEPOSIT)
+			title = "Cash Deposit";
+		else if(transactionCategory == TransactionCategory.CC_BILL_PAYMENT)
+			title = "Credit Card Bill Payment";
+		else if(transactionCategory == TransactionCategory.TRANSFER_TO_BENEFICIARY)
+			title = "Transfer to Benificiary";
+		else if(transactionCategory == TransactionCategory.TRANSFER_FROM_SELF)
+			title = "Transfer to Self";
+		
+		
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle(title);
+		dialog.setHeaderText(headerText);
+		dialog.setContentText(contentText);
+
+		Optional<String> result = dialog.showAndWait();
+		if (result.isPresent()){
+		    String enteredOTP = result.get();
+		    return enteredOTP;
+		}
+		return null;
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		
+		refreshState();
 	}
 }

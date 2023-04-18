@@ -69,6 +69,7 @@ public class TransfersSceneController extends Controller implements Initializabl
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		refreshState();
 		try {
 			AnchorPane transferOther = (AnchorPane)FXMLLoader.load(getClass().getResource(SceneFiles.TRANSFER_OTHER));
 			anchorPane.getChildren().setAll(transferOther.getChildren());

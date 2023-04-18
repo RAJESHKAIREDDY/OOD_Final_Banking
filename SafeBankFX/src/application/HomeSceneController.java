@@ -79,6 +79,6 @@ public class HomeSceneController extends Controller implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// TODO Auto-generated method stub	
-		
+		refreshState();
 	}
 }

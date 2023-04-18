@@ -38,6 +38,8 @@ public class ResetPasswordAnchorPaneController extends Controller implements Ini
 	private Hyperlink hyperlinkToLogin;
 	@FXML
 	private Button btnCancel;
+	
+	private static String emailVerified;
 
 	// Event Listener on Button[#btnChangePassword].onAction
 	@FXML
@@ -70,11 +72,11 @@ public class ResetPasswordAnchorPaneController extends Controller implements Ini
 				AlertController.showError(title, headerText, contentText);
 				return;
 			} else {
-				String email = lblResetPasswordEmail.getText();
 				String hashedPassword = PasswordUtils.hashPassword(confirmNewPassword);
-				boolean updatedPassword = UsersDAO.updateUserPassword(email, hashedPassword);
+				boolean updatedPassword = UsersDAO.updateUserPassword(emailVerified, hashedPassword);
 
 				if (updatedPassword) {
+					emailVerified = null;
 					headerText = "Changed Password Successfully. Login to Continue";
 					AlertController.showSuccess(title, headerText, contentText);
 				} else {
@@ -100,13 +102,14 @@ public class ResetPasswordAnchorPaneController extends Controller implements Ini
 			SwitchSceneController.invokeLayout(event, SceneFiles.FORGOT_PASSWORD_SCENE);
 	}
 
+	public void setResetPasswordEmail(String email) {
+		lblResetPasswordEmail.setText(email);
+		emailVerified = email;
+	}
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		
-	}
-
-	public void setResetPasswordEmail(String email) {
-		lblResetPasswordEmail.setText(email);
+		refreshState();
+		System.out.println("lblResetPasswordEmail ==> "+lblResetPasswordEmail.getText());
 	}
 }

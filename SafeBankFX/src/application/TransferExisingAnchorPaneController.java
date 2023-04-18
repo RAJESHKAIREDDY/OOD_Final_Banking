@@ -44,6 +44,7 @@ public class TransferExisingAnchorPaneController extends Controller implements I
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		refreshState();
 		cbBenAccNums.setVisible(false);
 		btnTransferFunds.setVisible(false);
 	}

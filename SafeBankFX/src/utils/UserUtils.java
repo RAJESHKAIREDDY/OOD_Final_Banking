@@ -37,12 +37,6 @@ public class UserUtils {
 
 		String subject = "SafeBank Email Verification";
 		String message = "Enter this verifiction code to verify your email\n" + "Verification Code : "+generatedOTP;
-		try {
-			EmailService.sendEmail(email, subject, message);
-			return true;
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			return false;
-		}
+		return EmailService.sendEmail(email, subject, message);
 	}
 }

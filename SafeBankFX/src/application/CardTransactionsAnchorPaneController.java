@@ -111,6 +111,7 @@ public class CardTransactionsAnchorPaneController extends Controller implements 
 	}
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		refreshState();
 		// TODO Auto-generated method stub
 		//List of card numbers of current user
 		CreditCard userCreditCard = CreditCardsDAO

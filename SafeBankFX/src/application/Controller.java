@@ -9,4 +9,5 @@ public class Controller {
 	protected static void refreshState() {
 		user = UsersDAO.getUserById(user.getUserId().toString());
 	}
+	protected static String verfifiedEmailForPasswordReset;
 }

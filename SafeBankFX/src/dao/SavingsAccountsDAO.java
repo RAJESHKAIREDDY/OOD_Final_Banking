@@ -64,40 +64,24 @@ public class SavingsAccountsDAO extends DatabaseConnectionFactory {
 	}
 	
 	public static SavingsAccount getSavingsAccountById(String accountId) {
-		return getAccountDetails(accountId);
+			String	GET_ACCOUNTS_QUERY = "SELECT * "
+					+ "FROM safebankdb.savings_accounts "
+					+ "WHERE account_id = '"+accountId+"';";
+
+		return getAccountDetails(GET_ACCOUNTS_QUERY);
 	}
 	
 	public static SavingsAccount getSavingsAccountByAccountNumber(long accountNumber) {
-		return getAccountDetails(accountNumber);
+		String GET_ACCOUNTS_QUERY = "SELECT * "
+				+ "FROM safebankdb.savings_accounts "
+				+ "WHERE account_number = '"+accountNumber+"';";
+		return getAccountDetails(GET_ACCOUNTS_QUERY);
 	}
 	
-	private static SavingsAccount getAccountDetails(Object object) {
-		
-		String accountId = null;
-		Long accountNumber = null;
-		
-		if(object.getClass().getSimpleName() == "String")
-			accountId = (String) object;
-		else
-			accountNumber = (Long) object;
-		
+	private static SavingsAccount getAccountDetails(String GET_ACCOUNTS_QUERY) {
 		ResultSet results = null;
 		SavingsAccount account = null;
-		try {
-			
-			final String GET_ACCOUNTS_QUERY;
-			if(accountId != null) {
-				GET_ACCOUNTS_QUERY = "SELECT * "
-						+ "FROM safebankdb.savings_accounts "
-						+ "WHERE account_id = '"+accountId+"';";
-			}
-			else if(accountNumber != null) {
-				GET_ACCOUNTS_QUERY = "SELECT * "
-						+ "FROM safebankdb.savings_accounts "
-						+ "WHERE account_number = '"+accountNumber.longValue()+"';";
-			}
-			else return null;
-			
+		try {	
 			results = (ResultSet) executeQuery(GET_ACCOUNTS_QUERY);
 			account = new SavingsAccount();
 			while(results.next()) {

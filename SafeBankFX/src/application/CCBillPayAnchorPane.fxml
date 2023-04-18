@@ -39,7 +39,7 @@
                         <Insets bottom="10.0" left="100.0" right="100.0" top="10.0" />
                      </VBox.margin>
                   </TextField>
-                  <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="133.0" text="Pay Credit Card Bill">
+                  <Button fx:id="btnCCBillPay" mnemonicParsing="false" onAction="#handleCCBillPayAction" prefHeight="26.0" prefWidth="133.0" text="Pay Credit Card Bill">
                      <VBox.margin>
                         <Insets bottom="10.0" left="130.0" right="130.0" top="10.0" />
                      </VBox.margin>

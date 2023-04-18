@@ -9,7 +9,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.TransactionsSceneController">
    <children>
-      <AnchorPane fx:id="anchorPaneTransactionScene" layoutX="20.0" layoutY="6.0" minHeight="800.0" minWidth="1500.0" prefHeight="806.0" prefWidth="1520.0" style="-fx-border-radius: 20px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="anchorPaneTransactionScene" layoutX="20.0" layoutY="6.0" minHeight="800.0" minWidth="1500.0" prefHeight="806.0" prefWidth="1468.0" style="-fx-border-radius: 20px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label fx:id="lblHome" alignment="CENTER" contentDisplay="CENTER" layoutX="511.0" layoutY="43.0" prefHeight="54.0" prefWidth="551.0" text="Welcome to Safe Bank Internet Banking">
                <font>
@@ -36,8 +36,8 @@
                <font>
                   <Font size="20.0" />
                </font></RadioButton>
-            <AnchorPane fx:id="anchorPane" layoutX="218.0" layoutY="228.0" prefHeight="456.0" prefWidth="1085.0" />
-            <Label fx:id="lblDisplayingAccountTransactions" layoutX="588.0" layoutY="144.0" text="Displaying Account Transactions">
+            <AnchorPane fx:id="anchorPane" layoutX="24.0" layoutY="228.0" prefHeight="560.0" prefWidth="1455.0" />
+            <Label fx:id="lblDisplayingAccountTransactions" layoutX="576.0" layoutY="186.0" text="Displaying Account Transactions">
                <font>
                   <Font size="30.0" />
                </font>

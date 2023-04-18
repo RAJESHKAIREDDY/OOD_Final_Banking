@@ -47,25 +47,32 @@ public class EmailService {
     }
 
 
-    public static void sendEmail(String toEmail, String subject, String message) throws MessagingException {
-    	// Create a Session object with authentication details
-        Session session = Session.getInstance(properties, new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(fromEmail, password); // Replace with your email and password
-            }
-        });
+    public static boolean sendEmail(String toEmail, String subject, String message) {
+    	boolean emailSent = false;
+    	try {
+    		// Create a Session object with authentication details
+            Session session = Session.getInstance(properties, new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(fromEmail, password); // Replace with your email and password
+                }
+            });
 
-        // Create the email message
-        Message mimeMessage = new MimeMessage(session);
-        mimeMessage.setFrom(new InternetAddress(fromEmail)); // Replace with your email
-        mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail)); // Replace with the recipient's email
-        mimeMessage.setSubject(subject);
-        mimeMessage.setText(message);
+            // Create the email message
+            Message mimeMessage = new MimeMessage(session);
+            mimeMessage.setFrom(new InternetAddress(fromEmail)); // Replace with your email
+            mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail)); // Replace with the recipient's email
+            mimeMessage.setSubject(subject);
+            mimeMessage.setText(message);
 
-        // Send the email
-        Transport.send(mimeMessage);
-
-        System.out.println("Email sent successfully.");
+            // Send the email
+            Transport.send(mimeMessage);
+            System.out.println("Email sent successfully.");
+            emailSent = true;
+		} catch (MessagingException messagingException) {
+			// TODO: handle exception
+			 emailSent = false;
+		}
+    	return emailSent;
     }
 }
 

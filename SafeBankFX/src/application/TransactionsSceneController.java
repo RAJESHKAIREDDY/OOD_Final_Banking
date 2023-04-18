@@ -56,15 +56,16 @@ public class TransactionsSceneController extends Controller implements Initializ
 		@Override
 		public void initialize(URL url, ResourceBundle arg1) {
 			// TODO Auto-generated method stub
+			refreshState();
+			
 			try {
-				
 				AnchorPane accounts = (AnchorPane)FXMLLoader
 						.load(getClass()
 								.getResource(SceneFiles.ACCOUNT_TRANSACTIONS));
 				AnchorPane cards = (AnchorPane)FXMLLoader
 						.load(getClass()
 								.getResource(SceneFiles.CARD_TRANSACTIONS));
-				
+					
 				if(user.getCreditCard().getCreditCardId() == null) {
 					radioBtnCredit.setVisible(false);
 					radioBtnSavings.setVisible(false);
@@ -72,6 +73,7 @@ public class TransactionsSceneController extends Controller implements Initializ
 				}
 				else 
 					anchorPane.getChildren().setAll(cards.getChildren());
+					lblDisplayingAccountTransactions.setVisible(false);
 				
 			} catch (IOException e) {
 				// TODO: handle exception
@@ -92,10 +94,11 @@ public class TransactionsSceneController extends Controller implements Initializ
 			else {
 				if(radioBtnCredit.isSelected()) {
 					anchorPane.getChildren().setAll(cards.getChildren());
-					
+					lblDisplayingAccountTransactions.setVisible(false);
 				}
 				else {
 					anchorPane.getChildren().setAll(accounts.getChildren());
+					lblDisplayingAccountTransactions.setVisible(true);
 				}
 			}
 		}

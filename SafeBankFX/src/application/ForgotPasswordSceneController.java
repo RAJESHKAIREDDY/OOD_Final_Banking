@@ -61,10 +61,8 @@ public class ForgotPasswordSceneController extends Controller implements Initial
 			anchorPaneResetPassword.getChildren().setAll(transferOther.getChildren());
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneFiles.RESET_PASSWORD_ANCHOR_PANE));
 			Parent root = loader.load();
-			ResetPasswordAnchorPaneController resetPasswordAnchorPaneController = loader.getController();
-
-			// Pass the value to ResetPasswordAnchorPaneController
-			resetPasswordAnchorPaneController.setResetPasswordEmail(email);
+			ResetPasswordAnchorPaneController resetPasswordController = loader.getController();
+			resetPasswordController.setResetPasswordEmail(email);
 			AlertController.showSuccess(title, headerText, contentText);
 			return;
 		}
@@ -100,6 +98,10 @@ public class ForgotPasswordSceneController extends Controller implements Initial
 				AnchorPane transferOther = (AnchorPane)FXMLLoader.load(getClass()
 						.getResource(SceneFiles.RESET_PASSWORD_ANCHOR_PANE));
 				anchorPaneResetPassword.getChildren().setAll(transferOther.getChildren());
+				FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneFiles.RESET_PASSWORD_ANCHOR_PANE));
+				Parent root = loader.load();
+				ResetPasswordAnchorPaneController resetPasswordController = loader.getController();
+				resetPasswordController.setResetPasswordEmail(email);
 			}
 			else {
 				headerText = "Email Verification Failed";
@@ -128,6 +130,7 @@ public class ForgotPasswordSceneController extends Controller implements Initial
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// TODO Auto-generated method stub
+		refreshState();
 		btnChangeEmail.setVisible(false);
 		temporaryVeriedEmailsList = new ArrayList<>();
 	}

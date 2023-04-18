@@ -13,13 +13,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import models.CreditCard;
+import models.SavingsAccount;
 import notifications.EmailService;
 import services.CreditCardsService;
+import services.SavingsAccountService;
 import utils.CreditCardUtils;
 import validations.UserValidations;
 
@@ -60,6 +63,8 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 	private Button btnViewCreditScore;
 	@FXML
 	private AnchorPane anchorPaneChangePassword;
+	@FXML
+	private Button btnNewSavingsAccount;
 
 	@FXML
 	public void handleChangeNameAction(ActionEvent event) throws IOException, MessagingException {
@@ -119,27 +124,52 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 			} else {
 
 				long phoneNumber = Long.parseLong(phone);
-				boolean phoneExists = UsersDAO.userExistsByPhone(phoneNumber);
+				boolean phoneExists = UsersDAO.userExistsByPhone(phoneNumber, user.getUserId().toString());
 				if (phoneExists) {
 					headerText = "User exists with the given phone number";
 					AlertController.showError(title, headerText, contentText);
 					return;
 				} else {
 					UsersDAO.updateUserPhone(user.getUserId().toString(), phoneNumber);
-					txtName.setDisable(true);
+					txtPhone.setDisable(true);
 					btnChangeName.setText("Change Number");
 					headerText = "Updated User Phone Number Successfully";
 
 					String toEmail = user.getEmail();
 					String subject = "SafeBank Update Account Details";
 					String message = "Your phone number has been updated";
-
+					
+					txtPhone.setDisable(true);
 					EmailService.sendEmail(toEmail, subject, message);
 					AlertController.showSuccess(title, headerText, contentText);
 					return;
 				}
 			}
 		}
+	}
+	
+	@FXML 
+	public void handleOpenNewSavingsAccountAction(ActionEvent event) throws IOException {
+		
+		String title = null;
+		String headerText = null;
+		String contentText = null;
+		
+		boolean createdNewSavingsAccount = 
+				SavingsAccountService.createSavingsAccount(user.getUserId().toString(), user);
+		if(createdNewSavingsAccount) {
+			title = "Create New Savings Account";
+			headerText = "Created New Savings Account";
+			AlertController.showSuccess(title, headerText, contentText);
+			return;
+		}
+		else {
+			title = "Account creation failed";
+			headerText = "Some Error Occurred";
+			AlertController.showSuccess(title, headerText, contentText);
+			return;
+		}
+		
 	}
 
 	@FXML
@@ -152,11 +182,16 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 		boolean iterating = true;
 		while (iterating) {
 			System.out.println("ietration " + iterationCount);
-			boolean passwordsMatched = DialogController.enterCurrentPasswordDialog(iterationCount);
-			if (passwordsMatched) {
+			String passwordsMatched = DialogController.enterCurrentPasswordDialog(iterationCount);
+			if(passwordsMatched == null) iterating = false;
+			else if (passwordsMatched.equals("matched")) {
 				AnchorPane transferOther = (AnchorPane) FXMLLoader
 						.load(getClass().getResource(SceneFiles.RESET_PASSWORD_ANCHOR_PANE));
 				anchorPaneChangePassword.getChildren().setAll(transferOther.getChildren());
+				FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneFiles.RESET_PASSWORD_ANCHOR_PANE));
+				Parent root = loader.load();
+				ResetPasswordAnchorPaneController resetPasswordController = loader.getController();
+				resetPasswordController.setResetPasswordEmail(user.getEmail());
 				iterating = false;
 			} else {
 
@@ -257,6 +292,12 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 		String message = "Your Credit Score : " + creditScore + "\n" + "Status : " + status;
 
 		EmailService.sendEmail(toEmail, subject, message);
+		
+		String title = "SafeBank Credit Score";
+		String headerText = "Your Credit Score : " + creditScore + "\n";
+		String contentText = "Status : " + status;
+		AlertController.showSuccess(title, headerText, contentText);
+		return;
 	}
 
 	@FXML
@@ -273,6 +314,7 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
+		refreshState();
 		// TODO Auto-generated method stub
 		txtEmail.setDisable(true);
 		txtName.setDisable(true);
@@ -280,5 +322,7 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 		txtEmail.setText(user.getEmail());
 		txtName.setText(user.getName());
 		txtPhone.setText(user.getPhone() + "");
+		if(user.getCreditCard().getCreditCardId() != null)
+			btnRequestCreditCardUpgrade.setText("Upgrade Existing Credit Card");
 	}
 }

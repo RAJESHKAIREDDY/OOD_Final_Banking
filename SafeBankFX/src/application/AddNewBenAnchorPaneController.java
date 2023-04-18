@@ -34,6 +34,6 @@ public class AddNewBenAnchorPaneController extends Controller implements Initial
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		
+		refreshState();
 	}
 }

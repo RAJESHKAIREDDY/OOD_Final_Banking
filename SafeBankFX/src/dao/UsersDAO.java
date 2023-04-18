@@ -35,10 +35,14 @@ public class UsersDAO extends DatabaseConnectionFactory {
 
 	public static boolean updateUserPassword(String email, String encryptedPassword) {
 		
+		System.out.println(email);
+		System.out.println(encryptedPassword);
+		
 		final String UPDATE_USER_PASSWORD_QUERY = "UPDATE safebankdb.users " 
-				+ "SET credit_score = '" + encryptedPassword + "'"
+				+ "SET password = '" + encryptedPassword + "'"
 				+ " WHERE email = '" + email + "'";
 		boolean updatedUserPassword = executeUpdate(UPDATE_USER_PASSWORD_QUERY);
+		System.out.println("Updated User password status ==> " + updatedUserPassword);
 		if (updatedUserPassword)
 			return true;
 		return false;
@@ -170,9 +174,10 @@ public class UsersDAO extends DatabaseConnectionFactory {
 		return false;
 	}
 	
-	public static boolean userExistsByPhone(long phone) {
+	public static boolean userExistsByPhone(long phone, String userId) {
 		User user = getUserByPhone(phone);
-		if (user != null)
+		//to ensure that the existing user is not the only current user
+		if (user != null && !user.getUserId().toString().equals(userId))
 			return true;
 		return false;
 	}

@@ -52,6 +52,7 @@ public class TransferToSelfAnchorPaneController extends Controller implements In
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		refreshState();
 		
 	}
 }

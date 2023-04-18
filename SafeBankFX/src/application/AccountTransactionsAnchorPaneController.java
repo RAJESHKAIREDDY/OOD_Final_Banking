@@ -77,11 +77,7 @@ public class AccountTransactionsAnchorPaneController extends Controller implemen
 			refreshState();
 			List<Transaction> accountTransactions = 
 					TransactionsDAO
-					.getUserTransactions(user.getUserId().toString())
-					.stream().filter(transaction -> 
-						transaction.getTransactionType() == 
-						TransactionType.ACCOUNT_TRANSACTION)
-					.collect(Collectors.toList());
+					.getTransactionsByAccountNumber(accountNumber);
 		        
 			ObservableList<Transaction> transactions = 
 		        		FXCollections.observableArrayList(accountTransactions);
@@ -108,6 +104,7 @@ public class AccountTransactionsAnchorPaneController extends Controller implemen
 	}
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		refreshState();
 		// TODO Auto-generated method stub
 //		//List of account numbers of current user
 		refreshState();

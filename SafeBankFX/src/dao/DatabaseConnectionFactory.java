@@ -86,6 +86,7 @@ public class DatabaseConnectionFactory {
 			getConnection();
 			preparedStatement = connection.prepareStatement(query);
 			result = preparedStatement.executeUpdate();
+			System.out.println("if 1 => Result updated else not updated. Result : "+result);
 		} catch (SQLException sqlException) {
 			// TODO: handle exception
 			Logger.getLogger(DatabaseConnectionFactory.class.getName()).log(Level.SEVERE, null, sqlException);

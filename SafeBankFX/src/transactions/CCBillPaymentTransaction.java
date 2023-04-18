@@ -2,23 +2,16 @@ package transactions;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import dao.CreditCardsDAO;
-import dao.DatabaseConnectionFactory;
 import dao.TransactionsDAO;
 import dao.UsersDAO;
 import enums.CCBillPaymentStatus;
+import enums.PaymentStatus;
 import enums.TransactionCategory;
-import enums.TransactionMode;
-import enums.TransactionType;
 import models.CreditCard;
-import models.Transaction;
 import models.User;
 
-public class CCBillPaymentTransaction extends Thread {
+public class CCBillPaymentTransaction {
 
 	private String userId;
 	private String accountId;
@@ -26,38 +19,70 @@ public class CCBillPaymentTransaction extends Thread {
 	private double accountBalance;
 	private double remainingCreditLimit;
 	private double amount;
-	private PaymentFromAccountTransaction accountPaymentTransaction;
+
 	
-    public CCBillPaymentTransaction(
-    		String userId, 
-    		String accountId, 
-    		String cardId, 
-    		double accountBalance,
-			double remainingCreditLimit, 
-			double amount) {
-		
-    	super();
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(String accountId) {
 		this.accountId = accountId;
+	}
+
+	public String getCardId() {
+		return cardId;
+	}
+
+	public void setCardId(String cardId) {
 		this.cardId = cardId;
+	}
+
+	public double getAccountBalance() {
+		return accountBalance;
+	}
+
+	public void setAccountBalance(double accountBalance) {
 		this.accountBalance = accountBalance;
+	}
+
+	public double getRemainingCreditLimit() {
+		return remainingCreditLimit;
+	}
+
+	public void setRemainingCreditLimit(double remainingCreditLimit) {
 		this.remainingCreditLimit = remainingCreditLimit;
+	}
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 
-	public void payCCBillAmount() throws Exception {
-        
-		accountPaymentTransaction = 
-        		new PaymentFromAccountTransaction(
-        				userId, 
-        				accountId, 
-        				accountBalance, 
-        				amount,
-        				TransactionCategory.CC_BILL_PAYMENT);
+	public PaymentStatus payCCBillAmount() throws Exception {
 		
-        accountPaymentTransaction.start();
-       
-        updateRemainingCreditLimit(userId, cardId, remainingCreditLimit, amount);
+        PaymentFromAccountTransaction accountPaymentTransaction = null;
+        
+		accountPaymentTransaction = new PaymentFromAccountTransaction();
+		accountPaymentTransaction.setUserId(userId);
+		accountPaymentTransaction.setAccountId(accountId);
+		accountPaymentTransaction.setAccountBalance(accountBalance);
+		accountPaymentTransaction.setAmount(amount);
+		accountPaymentTransaction.setTransactionCategory(TransactionCategory.ONLINE_PAYMENT);
+
+		PaymentStatus paymentStatus = 
+				accountPaymentTransaction.accountPayment.payment(amount);
+		return paymentStatus;
     }
 
     public static CCBillPaymentStatus getCCBillPaymentStatus(
@@ -101,7 +126,7 @@ public class CCBillPaymentTransaction extends Thread {
         return paymentStatus;
     }
     
-    private static void updateRemainingCreditLimit(
+    public static void updateRemainingCreditLimit(
     		String userId, 
     		String cardId, 
     		double remainingCreditLimit, 
@@ -135,19 +160,5 @@ public class CCBillPaymentTransaction extends Thread {
 		else if(paymentStatus == CCBillPaymentStatus.IN_TIME)
 			user.setCreditScore(creditScore + 40);
 		UsersDAO.updateUserCreditScore(userId, user.getCreditScore());
-    }
-    
-    @Override
-    public void run() {
-    	// TODO Auto-generated method stub
-    	synchronized (this) {
-    		try {
-    			payCCBillAmount();
-    		} catch (Exception exception) {
-    			// TODO Auto-generated catch block
-    			Logger.getLogger(CCBillPaymentTransaction.class.getName())
-    			.log(Level.SEVERE, null, exception);
-    		}
-		}
     }
 }
