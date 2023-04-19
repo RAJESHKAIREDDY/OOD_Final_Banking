@@ -15,8 +15,8 @@
       <AnchorPane layoutX="-100.0" layoutY="-110.0" prefHeight="456.0" prefWidth="1085.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Pane fx:id="paneAccounts" layoutX="252.0" layoutY="252.0" prefHeight="560.0" prefWidth="1455.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ComboBox fx:id="cbAccounts" layoutX="380.0" layoutY="46.0" onAction="#displayAccounts" prefHeight="40.0" prefWidth="300.0" promptText="Choose Your Account" />
-            <Button fx:id="btnResetCBValue" layoutX="703.0" layoutY="47.0" mnemonicParsing="false" onAction="#clearSelectedValue" text="Reset">
+            <ComboBox fx:id="cbAccounts" layoutX="570.0" layoutY="45.0" onAction="#displayAccounts" prefHeight="40.0" prefWidth="300.0" promptText="Choose Your Account" />
+            <Button fx:id="btnResetCBValue" layoutX="892.0" layoutY="46.0" mnemonicParsing="false" onAction="#clearSelectedValue" text="Reset">
                <font>
                   <Font size="20.0" />
                </font>
@@ -31,11 +31,11 @@
                   <TableColumn fx:id="tblClmAmt" prefWidth="202.5174560546875" text="Amount" />
                </columns>
             </TableView>
-            <TextField fx:id="txtAccountBalance" alignment="CENTER" layoutX="415.0" layoutY="137.0" promptText="Account Balance">
+            <TextField fx:id="txtAccountBalance" alignment="CENTER" layoutX="610.0" layoutY="127.0" promptText="Account Balance">
                <font>
                   <Font size="20.0" />
                </font></TextField>
-            <Label fx:id="lblAcctBalance" layoutX="464.0" layoutY="101.0" text="Account Balance">
+            <Label fx:id="lblAcctBalance" layoutX="664.0" layoutY="97.0" text="Account Balance">
                <font>
                   <Font size="20.0" />
                </font></Label>

@@ -95,10 +95,10 @@ public class PaymentFromCardTransaction {
 						if (amount <= remainingCreditLimit) {
 							remainingCreditLimit -= amount;
 							System.out.println("Updated Balance : USD " + remainingCreditLimit);
-							Date dueDate = CreditCardUtils.generateCCDueDateAfterTwoMin(new Date());
+							Date dueDate = CreditCardUtils.generateCCDueDateAfterTenMin(new Date());
 //									CreditCardUtils.generateDueDateForCreditCard();
 							CreditCardsDAO.updateRemainingCreditLimit(userId, cardId, remainingCreditLimit);
-							CreditCard userCreditCard = CreditCardsDAO.getCreditCard(cardId);
+							CreditCard userCreditCard = CreditCardsDAO.getCreditCardByCardId(cardId);
 							Transaction transaction = new Transaction();
 							transaction.setTransactionId(UUID.randomUUID());
 							transaction.setTransactionCategory(TransactionCategory.ONLINE_PAYMENT);
@@ -107,24 +107,30 @@ public class PaymentFromCardTransaction {
 							transaction.setTransactionName("Online Payment for Shopping");
 							transaction.setAmount(amount);
 							transaction.setDueDate(dueDate);
+							double payableAmount = CreditCardUtils.getPayableAmount(userCreditCard);
+							if(payableAmount > 0)
 							transaction.setPaymentStatus(CCBillPaymentStatus.PENDING);
+							else
+							transaction.setPaymentStatus(CCBillPaymentStatus.IN_TIME);
 							transaction.setCardNumber(userCreditCard.getCardNumber());
 							TransactionsDAO.createNewTransaction(userId, transaction);
+							
 							int creditScore = user.getCreditScore();
-							CreditCard creditCard = CreditCardsDAO.getCreditCard(cardId);
+							// CreditCard creditCard = CreditCardsDAO.getCreditCardByCardId(cardId);
 							CCBillPaymentStatus paymentStatus = 
-									CCBillPaymentTransaction.getCCBillPaymentStatus(user, creditCard);
+									CCBillPaymentTransaction.getCCBillPaymentStatus(user, userCreditCard);
 							if(paymentStatus == CCBillPaymentStatus.LATE)
 								user.setCreditScore(creditScore - 20);
 							else if(paymentStatus == CCBillPaymentStatus.LATE_YET_PENDING) {
-								double totCreditLimit = creditCard.getTotalCreditLimit();
-								double remCreditlimit = creditCard.getRemainingCreditLimit();
+								double totCreditLimit = userCreditCard.getTotalCreditLimit();
+								double remCreditlimit = userCreditCard.getRemainingCreditLimit();
 								Timestamp lastPaymentDateTimestamp = 
-										new Timestamp(creditCard.getLastPaymentDate().getTime());
-								
+										new Timestamp(userCreditCard.getLastPaymentDate().getTime());
+								CreditCardsDAO.updateLastPaymentDate(userId, cardId, lastPaymentDateTimestamp);
 								Transaction lastCCBillPaymentTransaction = 
 										TransactionsDAO.getTransactionByDate(userId, lastPaymentDateTimestamp);
 								double amountPaid = lastCCBillPaymentTransaction.getAmount();
+								System.out.println("Last CC Bill Payment Amount :::: "+amount);
 								if(amountPaid <= 0.1 * (totCreditLimit - (remCreditlimit - amount))) {
 									user.setCreditScore(creditScore - 30);
 								}

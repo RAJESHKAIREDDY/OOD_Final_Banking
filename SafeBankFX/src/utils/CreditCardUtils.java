@@ -126,10 +126,10 @@ public class CreditCardUtils {
 		}
 	}
 
-	public static Date generateCCDueDateAfterTwoMin(Date inputDate) throws Exception {
+	public static Date generateCCDueDateAfterTenMin(Date inputDate) throws Exception {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(inputDate);
-		calendar.add(Calendar.MINUTE, 2);
+		calendar.add(Calendar.MINUTE, 10);
 		return calendar.getTime();
 	}
 

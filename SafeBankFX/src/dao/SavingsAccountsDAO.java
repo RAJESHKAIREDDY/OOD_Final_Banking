@@ -84,8 +84,8 @@ public class SavingsAccountsDAO extends DatabaseConnectionFactory {
 		SavingsAccount account = null;
 		try {	
 			results = (ResultSet) executeQuery(GET_ACCOUNTS_QUERY);
-			account = new SavingsAccount();
 			while(results.next()) {
+				account = new SavingsAccount();
 				account.setAccountId(UUID.fromString(results.getString("account_id")));
 				account.setAccountNumber(results.getLong("account_number"));
 				account.setAccountBalance(results.getDouble("account_balance"));
@@ -116,8 +116,8 @@ public class SavingsAccountsDAO extends DatabaseConnectionFactory {
 	}
 	
 	public static boolean processTransfer(String senderAccountId, String receiverAccountId, double amount) {
-		SavingsAccount senderAccount = getAccountDetails(senderAccountId);
-		SavingsAccount receiverAccount = getAccountDetails(receiverAccountId);
+		SavingsAccount senderAccount = getSavingsAccountById(senderAccountId);
+		SavingsAccount receiverAccount = getSavingsAccountById(receiverAccountId);
 		double senderAccountBalance = senderAccount.getAccountBalance();
 		senderAccountBalance -= amount;
 		double receiverAccountBalance = receiverAccount.getAccountBalance();

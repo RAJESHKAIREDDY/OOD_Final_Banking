@@ -51,13 +51,13 @@ public class CardTransactionsAnchorPaneController extends Controller implements 
 	@FXML
 	private TableColumn<Transaction, Long> tblClmCardNum;
 	@FXML
-	private TableColumn<Transaction, String> tblClmTName;
-	@FXML
-	private TableColumn<Transaction, String> tblClmTType;
-	@FXML
 	private TableColumn<Transaction, Date> tblClmTDate;
 	@FXML
 	private TableColumn<Transaction, Double> tblClmAmt;
+	@FXML
+	private TableColumn<Transaction, String> tblClmDueDate;
+	@FXML
+	private TableColumn<Transaction, String> tblClmStatus;
 	
 	private Map<String, Long> displayCardNumbersMapping;
 	private String selectedDisplayCardNumber;
@@ -81,6 +81,7 @@ public class CardTransactionsAnchorPaneController extends Controller implements 
 			lblRemCardLimitValue.setText(currentSelectedCard.getRemainingCreditLimit() + "");
 			
 			refreshState();
+			TransactionsDAO.updateTransactionsPaymentStatus(user.getUserId().toString());
 			List<Transaction> cardTransactions = 
 					TransactionsDAO
 					.getUserTransactions(user.getUserId().toString())
@@ -94,10 +95,10 @@ public class CardTransactionsAnchorPaneController extends Controller implements 
 					
 			tblClmTID.setCellValueFactory(new PropertyValueFactory<>("TransactionId"));
 			tblClmCardNum.setCellValueFactory(new PropertyValueFactory<>("CardNumber"));
-			tblClmTName.setCellValueFactory(new PropertyValueFactory<>("TransactionName"));
 			tblClmAmt.setCellValueFactory(new PropertyValueFactory<>("Amount"));
-			tblClmTType.setCellValueFactory(new PropertyValueFactory<>("TransactionType"));
 			tblClmTDate.setCellValueFactory(new PropertyValueFactory<>("CreatedAt"));
+			tblClmDueDate.setCellValueFactory(new PropertyValueFactory<>("DueDate"));
+			tblClmStatus.setCellValueFactory(new PropertyValueFactory<>("PaymentStatus"));
 			tblCards.setItems(transactions);
 		}
 		

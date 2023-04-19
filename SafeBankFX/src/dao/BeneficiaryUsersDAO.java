@@ -12,14 +12,13 @@ import models.BeneficiaryUser;
 
 public class BeneficiaryUsersDAO extends DatabaseConnectionFactory {
 
-	public static boolean addNewBeneficiary(String userId, BeneficiaryUser beneficiaryUser) {
-		
-		String beneficiaryId = beneficiaryUser.getBeneficiaryUserId().toString();
+	public static boolean addNewBeneficiary(String userId, String beneficiaryId) {
 		
 		boolean beneficiaryUserExists = beneficiaryUserExists(beneficiaryId);
 		
 		if(beneficiaryUserExists)
 			return false;
+		
 		
 		final String ADD_NEW_BENEFICIARY_QUERY = 
 				"INSERT INTO "
@@ -52,18 +51,18 @@ public class BeneficiaryUsersDAO extends DatabaseConnectionFactory {
 		return false;
 	}
 	
-	public static BeneficiaryUser getBeneficiary(String beneficiaryUserId) {
+	public static BeneficiaryUser getBeneficiary(String beneficiaryId) {
 		ResultSet beneficiaries = null;
 		BeneficiaryUser beneficiaryUser = null;
 		try {
-			final String GET_BENEFICIARY_USER_QUERY = 
-					"SELECT * "
+			
+			final String GET_BENEFICIARY_USER_QUERY = "SELECT * "
 					+ "FROM safebankdb.beneficiary_users "
-					+ "WHERE beneficiary_user_id = '"+beneficiaryUserId+"'";
+					+ "WHERE beneficiary_user_id = '"+beneficiaryId+"';";
 
 			beneficiaries = executeQuery(GET_BENEFICIARY_USER_QUERY);
-			beneficiaryUser  = new BeneficiaryUser();
 			while(beneficiaries.next()) {
+				beneficiaryUser  = new BeneficiaryUser();
 				beneficiaryUser.setBeneficiaryUserId(UUID.fromString(beneficiaries.getString("beneficiary_user_id")));
 				beneficiaryUser.setCreatedAt(beneficiaries.getTimestamp("created_at"));
 			}

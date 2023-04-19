@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import enums.CCBillPaymentStatus;
-import enums.PaymentStatus;
 import enums.TransactionCategory;
 import enums.TransactionMode;
 import enums.TransactionType;
@@ -95,6 +94,10 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 				transaction.setDueDate(results.getTimestamp("due_date"));
 				transaction.setAccountNumber(results.getLong("account_number"));
 				transaction.setCardNumber(results.getLong("card_number"));
+				String status = results.getString("payment_status");
+				if(status == null)
+					status = CCBillPaymentStatus.NO_TRANSACTIONS.toString();
+				transaction.setPaymentStatus(CCBillPaymentStatus.valueOf(status));
 				retrievedTransactions.add(transaction);
 				
 			}
@@ -296,6 +299,7 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 			Date lastPaymentDate = currentUserCreditCard.getLastPaymentDate();
 			unpaidTransactions.forEach(currentTransaction -> {
 				Date currentTransactionDueDate = currentTransaction.getDueDate();
+				
 				int compareValue = lastPaymentDate.compareTo(currentTransactionDueDate);
 				if (compareValue > 0) {
 					if (payableAmount > 0) {

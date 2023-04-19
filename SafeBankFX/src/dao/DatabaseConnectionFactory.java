@@ -85,7 +85,10 @@ public class DatabaseConnectionFactory {
 		try {
 			getConnection();
 			preparedStatement = connection.prepareStatement(query);
+			System.out.println("EXECUTING THIS QUERY:::::"+query);
 			result = preparedStatement.executeUpdate();
+			System.out.println("UPDATED BENEFICIARY USERS STATUS ::: "+result);
+			
 		} catch (SQLException sqlException) {
 			// TODO: handle exception
 			Logger.getLogger(DatabaseConnectionFactory.class.getName()).log(Level.SEVERE, null, sqlException);

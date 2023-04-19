@@ -62,6 +62,8 @@ public class PayByCreditAnchorPaneController extends Controller implements Initi
 			btnPayByCredit.setVisible(true);
 			
 			Long cardNumber = displayCardNumbersMapping.get(selectedCardNumber);
+			selectedDisplayCardNumber = selectedCardNumber;
+			System.out.println("Current Selected Card is ::: "+currentSelectedCard);
 			currentSelectedCard = CreditCardsDAO.getCreditCardByCardNumber(cardNumber);
 		}
 	}

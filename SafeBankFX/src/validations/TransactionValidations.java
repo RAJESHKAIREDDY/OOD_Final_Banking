@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import models.SavingsAccount;
+
 public class TransactionValidations {
 
 //	public static boolean isValidHighSecurityCode
@@ -88,15 +90,37 @@ public class TransactionValidations {
 		}
 	}
 
-	public static boolean isAmountValidForCCBillPayment(String amount, double totalCardLimit) throws Exception {
+	public static boolean isAmountValidForCCBillPayment(String amount) throws Exception {
 		try {
 			double amountDouble = Double.parseDouble(amount);
 			if (amountDouble > 0) {
-				return amountDouble <= totalCardLimit;
+				return true;
 			}
 			return false;
 		} catch (Exception exception) {
 			return false;
+		}
+	}
+	
+	public static String isAmountValidForTransfer(String amount, SavingsAccount senderAccount) throws Exception {
+		try {
+			
+			double senderAccountBalance = senderAccount.getAccountBalance();
+	
+			double amountDouble = Double.parseDouble(amount);
+			if (amountDouble > 0) {
+				if(amountDouble <= senderAccountBalance) {
+					if(amountDouble <= 100000) {
+						return "valid";
+					}
+					return "exceeded_limit";
+				}
+				return "insufficient_funds";
+				
+			}
+			return "invalid";
+		} catch (Exception exception) {
+			return "invalid";
 		}
 	}
 }

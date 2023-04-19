@@ -137,22 +137,12 @@ public class CCBillPaymentTransaction {
         
         Timestamp lastPaymentDate = new Timestamp(new Date().getTime());
         CreditCardsDAO.updateLastPaymentDate(userId, cardId, lastPaymentDate);
-        
-//        Transaction transaction = new Transaction();
-//		transaction.setTransactionId(UUID.randomUUID());
-//		transaction.setTransactionCategory(TransactionCategory.CC_BILL_PAYMENT);
-//		transaction.setTransactionType(TransactionType.ACCOUNT_TRANSACTION);
-//		transaction.setTransactionMode(TransactionMode.DEBIT);
-//		transaction.setTransactionName("Credit Card bill Payment");
-//		transaction.setAmount(amount);
-//		TransactionsDAO.createNewTransaction(userId, transaction);
 		
-		User user = UsersDAO.getUserByEmail(userId);
-		CreditCard creditCard = CreditCardsDAO.getCreditCard(cardId);
+		User user = UsersDAO.getUserById(userId);
+		CreditCard creditCard = CreditCardsDAO.getCreditCardByCardId(cardId);
 		int creditScore = user.getCreditScore();
 		CCBillPaymentStatus paymentStatus = 
 				CCBillPaymentTransaction.getCCBillPaymentStatus(user, creditCard);
-		
 		TransactionsDAO.updateTransactionsPaymentStatus(userId);
 		
 		if(paymentStatus == CCBillPaymentStatus.LATE)

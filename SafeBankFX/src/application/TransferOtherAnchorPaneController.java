@@ -45,7 +45,17 @@ public class TransferOtherAnchorPaneController extends Controller implements Ini
 		// TODO Auto-generated method stub
 		try {
 			AnchorPane transferOther = (AnchorPane)FXMLLoader.load(getClass().getResource(SceneFiles.TRANSFER_EXISTING));
-			anchorPane.getChildren().setAll(transferOther.getChildren());
+			AnchorPane addNewBeneficiary = (AnchorPane)FXMLLoader.load(getClass().getResource(SceneFiles.ADD_NEW_BENEFICIARY));
+			if(user.getBeneficiaryUsers().size() > 0) {
+				anchorPane.getChildren().setAll(transferOther.getChildren());
+			}
+			else {
+				anchorPane.getChildren().setAll(addNewBeneficiary.getChildren());
+				radioBtnBenifNew.setVisible(false);
+				radioBtnBenifExist.setVisible(false);
+				radioBtnBenifNew.setSelected(true);
+			}
+				
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

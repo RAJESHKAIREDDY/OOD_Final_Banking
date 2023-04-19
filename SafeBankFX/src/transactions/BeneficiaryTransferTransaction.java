@@ -14,9 +14,7 @@ import models.SavingsAccount;
 import models.Transaction;
 import models.User;
 
-public class BeneficiaryTransferTransaction extends Thread {
-	
-	private volatile boolean running = true;
+public class BeneficiaryTransferTransaction {
 	
 	private String senderUserId;
 	private String receiverUserId;
@@ -24,21 +22,43 @@ public class BeneficiaryTransferTransaction extends Thread {
 	private String receiverAccountId;
 	private double amount;
 	
-	public void stopRunning() {
-        running = false;
-    }
-	
-	public BeneficiaryTransferTransaction(
-			String senderUserId, 
-			String receiverUserId, 
-			String senderAccountId,
-			String receiverAccountId, 
-			double amount) {
-		super();
+	public String getSenderUserId() {
+		return senderUserId;
+	}
+
+	public void setSenderUserId(String senderUserId) {
 		this.senderUserId = senderUserId;
+	}
+
+	public String getReceiverUserId() {
+		return receiverUserId;
+	}
+
+	public void setReceiverUserId(String receiverUserId) {
 		this.receiverUserId = receiverUserId;
+	}
+
+	public String getSenderAccountId() {
+		return senderAccountId;
+	}
+
+	public void setSenderAccountId(String senderAccountId) {
 		this.senderAccountId = senderAccountId;
+	}
+
+	public String getReceiverAccountId() {
+		return receiverAccountId;
+	}
+
+	public void setReceiverAccountId(String receiverAccountId) {
 		this.receiverAccountId = receiverAccountId;
+	}
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 
@@ -64,28 +84,13 @@ public class BeneficiaryTransferTransaction extends Thread {
       	
 		SavingsAccount recieverAccount = SavingsAccountsDAO.getSavingsAccountById(receiverAccountId);
       	Transaction receiverTransaction = new Transaction();
-        senderTransaction.setTransactionId(UUID.randomUUID());
-        senderTransaction.setTransactionCategory(TransactionCategory.TRANSFER_FROM_BENEFICIARY);
-        senderTransaction.setTransactionType(TransactionType.ACCOUNT_TRANSACTION);
-        senderTransaction.setTransactionMode(TransactionMode.CREDIT);
-        senderTransaction.setTransactionName("Transfer from Beneficiary");
-        senderTransaction.setAmount(amount);
+      	receiverTransaction.setTransactionId(UUID.randomUUID());
+      	receiverTransaction.setTransactionCategory(TransactionCategory.TRANSFER_FROM_BENEFICIARY);
+      	receiverTransaction.setTransactionType(TransactionType.ACCOUNT_TRANSACTION);
+      	receiverTransaction.setTransactionMode(TransactionMode.CREDIT);
+      	receiverTransaction.setTransactionName("Transfer from Beneficiary");
+      	receiverTransaction.setAmount(amount);
         receiverTransaction.setAccountNumber(recieverAccount.getAccountNumber());
       	TransactionsDAO.createNewTransaction(receiverUserId, receiverTransaction);
     }
-	
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-			synchronized (this) {
-				try {
-					transferToBeneficiary();
-				} catch (Exception exception) {
-					// TODO Auto-generated catch block
-					Logger
-					.getLogger(BeneficiaryTransferTransaction.class.getName())
-	    			.log(Level.SEVERE, null, exception);
-				}
-			}
-	}
 }

@@ -9,10 +9,14 @@
    <children>
       <AnchorPane layoutX="-94.0" layoutY="-109.0" prefHeight="300.0" prefWidth="780.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ComboBox fx:id="cbBenName" layoutX="274.0" layoutY="47.0" onAction="#displayAddedBeneficiaryNames" prefHeight="26.0" prefWidth="249.0" promptText="Choose Benificiary Name" />
+            <ComboBox fx:id="cbBenName" layoutX="274.0" layoutY="47.0" onAction="#displayAddedBeneficiaryNames" prefHeight="26.0" prefWidth="249.0" promptText="Choose Benificiary Email" />
             <ComboBox fx:id="cbBenAccNums" layoutX="273.0" layoutY="97.0" onAction="#displayBeneficiaryAccNumbers" prefHeight="26.0" prefWidth="247.0" promptText="Choose Benificiary Account Number" />
-            <TextField fx:id="txtAmount" layoutX="274.0" layoutY="152.0" prefHeight="26.0" prefWidth="249.0" promptText="Enter Amount" />
-            <Button fx:id="btnTransferFunds" layoutX="341.0" layoutY="212.0" mnemonicParsing="false" onAction="#handleTransferFundsAction" text="Transfer Funds" />
+            <TextField fx:id="txtAmount" layoutX="274.0" layoutY="199.0" prefHeight="26.0" prefWidth="249.0" promptText="Enter Amount" />
+            <Button fx:id="btnTransferFunds" layoutX="347.0" layoutY="244.0" mnemonicParsing="false" onAction="#handleTransferFundsAction" text="Transfer Funds" />
+            <Button fx:id="btnResetEmail" layoutX="535.0" layoutY="47.0" mnemonicParsing="false" onAction="#clearSelectedEmailValue" text="Reset Beneficiary Email" />
+            <Button fx:id="btnResetAcctNum" layoutX="535.0" layoutY="97.0" mnemonicParsing="false" onAction="#clearSelectedAccountNumberValue" text="Reset Account Number" />
+            <ComboBox fx:id="cbCurrentUserAcctNum" layoutX="272.0" layoutY="150.0" onAction="#displayCurrentUserAccountNumbers" prefHeight="26.0" prefWidth="249.0" promptText="Choose Your Account Number" />
+            <Button fx:id="btnResetCurrentUserAcctNum" layoutX="535.0" layoutY="151.0" mnemonicParsing="false" onAction="#clearSelectedCurrentUserAccountNumberValue" text="Reset Account Number" />
          </children>
       </AnchorPane>
    </children>

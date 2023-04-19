@@ -14,7 +14,6 @@ import models.SavingsAccount;
 import models.User;
 import notifications.EmailService;
 import notifications.OTPService;
-import services.BeneficiaryService;
 import services.CreditCardsService;
 import services.SavingsAccountService;
 import services.UserService;

@@ -14,27 +14,45 @@ import models.SavingsAccount;
 import models.Transaction;
 import models.User;
 
-public class SelfTransferTransaction extends Thread {
+public class SelfTransferTransaction {
 	
 	private String userId;
 	private String senderAccountId;
 	private String receiverAccountId;
 	private double amount;
 	
-	public SelfTransferTransaction(
-			String userId, 
-			String senderAccountId,
-			String receiverAccountId, 
-			double amount) {
-		super();
-		this.userId = userId;
-		this.senderAccountId = senderAccountId;
-		this.receiverAccountId = receiverAccountId;
-		this.amount = amount;
+	public String getUserId() {
+		return userId;
 	}
 
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
+	public String getSenderAccountId() {
+		return senderAccountId;
+	}
 
+	public void setSenderAccountId(String senderAccountId) {
+		this.senderAccountId = senderAccountId;
+	}
+
+	public String getReceiverAccountId() {
+		return receiverAccountId;
+	}
+
+	public void setReceiverAccountId(String receiverAccountId) {
+		this.receiverAccountId = receiverAccountId;
+	}
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+	
 	public void transferToSelf() throws Exception {
 		SavingsAccount senderAccount = SavingsAccountsDAO.getSavingsAccountById(senderAccountId);
         SavingsAccountsDAO.processTransfer(senderAccountId, receiverAccountId, amount);
@@ -47,15 +65,16 @@ public class SelfTransferTransaction extends Thread {
         senderTransaction.setAmount(amount);
         senderTransaction.setAccountNumber(senderAccount.getAccountNumber());
       	TransactionsDAO.createNewTransaction(userId, senderTransaction);
-      	
+   
+      	SavingsAccount receiverAccount = SavingsAccountsDAO.getSavingsAccountById(receiverAccountId);
       	Transaction receiverTransaction = new Transaction();
-        senderTransaction.setTransactionId(UUID.randomUUID());
-        senderTransaction.setTransactionCategory(TransactionCategory.TRANSFER_FROM_SELF);
-        senderTransaction.setTransactionType(TransactionType.ACCOUNT_TRANSACTION);
-        senderTransaction.setTransactionMode(TransactionMode.CREDIT);
-        senderTransaction.setTransactionName("Transfer from Self");
-        senderTransaction.setAmount(amount);
-        senderTransaction.setAccountNumber(senderAccount.getAccountNumber());
+      	receiverTransaction.setTransactionId(UUID.randomUUID());
+      	receiverTransaction.setTransactionCategory(TransactionCategory.TRANSFER_FROM_SELF);
+      	receiverTransaction.setTransactionType(TransactionType.ACCOUNT_TRANSACTION);
+      	receiverTransaction.setTransactionMode(TransactionMode.CREDIT);
+      	receiverTransaction.setTransactionName("Transfer from Self");
+      	receiverTransaction.setAmount(amount);
+      	receiverTransaction.setAccountNumber(receiverAccount.getAccountNumber());
       	TransactionsDAO.createNewTransaction(userId, receiverTransaction);
       	
       	User user = UsersDAO.getUserById(userId);
@@ -64,18 +83,4 @@ public class SelfTransferTransaction extends Thread {
 		
 		UsersDAO.updateUserCreditScore(userId, user.getCreditScore());
     }
-	
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		synchronized (this) {
-			try {
-				transferToSelf();
-			} catch (Exception exception) {
-				// TODO Auto-generated catch block
-				Logger.getLogger(SelfTransferTransaction.class.getName())
-    			.log(Level.SEVERE, null, exception);
-			}
-		}
-	}
 }
