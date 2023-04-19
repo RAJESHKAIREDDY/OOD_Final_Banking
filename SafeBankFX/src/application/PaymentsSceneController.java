@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
+import utils.CreditCardUtils;
 
 public class PaymentsSceneController extends Controller implements Initializable {
 	@FXML
@@ -62,7 +63,6 @@ public class PaymentsSceneController extends Controller implements Initializable
 			anchorPane.getChildren().setAll(payByCredit.getChildren());
 		}
 		else if(radioBtnPayBySavings.isSelected()) {
-			System.out.println("Here");
 			AnchorPane payBySavings = (AnchorPane)FXMLLoader.load(getClass().getResource(SceneFiles.PAY_BY_SAVINGS));
 			anchorPane.getChildren().setAll(payBySavings.getChildren());
 		}
@@ -76,8 +76,11 @@ public class PaymentsSceneController extends Controller implements Initializable
 			AnchorPane payBySavings = null;
 			if(user.getCreditCard().getCreditCardId() != null) {
 				radioBtnPayByCredit.setVisible(true);
-				radioBtnPayCCBill.setVisible(true);
 				radioBtnPayBySavings.setVisible(true);
+				double payableAmount = CreditCardUtils.getPayableAmount(user.getCreditCard());
+				if(payableAmount > 0) {
+					radioBtnPayCCBill.setVisible(true);
+				}
 				radioBtnPayCCBill.setSelected(true);
 				ccBillPay = (AnchorPane)FXMLLoader.load(getClass().getResource(SceneFiles.CC_BILL_PAY));
 				anchorPane.getChildren().setAll(ccBillPay.getChildren());

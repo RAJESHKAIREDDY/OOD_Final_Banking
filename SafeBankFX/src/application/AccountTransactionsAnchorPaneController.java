@@ -3,7 +3,9 @@ package application;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -25,6 +27,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import models.SavingsAccount;
 import models.Transaction;
+import utils.SavingsAccountUtils;
 
 public class AccountTransactionsAnchorPaneController extends Controller implements Initializable {
 	@FXML
@@ -56,6 +59,10 @@ public class AccountTransactionsAnchorPaneController extends Controller implemen
 	@FXML
 	private Label lblAcctBalance;
 	
+	private Map<String, Long> displayAccountNumbersMapping;
+	private String selectedDisplayAccountNumber;
+	private SavingsAccount currentSelectedAccount;
+	
 	// Event Listener on ComboBox[#cbAccounts].onAction
 	@FXML
 	public void displayAccounts(ActionEvent event) throws IOException {
@@ -68,12 +75,11 @@ public class AccountTransactionsAnchorPaneController extends Controller implemen
 			txtAccountBalance.setVisible(true);
 			tblAccounts.setVisible(true);
 			
-			System.out.println(selectedAccountNumber);
-			Long accountNumber = Long.parseLong(selectedAccountNumber);
-			SavingsAccount userAccount = 
+			Long accountNumber = displayAccountNumbersMapping.get(selectedAccountNumber);
+			currentSelectedAccount = 
 					SavingsAccountsDAO
 					.getSavingsAccountByAccountNumber(accountNumber);
-			txtAccountBalance.setText(userAccount.getAccountBalance() + "");
+			txtAccountBalance.setText(currentSelectedAccount.getAccountBalance() + "");
 			refreshState();
 			List<Transaction> accountTransactions = 
 					TransactionsDAO
@@ -104,15 +110,16 @@ public class AccountTransactionsAnchorPaneController extends Controller implemen
 	}
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		refreshState();
 		// TODO Auto-generated method stub
 //		//List of account numbers of current user
 		refreshState();
-		List<String> accountNumbers = user
-				.getAccounts()
-				.stream()
-				.map(account -> account.getAccountNumber() + "")
-				.collect(Collectors.toList());
+		displayAccountNumbersMapping = new HashMap<>();
+		List<String> accountNumbers = user.getAccounts().stream().map(account -> {
+			long accountNumber = account.getAccountNumber();
+			String displayAccountNumber = SavingsAccountUtils.getLastFourDigitsOf(accountNumber);
+			displayAccountNumbersMapping.put(displayAccountNumber, accountNumber);
+			return displayAccountNumber;
+		}).collect(Collectors.toList());
 		
 		ObservableList<String> accountNumbersList = 
 				FXCollections.observableArrayList(accountNumbers);

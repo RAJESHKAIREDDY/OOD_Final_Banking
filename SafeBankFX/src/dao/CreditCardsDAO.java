@@ -59,45 +59,32 @@ public class CreditCardsDAO extends DatabaseConnectionFactory {
 			return true;
 		return false;
 	}
-
-	public static CreditCard getCreditCard(String creditCardId) {
-		ResultSet results = null;
-		CreditCard creditCard = null;
-		try {
-			final String GET_CARDS_QUERY = "SELECT * " + "FROM safebankdb.credit_cards " + "WHERE credit_card_id = '"
-					+ creditCardId + "';";
-
-			results = (ResultSet) executeQuery(GET_CARDS_QUERY);
-			creditCard = new CreditCard();
-			while (results.next()) {
-				creditCard.setCreditCardId(UUID.fromString(results.getString("credit_card_id")));
-				creditCard.setCardNumber(results.getLong("card_number"));
-				creditCard.setSecurityCode(results.getInt("security_code"));
-				creditCard.setPinNumber(results.getInt("pin_number"));
-				creditCard.setTotalCreditLimit(results.getDouble("total_credit_limit"));
-				creditCard.setRemainingCreditLimit(results.getDouble("remaining_credit_limit"));
-				creditCard.setCardCategory(CardCategory.valueOf((String) results.getObject("card_category")));
-				creditCard.setCardProvider(CardProvider.valueOf((String) results.getObject("card_provider")));
-				creditCard.setValidThru(results.getTimestamp("valid_thru"));
-				creditCard.setLastPaymentDate(results.getTimestamp("last_payment_date"));
-				creditCard.setCreatedAt(results.getTimestamp("created_at"));
-				creditCard.setUpdatedAt(results.getTimestamp("updated_at"));
-			}
-		} catch (SQLException sqlException) {
-			// TODO Auto-generated catch block
-			Logger.getLogger(DatabaseConnectionFactory.class.getName()).log(Level.SEVERE, null, sqlException);
-		}
-		return creditCard;
+	
+	public static CreditCard getCreditCardByCardId(String cardId) {
+		final String GET_CARD_DETAILS_QUERY = 
+				"SELECT * " 
+				+ "FROM safebankdb.credit_cards " 
+				+ "WHERE credit_card_id = '"+ cardId + "';";
+		return getCreditCard(GET_CARD_DETAILS_QUERY);
 	}
 	
 	public static CreditCard getCreditCardByUserId(String userId) {
+		final String GET_CARD_DETAILS_QUERY = "SELECT * " + "FROM safebankdb.credit_cards " + "WHERE user_id = '"
+				+ userId + "';";
+		return getCreditCard(GET_CARD_DETAILS_QUERY);
+	}
+	
+	public static CreditCard getCreditCardByCardNumber(long cardNumber) {
+		final String GET_CARD_DETAILS_QUERY = "SELECT * " + "FROM safebankdb.credit_cards " + "WHERE card_number = "
+				+ cardNumber + ";";
+		return getCreditCard(GET_CARD_DETAILS_QUERY);
+	}
+
+	public static CreditCard getCreditCard(String GET_CARD_DETAILS_QUERY) {
 		ResultSet results = null;
 		CreditCard creditCard = null;
 		try {
-			final String GET_CARDS_QUERY = "SELECT * " + "FROM safebankdb.credit_cards " + "WHERE user_id = '"
-					+ userId + "';";
-
-			results = (ResultSet) executeQuery(GET_CARDS_QUERY);
+			results = (ResultSet) executeQuery(GET_CARD_DETAILS_QUERY);
 			creditCard = new CreditCard();
 			while (results.next()) {
 				creditCard.setCreditCardId(UUID.fromString(results.getString("credit_card_id")));
@@ -122,12 +109,34 @@ public class CreditCardsDAO extends DatabaseConnectionFactory {
 
 	public static boolean updateRemainingCreditLimit(String userId, String cardId, double remainingCreditLimit) {
 
-		final String UPDATE_REMAINING_CREDIT_LIMIT_QUERY = "UPDATE safebankdb.credit_cards " + "SET remaining_credit_limit = "
-				+ "'" + remainingCreditLimit + "'" + " WHERE user_id = " + "'" + userId + "'" + " AND credit_card_id = "
-				+ "'" + cardId + "'";
+		final String UPDATE_REMAINING_CREDIT_LIMIT_QUERY = 
+				"UPDATE safebankdb.credit_cards " 
+		+ "SET remaining_credit_limit = '" + remainingCreditLimit + "'" 
+		+ " WHERE user_id = " + "'" + userId + "'" 
+		+ " AND credit_card_id = "+ "'" + cardId + "'";
 
 		boolean updatedRemainingCreditLimit = executeUpdate(UPDATE_REMAINING_CREDIT_LIMIT_QUERY);
 		if (updatedRemainingCreditLimit)
+			return true;
+		return false;
+	}
+	
+	public static boolean updateTotalCreditLimit(
+			String userId, 
+			String cardId, 
+			double updatedTotalCreditLimit,
+			double updatedRemainingCreditLimit,
+			CardCategory cardCategory) {
+
+		final String UPDATE_TOTAL_CREDIT_LIMIT_QUERY = "UPDATE safebankdb.credit_cards " 
+		+ "SET total_credit_limit = " + updatedTotalCreditLimit + ", remaining_credit_limit = "+updatedRemainingCreditLimit+","
+		+ " card_category = '" + cardCategory.toString() + "' "
+		+ "WHERE user_id = " + "'" + userId + "'" + " AND credit_card_id = '" + cardId + "'";
+		
+		System.out.println("Executing this query ::: "+UPDATE_TOTAL_CREDIT_LIMIT_QUERY);
+
+		boolean updatedCardDetails = executeUpdate(UPDATE_TOTAL_CREDIT_LIMIT_QUERY);
+		if (updatedCardDetails)
 			return true;
 		return false;
 	}

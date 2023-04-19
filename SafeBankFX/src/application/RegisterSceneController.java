@@ -28,7 +28,7 @@ import utils.TransactionUtils;
 import utils.UserUtils;
 import validations.UserValidations;
 
-public class RegisterSceneController extends Controller implements Initializable {
+public class RegisterSceneController implements Initializable {
 	@FXML
 	private Label lblBankName;
 	@FXML
@@ -99,7 +99,7 @@ public class RegisterSceneController extends Controller implements Initializable
 			} else {
 
 				long phoneNumber = Long.parseLong(phone);
-				boolean phoneExists = UsersDAO.userExistsByPhone(phoneNumber, user.getUserId().toString());
+				boolean phoneExists = UsersDAO.userExistsByPhone(phoneNumber, null);
 				if (phoneExists) {
 					headerText = "Phone Number Already Exists";
 					AlertController.showError(title, headerText, contentText);
@@ -227,7 +227,6 @@ public class RegisterSceneController extends Controller implements Initializable
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// TODO Auto-generated method stub
-		refreshState();
 		btnRegister.setDisable(true);
 		btnChangeEmail.setVisible(false);
 		temporaryVeriedEmailsList = new ArrayList<>();

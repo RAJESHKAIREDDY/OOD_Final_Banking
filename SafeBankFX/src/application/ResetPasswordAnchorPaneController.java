@@ -110,6 +110,5 @@ public class ResetPasswordAnchorPaneController extends Controller implements Ini
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		refreshState();
-		System.out.println("lblResetPasswordEmail ==> "+lblResetPasswordEmail.getText());
 	}
 }

@@ -47,8 +47,9 @@ public class SavingsAccountsDAO extends DatabaseConnectionFactory {
 
 			results = (ResultSet) executeQuery(GET_ACCOUNTS_QUERY);
 			retrievedAccounts = new ArrayList<>();
-			SavingsAccount savingsAccount = new SavingsAccount();
+			
 			while(results.next()) {
+				SavingsAccount savingsAccount = new SavingsAccount();
 				savingsAccount.setAccountId(UUID.fromString(results.getString("account_id")));
 				savingsAccount.setAccountNumber(results.getLong("account_number"));
 				savingsAccount.setAccountBalance(results.getDouble("account_balance"));

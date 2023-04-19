@@ -65,6 +65,8 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 	private AnchorPane anchorPaneChangePassword;
 	@FXML
 	private Button btnNewSavingsAccount;
+	
+	private static int incorrectCorrentPasswordAttempts;
 
 	@FXML
 	public void handleChangeNameAction(ActionEvent event) throws IOException, MessagingException {
@@ -91,12 +93,13 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 				btnChangeName.setText("Change Name");
 				headerText = "Updated User Name Successfully";
 
+				AlertController.showSuccess(title, headerText, contentText);
 				String toEmail = user.getEmail();
 				String subject = "SafeBank Update Account Details";
 				String message = "Your account name has been updated";
 
 				EmailService.sendEmail(toEmail, subject, message);
-				AlertController.showSuccess(title, headerText, contentText);
+				
 				return;
 			}
 		}
@@ -132,21 +135,22 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 				} else {
 					UsersDAO.updateUserPhone(user.getUserId().toString(), phoneNumber);
 					txtPhone.setDisable(true);
-					btnChangeName.setText("Change Number");
+					btnChangeNumber.setText("Change Number");
 					headerText = "Updated User Phone Number Successfully";
 
+					AlertController.showSuccess(title, headerText, contentText);
 					String toEmail = user.getEmail();
 					String subject = "SafeBank Update Account Details";
 					String message = "Your phone number has been updated";
 					
 					txtPhone.setDisable(true);
 					EmailService.sendEmail(toEmail, subject, message);
-					AlertController.showSuccess(title, headerText, contentText);
+					
 					return;
 				}
 			}
 		}
-	}
+	}	
 	
 	@FXML 
 	public void handleOpenNewSavingsAccountAction(ActionEvent event) throws IOException {
@@ -155,21 +159,31 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 		String headerText = null;
 		String contentText = null;
 		
-		boolean createdNewSavingsAccount = 
-				SavingsAccountService.createSavingsAccount(user.getUserId().toString(), user);
-		if(createdNewSavingsAccount) {
-			title = "Create New Savings Account";
-			headerText = "Created New Savings Account";
-			AlertController.showSuccess(title, headerText, contentText);
-			return;
+		int numberOfSavingsAccounts = user.getAccounts().size();
+		
+		if(numberOfSavingsAccounts < 6) {
+			boolean createdNewSavingsAccount = 
+					SavingsAccountService.createSavingsAccount(user.getUserId().toString(), user);
+			if(createdNewSavingsAccount) {
+				title = "Create New Savings Account";
+				headerText = "Created New Savings Account";
+				AlertController.showSuccess(title, headerText, contentText);
+				return;
+			}
+			else {
+				title = "Account creation failed";
+				headerText = "Some Error Occurred";
+				AlertController.showError(title, headerText, contentText);
+				return;
+			}
 		}
 		else {
-			title = "Account creation failed";
-			headerText = "Some Error Occurred";
-			AlertController.showSuccess(title, headerText, contentText);
+			title = "Account Creation";
+			headerText = "Reached maximum limit for creating accounts";
+			contentText = "If you still want to create an account, register with a new email address";
+			AlertController.showWarning(title, headerText, contentText);
 			return;
 		}
-		
 	}
 
 	@FXML
@@ -178,13 +192,12 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 		String title = null;
 		String headerText = null;
 		String contentText = null;
-		int iterationCount = 0;
 		boolean iterating = true;
 		while (iterating) {
-			System.out.println("ietration " + iterationCount);
-			String passwordsMatched = DialogController.enterCurrentPasswordDialog(iterationCount);
+			String passwordsMatched = DialogController.enterCurrentPasswordDialog(incorrectCorrentPasswordAttempts);
 			if(passwordsMatched == null) iterating = false;
 			else if (passwordsMatched.equals("matched")) {
+				incorrectCorrentPasswordAttempts = 0;
 				AnchorPane transferOther = (AnchorPane) FXMLLoader
 						.load(getClass().getResource(SceneFiles.RESET_PASSWORD_ANCHOR_PANE));
 				anchorPaneChangePassword.getChildren().setAll(transferOther.getChildren());
@@ -195,22 +208,26 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 				iterating = false;
 			} else {
 
-				if (iterationCount == 2) {
+				if (incorrectCorrentPasswordAttempts == 2) {
 					iterating = false;
 					Controller.user = null;
 					Controller.isSessionActive = false;
-					headerText = "Too many incorrect attempst. You have been signed out";
+					headerText = "Too many incorrect attempst. For security reasons, you will be signed out";
 					AlertController.showError(title, headerText, contentText);
+					incorrectCorrentPasswordAttempts = 0;
 					SwitchSceneController.invokeLayout(event, SceneFiles.LOGIN_SCENE_LAYOUT);
 					return;
 				}
+				incorrectCorrentPasswordAttempts++;
 			}
-			iterationCount++;
+			
 		}
 	}
 
 	@FXML
 	public void handleRequestCreditCardUpgradeAction(ActionEvent event) throws Exception {
+		
+		refreshState();
 		String title = null;
 		String headerText = null;
 		String contentText = null;
@@ -220,7 +237,7 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 
 		int creditScore = user.getCreditScore();
 		if (userCreditCard.getCardCategory() == null) {
-
+			refreshState();
 			// CREATING NEW CARD
 			if (creditScore < 720) {
 				title = "SafeBank Credit Card Request";
@@ -242,14 +259,17 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 			// UPDATING EXISTING CARD
 			String cardId = userCreditCard.getCreditCardId().toString();
 			CardCategory cardCategory = CreditCardUtils.getEligibleCreditCard(creditScore, user);
-			double totalcreditLimit = CreditCardUtils.getTotalCreditLimit(cardCategory);
+			double newTotalCreditLimit = CreditCardUtils.getTotalCreditLimit(cardCategory);
+			double oldTotalCreditLimit = userCreditCard.getTotalCreditLimit();
+			double oldRemainingCreditLimit = userCreditCard.getRemainingCreditLimit();
+			double newRemainingCreditLimit = oldRemainingCreditLimit + (newTotalCreditLimit - oldTotalCreditLimit);
 			if (cardCategory != userCreditCard.getCardCategory()) {
 				// upgraded
-				CreditCardsDAO.updateRemainingCreditLimit(userId, cardId, totalcreditLimit);
-				refreshState();
+				CreditCardsDAO.updateTotalCreditLimit(userId, cardId, newTotalCreditLimit, newRemainingCreditLimit, cardCategory);
+				
 				title = "SafeBank Credit Card Upgrade Request";
 				headerText = "Congratulations. We offered you a " + cardCategory + "card, with a credit limit of "
-						+ totalcreditLimit;
+						+ newTotalCreditLimit;
 
 				String toEmail = user.getEmail();
 				String subject = "SafeBank Update Account Details";
@@ -262,11 +282,11 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 				// same
 				title = "SafeBank Credit Card Upgrade Request";
 				headerText = "Currently you have " + userCreditCard.getCardCategory()
-						+ ". Boost your score further to upgrade card";
+						+ " credit card. Boost your score further to upgrade your credit card and credit limit";
 				AlertController.showWarning(title, headerText, contentText);
 				return;
 			}
-
+			
 		}
 
 	}
@@ -287,16 +307,17 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 			status = "Good";
 		else if (bestScore)
 			status = "Best";
-		String toEmail = user.getEmail();
-		String subject = "SafeBank Credit Score";
-		String message = "Your Credit Score : " + creditScore + "\n" + "Status : " + status;
-
-		EmailService.sendEmail(toEmail, subject, message);
 		
 		String title = "SafeBank Credit Score";
 		String headerText = "Your Credit Score : " + creditScore + "\n";
 		String contentText = "Status : " + status;
 		AlertController.showSuccess(title, headerText, contentText);
+		
+		String toEmail = user.getEmail();
+		String subject = "SafeBank Credit Score";
+		String message = "Your Credit Score : " + creditScore + "\n" + "Status : " + status;
+
+		EmailService.sendEmail(toEmail, subject, message);
 		return;
 	}
 
@@ -304,7 +325,7 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 	public void handleLogoutAction(ActionEvent event) throws IOException {
 		isSessionActive = false;
 		user = null;
-		SwitchSceneController.invokeLayout(event, SceneFiles.HOME_SCENE_LAYOUT);
+		SwitchSceneController.invokeLayout(event, SceneFiles.LOGIN_SCENE_LAYOUT);
 	}
 
 	@FXML

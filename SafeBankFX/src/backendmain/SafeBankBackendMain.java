@@ -52,7 +52,6 @@ public class SafeBankBackendMain {
 //		EmailService.sendEmail(toEmail, subject, message);
 //			MailgunEmailService.sendSimpleMessage();
 		
-//		System.out.println(user.toString());
 		
 		double amount = 10000;
 		

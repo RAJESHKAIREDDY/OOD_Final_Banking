@@ -169,7 +169,6 @@ public class CCBillPayAnchorPaneController extends Controller implements Initial
     		
     		Long accountNumber = displayAccountNumbersMapping.get(selectedAccountNumber);
 			currentSelectedAccount = SavingsAccountsDAO.getSavingsAccountByAccountNumber(accountNumber);
-			System.out.println(accountNumber);
     	}
     }
 
@@ -192,7 +191,6 @@ public class CCBillPayAnchorPaneController extends Controller implements Initial
 
     @FXML
     public void handleReset(ActionEvent event) throws IOException {
-    	System.out.println("working");
     	cbAccounts.getSelectionModel().clearSelection();
     	cbAccounts.setButtonCell(new PromptButtonCell<>(cbAccounts.getPromptText()));
     	vBoxDetails.setVisible(false);

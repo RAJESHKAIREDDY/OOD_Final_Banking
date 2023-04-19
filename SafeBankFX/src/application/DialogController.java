@@ -90,7 +90,6 @@ public class DialogController extends Controller implements Initializable {
 						AlertController.showError(title, headerText, contentText);
 					} else {
 						String email = user.getEmail();
-						System.out.println("Retrieved forgotten user email");
 						headerText = "Your registered email is : " + email;
 						AlertController.showSuccess(title, headerText, contentText);
 					}

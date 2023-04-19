@@ -82,8 +82,8 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 
 			results = (ResultSet) executeQuery(GET_TRANSACTIONS_QUERY);
 			retrievedTransactions = new ArrayList<>();
-			Transaction transaction = new Transaction();
 			while (results.next()) {
+				Transaction transaction = new Transaction();
 				transaction.setTransactionId(UUID.fromString(results.getString("transaction_id")));
 				transaction.setTransactionName(results.getString("transaction_name"));
 				transaction
@@ -95,8 +95,6 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 				transaction.setDueDate(results.getTimestamp("due_date"));
 				transaction.setAccountNumber(results.getLong("account_number"));
 				transaction.setCardNumber(results.getLong("card_number"));
-				
-				System.out.println(transaction.toString());
 				retrievedTransactions.add(transaction);
 				
 			}
@@ -104,7 +102,6 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 			// TODO Auto-generated catch block
 			Logger.getLogger(DatabaseConnectionFactory.class.getName()).log(Level.SEVERE, null, sqlException);
 		}
-		System.out.println(retrievedTransactions);
 		return retrievedTransactions;
 	}
 	
@@ -131,10 +128,7 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 		ResultSet results = null;
 		List<Transaction> retrievedTransactions = null;
 		try {
-			results = (ResultSet) executeQuery(GET_TRANSACTIONS_QUERY);
-			
-			System.out.println("Printing Result Set Data ::: "+results);
-			
+			results = (ResultSet) executeQuery(GET_TRANSACTIONS_QUERY);			
 			retrievedTransactions = new ArrayList<>();
 			
 			while (results.next()) {
@@ -156,8 +150,6 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 			// TODO Auto-generated catch block
 			Logger.getLogger(DatabaseConnectionFactory.class.getName()).log(Level.SEVERE, null, sqlException);
 		}
-		retrievedTransactions.forEach(n -> System.out.println("Amount : " + n.getAmount()));
-		System.out.println(retrievedTransactions);
 		return retrievedTransactions;
 	}
 
@@ -278,8 +270,8 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 
 			results = (ResultSet) executeQuery(GET_UNPAID_TRANSACTIONS_QUERY);
 			unpaidTransactions = new ArrayList<>();
-			Transaction transaction = new Transaction();
 			while (results.next()) {
+				Transaction transaction = new Transaction();
 				transaction.setTransactionId(UUID.fromString(results.getString("transaction_id")));
 				transaction.setTransactionName(results.getString("transaction_name"));
 				transaction

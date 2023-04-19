@@ -62,8 +62,7 @@ public class PayByCreditAnchorPaneController extends Controller implements Initi
 			btnPayByCredit.setVisible(true);
 			
 			Long cardNumber = displayCardNumbersMapping.get(selectedCardNumber);
-			currentSelectedCard = CreditCardsDAO.getCreditCardByUserId(user.getUserId().toString());
-			System.out.println(cardNumber);
+			currentSelectedCard = CreditCardsDAO.getCreditCardByCardNumber(cardNumber);
 		}
 	}
 	
@@ -171,7 +170,7 @@ public class PayByCreditAnchorPaneController extends Controller implements Initi
 		refreshState();
 		// TODO Auto-generated method stub
 		displayCardNumbersMapping = new HashMap<>();
-		List<String> cardNumbers = new ArrayList();
+		List<String> cardNumbers = new ArrayList<>();
 		CreditCard userCreditCard = CreditCardsDAO.getCreditCardByUserId(user.getUserId().toString());
 		long cardNumber = userCreditCard.getCardNumber();
 		String displayCardNumber = SavingsAccountUtils.getLastFourDigitsOf(cardNumber);

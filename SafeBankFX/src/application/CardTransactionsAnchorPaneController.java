@@ -2,8 +2,11 @@ package application;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -24,6 +27,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import models.CreditCard;
 import models.Transaction;
+import utils.SavingsAccountUtils;
 
 public class CardTransactionsAnchorPaneController extends Controller implements Initializable {
 	@FXML
@@ -54,6 +58,10 @@ public class CardTransactionsAnchorPaneController extends Controller implements 
 	private TableColumn<Transaction, Date> tblClmTDate;
 	@FXML
 	private TableColumn<Transaction, Double> tblClmAmt;
+	
+	private Map<String, Long> displayCardNumbersMapping;
+	private String selectedDisplayCardNumber;
+	private CreditCard currentSelectedCard;
 
 	@FXML
 	public void displayCards(ActionEvent event) throws IOException {
@@ -67,12 +75,10 @@ public class CardTransactionsAnchorPaneController extends Controller implements 
 			tblCards.setVisible(true);
 			btnResetCardCBValue.setVisible(true);
 			
-			System.out.println(selectedCardNumber);
-			CreditCard userCreditCard = 
-					CreditCardsDAO
-					.getCreditCardByUserId(user.getUserId().toString());
-			lblTotCardLimitValue.setText(userCreditCard.getTotalCreditLimit() + "");
-			lblRemCardLimitValue.setText(userCreditCard.getRemainingCreditLimit() + "");
+			Long cardNumber = displayCardNumbersMapping.get(selectedCardNumber);
+			currentSelectedCard = CreditCardsDAO.getCreditCardByCardNumber(cardNumber);
+			lblTotCardLimitValue.setText(currentSelectedCard.getTotalCreditLimit() + "");
+			lblRemCardLimitValue.setText(currentSelectedCard.getRemainingCreditLimit() + "");
 			
 			refreshState();
 			List<Transaction> cardTransactions = 
@@ -114,11 +120,17 @@ public class CardTransactionsAnchorPaneController extends Controller implements 
 		refreshState();
 		// TODO Auto-generated method stub
 		//List of card numbers of current user
-		CreditCard userCreditCard = CreditCardsDAO
-				.getCreditCardByUserId(user.getUserId().toString());
+		displayCardNumbersMapping = new HashMap<>();
+		List<String> cardNumbers = new ArrayList<>();
+		CreditCard userCreditCard = CreditCardsDAO.getCreditCardByUserId(user.getUserId().toString());
+		long cardNumber = userCreditCard.getCardNumber();
+		String displayCardNumber = SavingsAccountUtils.getLastFourDigitsOf(cardNumber);
+		displayCardNumbersMapping.put(displayCardNumber, cardNumber);
+		cardNumbers.add(displayCardNumber);	
+		
 		ObservableList<String> cardNumbersList = 
 				FXCollections
-				.observableArrayList(userCreditCard.getCardNumber() + "");
+				.observableArrayList(cardNumbers);
 		
 		//initializing values of account transactions
 		cbCards.setItems(cardNumbersList);

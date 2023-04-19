@@ -62,7 +62,6 @@ public class DepositAnchorPaneController extends Controller implements Initializ
 			
 			Long accountNumber = displayAccountNumbersMapping.get(selectedAccountNumber);
 			currentSelectedAccount = SavingsAccountsDAO.getSavingsAccountByAccountNumber(accountNumber);
-			System.out.println(accountNumber);
 		}
 		
 	}

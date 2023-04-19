@@ -85,7 +85,6 @@ public class TransactionsSceneController extends Controller implements Initializ
 			
 			AnchorPane cards = (AnchorPane)FXMLLoader.load(getClass().getResource(SceneFiles.CARD_TRANSACTIONS));
 			AnchorPane accounts = (AnchorPane)FXMLLoader.load(getClass().getResource(SceneFiles.ACCOUNT_TRANSACTIONS));
-			System.out.println(user.getCreditCard().toString());
 			if(user.getCreditCard().getCreditCardId() == null) {
 				radioBtnCredit.setVisible(false);
 				radioBtnSavings.setVisible(false);

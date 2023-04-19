@@ -72,7 +72,6 @@ public class PayBySavingsAnchorPaneController extends Controller implements Init
 
 			Long accountNumber = displayAccountNumbersMapping.get(selectedAccountNumber);
 			currentSelectedAccount = SavingsAccountsDAO.getSavingsAccountByAccountNumber(accountNumber);
-			System.out.println(accountNumber);
 		}
 	}
 

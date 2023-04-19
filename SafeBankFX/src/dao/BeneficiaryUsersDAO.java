@@ -21,7 +21,8 @@ public class BeneficiaryUsersDAO extends DatabaseConnectionFactory {
 		if(beneficiaryUserExists)
 			return false;
 		
-		final String ADD_NEW_BENEFICIARY_QUERY = "INSERT INTO "
+		final String ADD_NEW_BENEFICIARY_QUERY = 
+				"INSERT INTO "
 				+ "safebankdb.beneficiary_users("
 				+ "beneficiary_user_id, "
 				+ "user_id) "
@@ -39,7 +40,8 @@ public class BeneficiaryUsersDAO extends DatabaseConnectionFactory {
 	
 	public static boolean deleteBeneficiary(String beneficiaryId) {
 		
-		final String DELETE_BENEFICIARY_QUERY = "DELETE FROM "
+		final String DELETE_BENEFICIARY_QUERY = 
+				"DELETE FROM "
 				+ "safebankdb.beneficiary_users"
 				+ "WHERE"
 				+ "beneficiary_user_id = '" + beneficiaryId + "'";
@@ -54,7 +56,8 @@ public class BeneficiaryUsersDAO extends DatabaseConnectionFactory {
 		ResultSet beneficiaries = null;
 		BeneficiaryUser beneficiaryUser = null;
 		try {
-			final String GET_BENEFICIARY_USER_QUERY = "SELECT * "
+			final String GET_BENEFICIARY_USER_QUERY = 
+					"SELECT * "
 					+ "FROM safebankdb.beneficiary_users "
 					+ "WHERE beneficiary_user_id = '"+beneficiaryUserId+"'";
 
@@ -85,8 +88,9 @@ public class BeneficiaryUsersDAO extends DatabaseConnectionFactory {
 
 			results = (ResultSet) executeQuery(GET_ACCOUNTS_QUERY);
 			retrievedBeneficiaries = new ArrayList<>();
-			BeneficiaryUser beneficiaryUser = new BeneficiaryUser();
+			
 			while(results.next()) {
+				BeneficiaryUser beneficiaryUser = new BeneficiaryUser();
 				beneficiaryUser.setBeneficiaryUserId(UUID.fromString(results.getString("beneficiary_user_id")));
 				beneficiaryUser.setCreatedAt(results.getTimestamp("created_at"));
 				retrievedBeneficiaries.add(beneficiaryUser);

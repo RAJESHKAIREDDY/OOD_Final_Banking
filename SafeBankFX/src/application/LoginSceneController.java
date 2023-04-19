@@ -23,7 +23,7 @@ import models.User;
 import utils.UserUtils;
 import validations.UserValidations;
 
-public class LoginSceneController implements Initializable {
+public class LoginSceneController extends Controller implements Initializable {
 	@FXML
 	private Label lblBankName;
 	@FXML

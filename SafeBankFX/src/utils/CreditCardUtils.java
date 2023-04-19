@@ -12,6 +12,7 @@ import java.util.TimeZone;
 
 import enums.CardCategory;
 import enums.CardProvider;
+import models.CreditCard;
 import models.User;
 
 public class CreditCardUtils {
@@ -206,5 +207,13 @@ public class CreditCardUtils {
 		// convert LocalDateTime to Date object
 		Date date = java.util.Date.from(outputDate.atZone(java.time.ZoneId.systemDefault()).toInstant());
 		return date;
+	}
+	
+	public static double getPayableAmount(CreditCard creditCard) {
+		
+		double totalCreditLimit = creditCard.getTotalCreditLimit();
+		double remainingCreditLimit = creditCard.getRemainingCreditLimit();
+		double payableAmount = totalCreditLimit - remainingCreditLimit;
+		return payableAmount;
 	}
 }
