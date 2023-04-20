@@ -109,6 +109,7 @@ public class PayByCreditAnchorPaneController extends Controller implements Initi
 					headerText = "*** Paid USD " + amount + " from card number ending "
 							+ selectedDisplayCardNumber + " ***";
 					AlertController.showSuccess(title, headerText, contentText);
+					SwitchSceneController.invokeLayout(event, SceneFiles.TRANSACTIONS_SCENE_LAYOUT);
 					return;
 				} else {
 					if (insufficientFundsAttemptsCount == 2 || invalidOTPAttemptsCount == 2

@@ -7,12 +7,15 @@
 
 <AnchorPane minHeight="800.0" minWidth="1500.0" style="-fx-border-radius: 20px;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.HomeSceneController">
    <children>
-      <Label fx:id="lblHome" alignment="CENTER" contentDisplay="CENTER" layoutX="520.0" layoutY="36.0" prefHeight="54.0" prefWidth="444.0" text="Welcome to Safe Bank Internet Banking">
+      <Label fx:id="lblHome" alignment="CENTER" contentDisplay="CENTER" layoutX="490.0" layoutY="40.0" prefHeight="54.0" prefWidth="526.0" text="Welcome to Safe Bank Internet Banking">
          <font>
-            <Font size="24.0" />
+            <Font size="30.0" />
          </font>
       </Label>
-      <Button fx:id="btnLogout" layoutX="1378.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleLogoutAction" text="Logout" />
+      <Button fx:id="btnLogout" layoutX="1378.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleLogoutAction" text="Logout">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
       <Label fx:id="lblCurrentUserEmail" alignment="CENTER" contentDisplay="CENTER" layoutX="607.0" layoutY="135.0" prefHeight="30.0" prefWidth="324.0">
          <font>
             <Font size="25.0" />

@@ -5,7 +5,7 @@ public class SceneFiles {
 	public static final String REGISTER_SCENE_LAYOUT = "RegisterScene.fxml";
 	public static final String LOGIN_SCENE_LAYOUT = "LoginScene.fxml";
 	public static final String PROFILE_INFO_SCENE_LAYOUT = "ProfileInfoScene.fxml";
-	public static final String ACCOUNTS_SCENE_LAYOUT = "TransactionsScene.fxml";
+	public static final String TRANSACTIONS_SCENE_LAYOUT = "TransactionsScene.fxml";
 	public static final String PAYMENTS_SCENE_LAYOUT = "PaymentsScene.fxml";
 	public static final String TRANSFERS_SCENE_LAYOUT = "TransfersScene.fxml";
 	public static final String REPORTS_SCENE_LAYOUT = "ReportsScene.fxml";

@@ -115,6 +115,7 @@ public class PayBySavingsAnchorPaneController extends Controller implements Init
 					headerText = "*** Paid USD " + amount + " from A/C account number ending "
 							+ selectedDisplayAccountNumber + " ***";
 					AlertController.showSuccess(title, headerText, contentText);
+					SwitchSceneController.invokeLayout(event, SceneFiles.TRANSACTIONS_SCENE_LAYOUT);
 					return;
 				} else {
 					if (insufficientFundsAttemptsCount == 2 || invalidOTPAttemptsCount == 2
@@ -129,6 +130,7 @@ public class PayBySavingsAnchorPaneController extends Controller implements Init
 						}
 						AlertController.showError(title, headerText, contentText);
 						SwitchSceneController.invokeLayout(event, SceneFiles.LOGIN_SCENE_LAYOUT);
+						
 					} else {
 						if (paymentStatus == PaymentStatus.INSUFFICIENT_FUNDS) {
 							title = "Insufficient Funds";

@@ -127,7 +127,7 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 			} else {
 
 				long phoneNumber = Long.parseLong(phone);
-				boolean phoneExists = UsersDAO.userExistsByPhone(phoneNumber, user.getUserId().toString());
+				boolean phoneExists = UsersDAO.userExistsByPhoneAndNotCurrentUser(phoneNumber, user.getUserId().toString());
 				if (phoneExists) {
 					headerText = "User exists with the given phone number";
 					AlertController.showError(title, headerText, contentText);
@@ -251,7 +251,7 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 				title = "SafeBank Credit Card Request";
 				headerText = "Congratulations. We offered you a " + cardCategory + ", with a credit limit of "
 						+ totalcreditLimit;
-				AlertController.showError(title, headerText, contentText);
+				AlertController.showSuccess(title, headerText, contentText);
 				return;
 			}
 		} else {
@@ -270,20 +270,30 @@ public class ProfileInfoSceneController extends Controller implements Initializa
 				title = "SafeBank Credit Card Upgrade Request";
 				headerText = "Congratulations. We offered you a " + cardCategory + "card, with a credit limit of "
 						+ newTotalCreditLimit;
-
+				AlertController.showSuccess(title, headerText, contentText);
 				String toEmail = user.getEmail();
 				String subject = "SafeBank Update Account Details";
 				String message = "Your total credit limit has been upgraded";
 
 				EmailService.sendEmail(toEmail, subject, message);
-				AlertController.showSuccess(title, headerText, contentText);
+				
 				return;
 			} else {
+				
 				// same
-				title = "SafeBank Credit Card Upgrade Request";
-				headerText = "Currently you have " + userCreditCard.getCardCategory()
-						+ " credit card. Boost your score further to upgrade your credit card and credit limit";
-				AlertController.showWarning(title, headerText, contentText);
+				
+				if(userCreditCard.getCardCategory() == CardCategory.PLATINUM) {
+					title = "SafeBank Credit Card Upgrade Request";
+					headerText = "Currently you have the most premium card. " + userCreditCard.getCardCategory()
+							+ " is the maixum we can offer.";
+					AlertController.showSuccess(title, headerText, contentText);
+				}
+				else {
+					title = "SafeBank Credit Card Upgrade Request";
+					headerText = "Currently you have " + userCreditCard.getCardCategory()
+							+ " credit card. Boost your score further to upgrade your credit card and credit limit";
+					AlertController.showSuccess(title, headerText, contentText);
+				}
 				return;
 			}
 			

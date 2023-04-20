@@ -9,36 +9,36 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="1455.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CardTransactionsAnchorPaneController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="1455.0" style="-fx-alignment: center;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CardTransactionsAnchorPaneController">
    <children>
       <Pane fx:id="paneCards" layoutX="-42.0" layoutY="6.0" minHeight="560.0" minWidth="1455.0" prefHeight="560.0" prefWidth="1455.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ComboBox fx:id="cbCards" layoutX="539.0" layoutY="38.0" onAction="#displayCards" prefHeight="40.0" prefWidth="300.0" promptText="Choose Your Card" />
-            <Button fx:id="btnResetCardCBValue" layoutX="862.0" layoutY="39.0" mnemonicParsing="false" onAction="#clearSelectedValueCardsCB" text="Reset">
+            <ComboBox fx:id="cbCards" layoutX="602.0" layoutY="36.0" onAction="#displayCards" prefHeight="40.0" prefWidth="300.0" promptText="Choose Your Card" />
+            <Button fx:id="btnResetCardCBValue" layoutX="925.0" layoutY="37.0" mnemonicParsing="false" onAction="#clearSelectedValueCardsCB" text="Reset">
                <font>
                   <Font size="20.0" />
                </font></Button>
-            <Label fx:id="lblTotalCardLimit" layoutX="606.0" layoutY="115.0" prefHeight="21.0" prefWidth="173.0" text="Total Card Limit :  $">
+            <Label fx:id="lblTotalCardLimit" layoutX="669.0" layoutY="113.0" prefHeight="21.0" prefWidth="173.0" text="Total Card Limit :  $">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="lblRemCardLimit" layoutX="568.0" layoutY="145.0" prefHeight="21.0" prefWidth="190.0" text="Remaining Card Limit :  $">
+            <Label fx:id="lblRemCardLimit" layoutX="631.0" layoutY="143.0" prefHeight="21.0" prefWidth="190.0" text="Remaining Card Limit :  $">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="lblTotCardLimitValue" layoutX="755.0" layoutY="116.0" prefHeight="21.0" prefWidth="95.0">
+            <Label fx:id="lblTotCardLimitValue" layoutX="818.0" layoutY="114.0" prefHeight="21.0" prefWidth="95.0">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="lblRemCardLimitValue" layoutX="754.0" layoutY="144.0" prefHeight="21.0" prefWidth="95.0">
+            <Label fx:id="lblRemCardLimitValue" layoutX="817.0" layoutY="142.0" prefHeight="21.0" prefWidth="95.0">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <TableView fx:id="tblCards" layoutX="219.0" layoutY="196.0" prefHeight="250.0" prefWidth="1062.0">
+            <TableView fx:id="tblCards" layoutX="-5.0" layoutY="193.0" prefHeight="352.0" prefWidth="1416.0">
                <columns>
                   <TableColumn fx:id="tblClmTID" prefWidth="218.65203857421875" text="Transaction ID" />
                   <TableColumn fx:id="tblClmCardNum" prefWidth="135.40570068359375" text="Card Number" />

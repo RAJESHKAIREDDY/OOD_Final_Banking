@@ -126,6 +126,7 @@ public class CCBillPayAnchorPaneController extends Controller implements Initial
 							+ selectedDisplayAccountNumber + " ***";
 					CCBillPaymentTransaction.updateRemainingCreditLimit(userId, cardId, remainingCreditLimit, amount);
 					AlertController.showSuccess(title, headerText, contentText);
+					SwitchSceneController.invokeLayout(event, SceneFiles.TRANSACTIONS_SCENE_LAYOUT);
 					return;
 				} else {
 					if (insufficientFundsAttemptsCount == 2 || invalidOTPAttemptsCount == 2
@@ -180,6 +181,10 @@ public class CCBillPayAnchorPaneController extends Controller implements Initial
 
 			Long accountNumber = displayAccountNumbersMapping.get(selectedAccountNumber);
 			currentSelectedAccount = SavingsAccountsDAO.getSavingsAccountByAccountNumber(accountNumber);
+			if(radioBtnCustom.isSelected() && txtAmount.isDisable()) {
+				txtAmount.setText("");
+				txtAmount.setDisable(false);
+			}
 		}
 	}
 
@@ -196,8 +201,8 @@ public class CCBillPayAnchorPaneController extends Controller implements Initial
 			txtAmount.setDisable(true);
 			txtAmount.setText(payableAmount.toString());
 		} else {
-			txtAmount.setDisable(false);
 			txtAmount.setText("");
+			txtAmount.setDisable(false);
 		}
 
 	}
@@ -209,7 +214,7 @@ public class CCBillPayAnchorPaneController extends Controller implements Initial
 		vBoxDetails.setVisible(false);
 		btnReset.setVisible(false);
 		radioBtnFull.setSelected(true);
-		txtAmount.setText("5000.0");
+		txtAmount.setText("");
 	}
 
 	@Override

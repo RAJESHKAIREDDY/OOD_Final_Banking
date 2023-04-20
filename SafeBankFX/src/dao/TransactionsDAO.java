@@ -17,6 +17,8 @@ import enums.TransactionType;
 import models.CreditCard;
 import models.Transaction;
 import models.User;
+import utils.CreditCardUtils;
+import utils.TransactionUtils;
 
 public class TransactionsDAO extends DatabaseConnectionFactory {
 
@@ -111,7 +113,7 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 	public static List<Transaction> getTransactionsByCardNumber(long cardNumber) {
 
 		final String GET_TRANSACTIONS_QUERY = "SELECT * " + "FROM safebankdb.transactions " + "WHERE card_number = "
-				+ cardNumber + ";";
+				+ cardNumber + " order by created_at desc;";
 		
 		return getTransactions(GET_TRANSACTIONS_QUERY);
 	}
@@ -119,7 +121,7 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 	public static List<Transaction> getTransactionsByAccountNumber(long accountNumber) {
 
 		final String GET_TRANSACTIONS_QUERY = "SELECT * " + "FROM safebankdb.transactions " + "WHERE account_number = "
-				+ accountNumber + ";";
+				+ accountNumber + " order by created_at desc;";
 		
 		System.out.println("Running this query :::: "+ GET_TRANSACTIONS_QUERY);
 		return getTransactions(GET_TRANSACTIONS_QUERY);
@@ -292,32 +294,32 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 			User currentUser = UsersDAO.getUserById(userId);
 			CreditCard currentUserCreditCard = CreditCardsDAO.getCreditCardByUserId(currentUser.getUserId().toString());
 			System.out.println(currentUserCreditCard);
-			double totalCreditLimit = currentUserCreditCard.getTotalCreditLimit();
-			double remainingCreditLimit = currentUserCreditCard.getRemainingCreditLimit();
-			double payableAmount = totalCreditLimit - remainingCreditLimit;
-
+			double payableAmount = CreditCardUtils.getPayableAmount(currentUserCreditCard);
+			
 			Date lastPaymentDate = currentUserCreditCard.getLastPaymentDate();
 			unpaidTransactions.forEach(currentTransaction -> {
 				Date currentTransactionDueDate = currentTransaction.getDueDate();
 				
-				int compareValue = lastPaymentDate.compareTo(currentTransactionDueDate);
-				if (compareValue > 0) {
-					if (payableAmount > 0) {
-						currentTransaction.setPaymentStatus(CCBillPaymentStatus.LATE_YET_PENDING);
+				if(lastPaymentDate != null && currentTransactionDueDate != null) {
+					int compareValue = lastPaymentDate.compareTo(currentTransactionDueDate);
+					if (compareValue > 0) {
+						if (payableAmount > 0) {
+							currentTransaction.setPaymentStatus(CCBillPaymentStatus.LATE_YET_PENDING);
+						} else {
+							currentTransaction.setPaymentStatus(CCBillPaymentStatus.LATE);
+						}
 					} else {
-						currentTransaction.setPaymentStatus(CCBillPaymentStatus.LATE);
+						if (payableAmount > 0) {
+							currentTransaction.setPaymentStatus(CCBillPaymentStatus.PENDING);
+						} else {
+							currentTransaction.setPaymentStatus(CCBillPaymentStatus.IN_TIME);
+						}
 					}
-				} else {
-					if (payableAmount > 0) {
-						currentTransaction.setPaymentStatus(CCBillPaymentStatus.PENDING);
-					} else {
-						currentTransaction.setPaymentStatus(CCBillPaymentStatus.IN_TIME);
-					}
+
+					updateTransactionPaymentStatus(userId, currentTransaction.getTransactionId().toString(),
+							currentTransaction.getPaymentStatus().toString());
+
 				}
-
-				updateTransactionPaymentStatus(userId, currentTransaction.getTransactionId().toString(),
-						currentTransaction.getPaymentStatus().toString());
-
 			});
 
 		} catch (SQLException sqlException) {

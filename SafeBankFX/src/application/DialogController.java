@@ -79,7 +79,7 @@ public class DialogController extends Controller implements Initializable {
 				AlertController.showError(title, headerText, contentText);
 			} else {
 				long phoneNumber = Long.parseLong(enteredPhoneNumber);
-				boolean phoneExists = UsersDAO.userExistsByPhone(phoneNumber, Controller.user.getUserId().toString());
+				boolean phoneExists = UsersDAO.userExistsByPhone(phoneNumber);
 				if (!phoneExists) {
 					headerText = "No record exists with the given phone number";
 					AlertController.showError(title, headerText, contentText);

@@ -106,6 +106,7 @@ public class DepositAnchorPaneController extends Controller implements Initializ
 					headerText = "*** Deposited USD " + amount + " to account number ending "
 							+ selectedDisplayAccountNumber + " ***";
 					AlertController.showSuccess(title, headerText, contentText);
+					SwitchSceneController.invokeLayout(event, SceneFiles.TRANSACTIONS_SCENE_LAYOUT);
 					return;
 				} else {
 					if (insufficientFundsAttemptsCount == 2 || invalidOTPAttemptsCount == 2

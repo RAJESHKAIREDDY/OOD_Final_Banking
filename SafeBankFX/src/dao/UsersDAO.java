@@ -174,7 +174,15 @@ public class UsersDAO extends DatabaseConnectionFactory {
 		return false;
 	}
 	
-	public static boolean userExistsByPhone(long phone, String userId) {
+	public static boolean userExistsByPhone(long phone) {
+		User user = getUserByPhone(phone);
+		//to ensure that the existing user is not the only current user
+		if (user != null)
+			return true;
+		return false;
+	}
+	
+	public static boolean userExistsByPhoneAndNotCurrentUser(long phone, String userId) {
 		User user = getUserByPhone(phone);
 		//to ensure that the existing user is not the only current user
 		if (user != null && !user.getUserId().toString().equals(userId))

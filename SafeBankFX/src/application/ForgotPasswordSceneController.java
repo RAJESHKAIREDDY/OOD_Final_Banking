@@ -130,7 +130,6 @@ public class ForgotPasswordSceneController extends Controller implements Initial
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// TODO Auto-generated method stub
-		refreshState();
 		btnChangeEmail.setVisible(false);
 		temporaryVeriedEmailsList = new ArrayList<>();
 	}

@@ -250,6 +250,7 @@ public class TransferExisingAnchorPaneController extends Controller implements I
 					
 					EmailService.sendEmail(currUserToEmail, currUserEmailSubject, currUserEmailMessage);
 					EmailService.sendEmail(benUserToEmail, benUserEmailSubject, benUserEmailMessage);
+					SwitchSceneController.invokeLayout(event, SceneFiles.TRANSACTIONS_SCENE_LAYOUT);
 				}
 				else {
 					title = "Incorrect OTP";
