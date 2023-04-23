@@ -37,8 +37,6 @@ import validations.TransactionValidations;
 
 public class TransferToSelfAnchorPaneController extends Controller implements Initializable {
 	@FXML
-	private VBox vBoxTransferToSelf;
-	@FXML
 	private ComboBox<String> cbFromAccount;
 	@FXML
 	private ComboBox<String> cbToAccount;

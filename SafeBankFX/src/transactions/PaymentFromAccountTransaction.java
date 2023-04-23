@@ -1,18 +1,22 @@
 package transactions;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import application.DialogController;
+import dao.CreditCardsDAO;
 import dao.SavingsAccountsDAO;
 import dao.TransactionsDAO;
 import dao.UsersDAO;
+import enums.CCBillPaymentStatus;
 import enums.PaymentStatus;
 import enums.TransactionCategory;
 import enums.TransactionMode;
 import enums.TransactionType;
+import models.CreditCard;
 import models.SavingsAccount;
 import models.Transaction;
 import models.User;
@@ -112,6 +116,14 @@ public class PaymentFromAccountTransaction {
 						transaction.setAccountNumber(userAccount.getAccountNumber());
 						if (amount > 0)
 							TransactionsDAO.createNewTransaction(userId, transaction);
+						if(transactionCategory == TransactionCategory.CC_BILL_PAYMENT) {
+							Date lastCCBillPaymentDate = TransactionsDAO.getLastPaymentDate(userId);
+							Timestamp lastCCBillPaymentDateTimestamp = 
+									new Timestamp(lastCCBillPaymentDate.getTime());
+							CreditCard creditCard = CreditCardsDAO.getCreditCardByUserId(userId);
+							String cardId = creditCard.getCreditCardId().toString();
+							CreditCardsDAO.updateLastPaymentDate(userId, cardId, lastCCBillPaymentDateTimestamp);
+						}
 						int creditScore = user.getCreditScore();
 						user.setCreditScore(creditScore + 10);
 						UsersDAO.updateUserCreditScore(userId, user.getCreditScore());

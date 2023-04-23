@@ -61,6 +61,7 @@ public class TransactionsSceneController extends Controller implements Initializ
 			refreshState();
 			
 			try {
+				
 				AnchorPane accounts = (AnchorPane)FXMLLoader
 						.load(getClass()
 								.getResource(SceneFiles.ACCOUNT_TRANSACTIONS));
@@ -72,10 +73,13 @@ public class TransactionsSceneController extends Controller implements Initializ
 					radioBtnCredit.setVisible(false);
 					radioBtnSavings.setVisible(false);
 					anchorPane.getChildren().setAll(accounts.getChildren());
+					lblDisplayingAccountTransactions.setText("Displaying Account Transactions");
 				}
-				else 
+				else {
 					anchorPane.getChildren().setAll(cards.getChildren());
-					lblDisplayingAccountTransactions.setVisible(false);
+//					lblDisplayingAccountTransactions.setVisible(false);
+					lblDisplayingAccountTransactions.setText("Displaying Card Transactions");
+				}
 				
 			} catch (IOException e) {
 				// TODO: handle exception
@@ -95,11 +99,13 @@ public class TransactionsSceneController extends Controller implements Initializ
 			else {
 				if(radioBtnCredit.isSelected()) {
 					anchorPane.getChildren().setAll(cards.getChildren());
-					lblDisplayingAccountTransactions.setVisible(false);
+					lblDisplayingAccountTransactions.setVisible(true);
+					lblDisplayingAccountTransactions.setText("Displaying Card Transactions");
 				}
 				else {
 					anchorPane.getChildren().setAll(accounts.getChildren());
 					lblDisplayingAccountTransactions.setVisible(true);
+					lblDisplayingAccountTransactions.setText("Displaying Account Transactions");
 				}
 			}
 		}

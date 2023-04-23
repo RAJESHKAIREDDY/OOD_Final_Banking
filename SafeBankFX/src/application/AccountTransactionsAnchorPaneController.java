@@ -125,6 +125,7 @@ public class AccountTransactionsAnchorPaneController extends Controller implemen
 				FXCollections.observableArrayList(accountNumbers);
 		
 		cbAccounts.setItems(accountNumbersList);
+		cbAccounts.setStyle("-fx-font-size: 20px;");
 		
 		btnResetCBValue.setVisible(false);
 		lblAcctBalance.setVisible(false);

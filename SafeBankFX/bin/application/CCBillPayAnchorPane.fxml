@@ -13,7 +13,10 @@
       <AnchorPane layoutY="-4.0" prefHeight="456.0" prefWidth="1085.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
          <children>
             <ComboBox fx:id="cbAccounts" layoutX="410.0" layoutY="78.0" onAction="#displayAccounts" prefHeight="40.0" prefWidth="280.0" promptText="Choose Your Account Number" />
-            <Button fx:id="btnReset" layoutX="700.0" layoutY="79.0" mnemonicParsing="false" onAction="#handleReset" prefHeight="38.0" text="Reset" />
+            <Button fx:id="btnReset" layoutX="700.0" layoutY="79.0" mnemonicParsing="false" onAction="#handleReset" prefHeight="38.0" text="Reset">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
             <RadioButton fx:id="radioBtnFull" layoutX="454.0" layoutY="160.0" mnemonicParsing="false" onAction="#handleChangeAmountLimit" selected="true" text="Pay Full Amount">
                <toggleGroup>
                   <ToggleGroup fx:id="ChangeAmountLimit" />

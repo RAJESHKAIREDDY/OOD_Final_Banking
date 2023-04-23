@@ -11,13 +11,22 @@
    <children>
       <AnchorPane layoutX="5.0" layoutY="-12.0" prefHeight="456.0" prefWidth="1085.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="-5.0" AnchorPane.topAnchor="-12.0">
          <children>
-            <ComboBox fx:id="cbAccounts" layoutX="353.0" layoutY="104.0" onAction="#displayAccounts" prefHeight="26.0" prefWidth="240.0" promptText="Choose Your Account Number" />
-            <TextField fx:id="txtAmount" layoutX="363.0" layoutY="172.0" prefHeight="26.0" prefWidth="231.0" promptText="Enter Amount" />
-            <Button fx:id="btnPayBySavings" layoutX="422.0" layoutY="234.0" mnemonicParsing="false" onAction="#handlePayBySavings" text="Pay By Savings" />
-            <Button fx:id="btnReset" layoutX="602.0" layoutY="104.0" mnemonicParsing="false" onAction="#handleReset" text="Reset" />
-            <Label fx:id="lblMakeOnlinePaymentByAccount" layoutX="409.0" layoutY="48.0" text="Make an Online Payment">
+            <ComboBox fx:id="cbAccounts" layoutX="342.0" layoutY="135.0" onAction="#displayAccounts" prefHeight="40.0" prefWidth="350.0" promptText="Choose Your Account Number" />
+            <TextField fx:id="txtAmount" layoutX="377.0" layoutY="203.0" prefHeight="40.0" prefWidth="294.0" promptText="Enter Amount">
                <font>
                   <Font size="20.0" />
+               </font></TextField>
+            <Button fx:id="btnPayBySavings" layoutX="445.0" layoutY="279.0" mnemonicParsing="false" onAction="#handlePayBySavings" text="Pay By Savings">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
+            <Button fx:id="btnReset" layoutX="709.0" layoutY="134.0" mnemonicParsing="false" onAction="#handleReset" prefHeight="40.0" text="Reset">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
+            <Label fx:id="lblMakeOnlinePaymentByAccount" layoutX="371.0" layoutY="48.0" text="Make an Online Payment">
+               <font>
+                  <Font size="30.0" />
                </font>
             </Label>
          </children>

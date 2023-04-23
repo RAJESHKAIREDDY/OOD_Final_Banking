@@ -56,8 +56,6 @@ public class CCBillPayAnchorPaneController extends Controller implements Initial
 	@FXML
 	private TextField txtAmount;
 
-	@FXML
-	private VBox vBoxDetails;
 
 	private Map<String, Long> displayAccountNumbersMapping;
 	private Map<String, Long> displayCardNumbersMapping;
@@ -76,6 +74,14 @@ public class CCBillPayAnchorPaneController extends Controller implements Initial
 		String title = null;
 		String headerText = null;
 		String contentText = null;
+		
+		if(currentSelectedAccount == null) {
+			title = "Credit Card Bill Payment";
+			headerText = "No Account Selected";
+			contentText = "Please select an account to pay from";
+			AlertController.showError(title, headerText, contentText);
+			return;
+		}
 
 		selectedDisplayAccountNumber = SavingsAccountUtils
 				.getLastFourDigitsOf(currentSelectedAccount.getAccountNumber());
@@ -94,6 +100,7 @@ public class CCBillPayAnchorPaneController extends Controller implements Initial
 		String amountTextFieldValue = txtAmount.getText();
 		boolean isAmountValid = TransactionValidations.isAmountValidForCCBillPayment(amountTextFieldValue);
 
+		
 		if (!isAmountValid) {
 			title = "Invalid Amount";
 			headerText = "Amount is invalid for transaction";
@@ -175,7 +182,6 @@ public class CCBillPayAnchorPaneController extends Controller implements Initial
 	public void displayAccounts(ActionEvent event) throws IOException {
 		String selectedAccountNumber = cbAccounts.getSelectionModel().getSelectedItem();
 		if (selectedAccountNumber != null) {
-			vBoxDetails.setVisible(true);
 			txtAmount.setDisable(true);
 			btnReset.setVisible(true);
 
@@ -211,7 +217,6 @@ public class CCBillPayAnchorPaneController extends Controller implements Initial
 	public void handleReset(ActionEvent event) throws IOException {
 		cbAccounts.getSelectionModel().clearSelection();
 		cbAccounts.setButtonCell(new PromptButtonCell<>(cbAccounts.getPromptText()));
-		vBoxDetails.setVisible(false);
 		btnReset.setVisible(false);
 		radioBtnFull.setSelected(true);
 		txtAmount.setText("");
@@ -233,6 +238,7 @@ public class CCBillPayAnchorPaneController extends Controller implements Initial
 
 		ObservableList<String> accountNumbersList = FXCollections.observableArrayList(accountNumbers);
 		cbAccounts.setItems(accountNumbersList);
+		cbAccounts.setStyle("-fx-font-size: 20px;");
 
 		CreditCard userCreditCard = CreditCardsDAO.getCreditCardByUserId(user.getUserId().toString());
 
@@ -240,9 +246,9 @@ public class CCBillPayAnchorPaneController extends Controller implements Initial
 		displayCardNumbersMapping.put(displayCardNumber, userCreditCard.getCardNumber());
 
 		Double totalPayableAmount = CreditCardUtils.getPayableAmount(userCreditCard);
-
-		vBoxDetails.setVisible(false);
+		
 		btnReset.setVisible(false);
 		txtAmount.setText(totalPayableAmount.toString());
+		txtAmount.setDisable(true);
 	}
 }

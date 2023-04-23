@@ -75,6 +75,7 @@ public class PaymentsSceneController extends Controller implements Initializable
 			AnchorPane ccBillPay = null;
 			AnchorPane payBySavings = null;
 			AnchorPane payByCredit = null;
+			
 			if(user.getCreditCard().getCreditCardId() != null) {
 				radioBtnPayByCredit.setVisible(true);
 				radioBtnPayBySavings.setVisible(true);

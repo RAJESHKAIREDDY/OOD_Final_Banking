@@ -135,6 +135,7 @@ public class CardTransactionsAnchorPaneController extends Controller implements 
 		
 		//initializing values of account transactions
 		cbCards.setItems(cardNumbersList);
+		cbCards.setStyle("-fx-font-size: 20px;");
 		
 		//initializing values of card transactions
 		cbCards.getSelectionModel().clearSelection();

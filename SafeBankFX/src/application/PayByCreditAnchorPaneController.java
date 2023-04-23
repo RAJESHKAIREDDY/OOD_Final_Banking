@@ -186,6 +186,7 @@ public class PayByCreditAnchorPaneController extends Controller implements Initi
 		
 		//initializing values of account transactions
 		cbCards.setItems(cardNumbersList);
+		cbCards.setStyle("-fx-font-size: 20px;");
 		
 		txtAmount.setText("");
 		txtAmount.setVisible(false);

@@ -180,6 +180,7 @@ public class PayBySavingsAnchorPaneController extends Controller implements Init
 
 		ObservableList<String> accountNumbersList = FXCollections.observableArrayList(accountNumbers);
 		cbAccounts.setItems(accountNumbersList);
+		cbAccounts.setStyle("-fx-font-size: 20px;");
 
 		btnReset.setVisible(false);
 		txtAmount.setText("");

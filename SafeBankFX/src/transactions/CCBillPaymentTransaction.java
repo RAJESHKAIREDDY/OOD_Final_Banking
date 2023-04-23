@@ -10,6 +10,8 @@ import enums.PaymentStatus;
 import enums.TransactionCategory;
 import models.CreditCard;
 import models.User;
+import utils.CreditCardUtils;
+import utils.TransactionUtils;
 
 public class CCBillPaymentTransaction {
 
@@ -87,9 +89,7 @@ public class CCBillPaymentTransaction {
 
     public static CCBillPaymentStatus getCCBillPaymentStatus(
     		User user, CreditCard creditCard) throws Exception {
-        double totalCreditLimit = creditCard.getTotalCreditLimit();
-        double remainingBalance = creditCard.getRemainingCreditLimit();
-        double totalPayableAmount = totalCreditLimit - remainingBalance;
+        double totalPayableAmount = CreditCardUtils.getPayableAmount(creditCard);
         Date lastDueDate = TransactionsDAO.getLastDueDate(user.getUserId().toString());
         Date lastPaymentDate = creditCard.getLastPaymentDate();
         CCBillPaymentStatus paymentStatus;

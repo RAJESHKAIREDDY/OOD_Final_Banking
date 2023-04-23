@@ -95,7 +95,7 @@ public class PaymentFromCardTransaction {
 						if (amount <= remainingCreditLimit) {
 							remainingCreditLimit -= amount;
 							System.out.println("Updated Balance : USD " + remainingCreditLimit);
-							Date dueDate = CreditCardUtils.generateCCDueDateAfterTenMin(new Date());
+							Date dueDate = CreditCardUtils.generateCCDueDateAfterTwoMin(new Date());
 //									CreditCardUtils.generateDueDateForCreditCard();
 							CreditCardsDAO.updateRemainingCreditLimit(userId, cardId, remainingCreditLimit);
 							CreditCard userCreditCard = CreditCardsDAO.getCreditCardByCardId(cardId);
@@ -124,18 +124,24 @@ public class PaymentFromCardTransaction {
 							else if(paymentStatus == CCBillPaymentStatus.LATE_YET_PENDING) {
 								double totCreditLimit = userCreditCard.getTotalCreditLimit();
 								double remCreditlimit = userCreditCard.getRemainingCreditLimit();
-								Timestamp lastPaymentDateTimestamp = 
-										new Timestamp(userCreditCard.getLastPaymentDate().getTime());
-								CreditCardsDAO.updateLastPaymentDate(userId, cardId, lastPaymentDateTimestamp);
-								Transaction lastCCBillPaymentTransaction = 
-										TransactionsDAO.getTransactionByDate(userId, lastPaymentDateTimestamp);
-								double amountPaid = lastCCBillPaymentTransaction.getAmount();
-								System.out.println("Last CC Bill Payment Amount :::: "+amount);
-								if(amountPaid <= 0.1 * (totCreditLimit - (remCreditlimit - amount))) {
-									user.setCreditScore(creditScore - 30);
+								Timestamp lastPaymentDateTimestamp = null;
+								Transaction lastCCBillPaymentTransaction = null;
+								lastPaymentDateTimestamp = new Timestamp(userCreditCard.getLastPaymentDate().getTime());
+								if(lastPaymentDateTimestamp != null) {
+									CreditCardsDAO.updateLastPaymentDate(userId, cardId, lastPaymentDateTimestamp);
 								}
-								else
-									user.setCreditScore(creditScore - 20);
+								
+								lastCCBillPaymentTransaction = 
+										TransactionsDAO.getTransactionByDate(userId, lastPaymentDateTimestamp);
+								if(lastCCBillPaymentTransaction != null) {
+									double amountPaid = lastCCBillPaymentTransaction.getAmount();
+									System.out.println("Last CC Bill Payment Amount :::: "+amount);
+									if(amountPaid <= 0.1 * (totCreditLimit - (remCreditlimit - amount))) {
+										user.setCreditScore(creditScore - 30);
+									}
+									else
+										user.setCreditScore(creditScore - 20);
+								}
 							}
 								
 							if(amount > 0.33 * remainingCreditLimit)

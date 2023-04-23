@@ -300,8 +300,9 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 			unpaidTransactions.forEach(currentTransaction -> {
 				Date currentTransactionDueDate = currentTransaction.getDueDate();
 				
-				if(lastPaymentDate != null && currentTransactionDueDate != null) {
-					int compareValue = lastPaymentDate.compareTo(currentTransactionDueDate);
+//				if(lastPaymentDate != null && currentTransactionDueDate != null) {
+					int compareValue = new Date().compareTo(currentTransactionDueDate);
+					
 					if (compareValue > 0) {
 						if (payableAmount > 0) {
 							currentTransaction.setPaymentStatus(CCBillPaymentStatus.LATE_YET_PENDING);
@@ -315,11 +316,13 @@ public class TransactionsDAO extends DatabaseConnectionFactory {
 							currentTransaction.setPaymentStatus(CCBillPaymentStatus.IN_TIME);
 						}
 					}
-
+					System.out.println("Last Payment Date :::: "+lastPaymentDate);
+					System.out.println("Current Transaction Due Date :::: "+currentTransactionDueDate);
+					System.out.println("compare value in updateTransactionsPaymentStatus :::: "+compareValue+ " :::: Status :::: "+currentTransaction.getPaymentStatus());
 					updateTransactionPaymentStatus(userId, currentTransaction.getTransactionId().toString(),
 							currentTransaction.getPaymentStatus().toString());
 
-				}
+//				}
 			});
 
 		} catch (SQLException sqlException) {
