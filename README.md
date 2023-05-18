@@ -4,7 +4,7 @@ Safe Bank Internet Banking is a secure Internet banking application that aims to
 
 # Steps to run
 
-1. clone the repository using **git clone https://github.com/sriharshaperi/Safe_Bank_Banking_App.git**
+1. clone the repository using **git clone https://github.com/RAJESHKAIREDDY/OOD_Final_Banking.git**
 2. Run the java project
 3. Provide a valid email for registration as the further step requires email verification
 
